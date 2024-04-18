@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
+  m_Name: 43_SniperScope
+  m_EditorClassIdentifier: 
+  itemId: 43
+  itemType: 8
+  itemName: "\uC2A4\uB098\uC774\uD37C \uC870\uC900\uACBD"
+  itemImage: {fileID: 21300000, guid: 157f302fc54fcc84289b09d3381568e2, type: 3}
+  weight: 0
+  maxItemCount: 0
+  itemPrefab: {fileID: 6216661893047218748, guid: ed7a87171a6507d45b337d91980b6dff, type: 3}
+  Price: 0

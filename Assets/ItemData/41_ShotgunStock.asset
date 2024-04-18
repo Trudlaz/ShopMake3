@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
+  m_Name: 41_ShotgunStock
+  m_EditorClassIdentifier: 
+  itemId: 41
+  itemType: 8
+  itemName: "\uC0F7\uAC74 \uAC1C\uBA38\uB9AC\uD310"
+  itemImage: {fileID: 21300000, guid: a6b084e0456b01c4cb4a327e8ec4064a, type: 3}
+  weight: 0
+  maxItemCount: 0
+  itemPrefab: {fileID: 1791807656011587016, guid: 36931e201f9c3ff45a5be8e70c328179, type: 3}
+  Price: 0

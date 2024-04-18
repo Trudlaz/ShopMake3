@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
+  m_Name: 18_Sniper
+  m_EditorClassIdentifier: 
+  itemId: 18
+  itemType: 2
+  itemName: "\uC2A4\uB098\uC774\uD37C"
+  itemImage: {fileID: 21300000, guid: fdb54aa87fd73e64bab62d94b9c1a2a8, type: 3}
+  weight: 16
+  maxItemCount: 1
+  itemPrefab: {fileID: 8105093614528831879, guid: ea96cf43fa5d15147921a167ed9e68f7, type: 3}
+  Price: 0

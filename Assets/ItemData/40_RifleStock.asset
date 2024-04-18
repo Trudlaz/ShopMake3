@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
+  m_Name: 40_RifleStock
+  m_EditorClassIdentifier: 
+  itemId: 40
+  itemType: 8
+  itemName: "\uB77C\uC774\uD50C \uAC1C\uBA38\uB9AC\uD310"
+  itemImage: {fileID: 21300000, guid: cd15a8df703089f459d9928d931c9d14, type: 3}
+  weight: 0
+  maxItemCount: 0
+  itemPrefab: {fileID: 4254361218481363418, guid: 1360746be4ff9274f8de8dbba78bfd32, type: 3}
+  Price: 0
