@@ -53,6 +53,8 @@ public class WorldSelectMenuUI : MonoBehaviour
         {
             onItemSell?.Invoke(targetSlot);
         });
+        // sellButton의 onClick 이벤트에 AddListener()를 사용하여
+        // onItemSell?.Invoke(targetSlot); 코드를 실행
     }
 
 
