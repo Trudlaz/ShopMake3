@@ -31,6 +31,11 @@ public class ItemSlot
         IsEquiped = false;
     }
 
+    public ItemSlot(ItemData itemData)
+    {
+        this.itemData = itemData;
+    }
+
     public Action onSlotItemChange;
 
     public Action<ItemSlot> onItemEquiped;

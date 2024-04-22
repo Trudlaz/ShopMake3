@@ -3,50 +3,56 @@ using UnityEngine;
 
 public class ShopInventoryUI : MonoBehaviour
 {
-    public GameObject slotPrefab;       // 슬롯 프리팹
-    public Transform slotParent;        // 슬롯이 생성될 부모 Transform
-    private ShopInventory shopInventory; // 상점 인벤토리
-
-    private Slot_UI[] shopSlots;        // 상점 슬롯 UI 배열
+    // 상점에서 사용할 컴포넌트 및 변수 선언
+    Slot_UI[] shopSlots;
+    RectTransform shopTransform;
+    CanvasGroup canvas;
+    ShopBuyMenuUI shopBuyMenu;  // ShopBuyMenuUI 컴포넌트를 위한 참조
 
     private void Awake()
     {
-        // 상점 인벤토리 컴포넌트 참조
-        shopInventory = GetComponent<ShopInventory>();
-        // 슬롯 초기화 함수 호출
-        InitializeSlots();
+        // 컴포넌트 초기화: 각 UI 컴포넌트를 찾아서 변수에 할당
+        Transform child = transform.GetChild(0);
+        shopSlots = child.GetComponentsInChildren<Slot_UI>();
+        shopTransform = GetComponent<RectTransform>();
+        canvas = GetComponent<CanvasGroup>();
+        shopBuyMenu = GetComponentInChildren<ShopBuyMenuUI>();  // ShopBuyMenuUI 컴포넌트 찾기
     }
 
-    // 슬롯 초기화
-    private void InitializeSlots()
+    public void InitializeShop()
     {
-        // 슬롯 UI 배열 생성
-        shopSlots = new Slot_UI[shopInventory.Items.Count];
-
-        // 상점 아이템들에 대한 슬롯을 생성하고 초기화
-        for (int i = 0; i < shopInventory.Items.Count; i++)
+        // 슬롯 UI 초기화
+        for (uint i = 0; i < shopSlots.Length; i++)
         {
-            // 슬롯 프리팹을 복제하여 새로운 슬롯 생성
-            GameObject slotObject = Instantiate(slotPrefab, slotParent);
-            // 슬롯 UI 컴포넌트 참조
-            Slot_UI shopSlot = slotObject.GetComponent<Slot_UI>();
-
-            if (shopSlot != null)
-            {
-                // 슬롯 UI를 배열에 할당
-                shopSlots[i] = shopSlot;
-                // 우클릭 이벤트 리스너 연결
-                int index = i; // 클로저를 사용하여 캡처하기 위해 index 변수를 따로 생성
-                shopSlot.onRightClick += HandleRightClick;
-            }
+            shopSlots[i].InitializeSlot(shopSlots[i].ItemSlot);  // 예시 아이템 데이터
+            shopSlots[i].onRightClick += OnItemSell;  // 판매 함수 연결
         }
     }
 
-    // 우클릭 이벤트 처리 함수
-    private void HandleRightClick(uint obj)
+    // 아이템 판매 함수
+    private void OnItemSell(uint index)
     {
-        // 우클릭 시 실행될 로직
-        Debug.Log($"{obj}");
-        // 여기에서 index를 사용하여 해당 슬롯에 대한 데이터 또는 처리를 수행
+        Slot_UI target = shopSlots[index];
+        if (target.ItemSlot.ItemData.itemType != ItemType.Price)  // 판매 가능한 아이템인지 확인
+        {
+            Debug.Log($" {target.ItemSlot} 아이템을 팔았습니다.");
+            shopBuyMenu.OpenBuyMenu(target.ItemSlot);  // ShopBuyMenuUI의 구매 메뉴 열기 메서드 호출
+        }
+    }
+
+    // 상점 열기 함수
+    public void Open()
+    {
+        canvas.alpha = 1;
+        canvas.interactable = true;
+        canvas.blocksRaycasts = true;
+    }
+
+    // 상점 닫기 함수
+    public void Close()
+    {
+        canvas.alpha = 0;
+        canvas.interactable = false;
+        canvas.blocksRaycasts = false;
     }
 }

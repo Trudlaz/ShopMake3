@@ -191,6 +191,8 @@ public class WorldInventory_UI : MonoBehaviour
         canvas.alpha = 1;
         canvas.interactable = true;
         canvas.blocksRaycasts = true;
+
+        invenManager.DragSlot.Close();
     }
 
     // 인벤토리 닫기 함수
