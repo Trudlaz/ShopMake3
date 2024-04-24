@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class Slot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
@@ -15,6 +16,8 @@ public class Slot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IE
     public Action<uint> onRightClick;
 
     TextMeshProUGUI equippedText;
+
+    ShopBuyMenuUI shopBuyMenu;
 
     protected override void Awake()
     {
@@ -37,16 +40,16 @@ public class Slot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IE
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Right)
+        if (eventData.button == PointerEventData.InputButton.Right && ItemSlot != null)
         {
-            onRightClick?.Invoke(Index);
-        }
-        else
-        {
-            RectTransform rect = transform.parent.parent.parent.parent.GetComponent<RectTransform>();
-            OnClick?.Invoke(ItemSlot, rect);
+            shopBuyMenu?.Open(ItemSlot);
+            shopBuyMenu?.MovePosition(Mouse.current.position.ReadValue());
         }
     }
+
+
+
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {

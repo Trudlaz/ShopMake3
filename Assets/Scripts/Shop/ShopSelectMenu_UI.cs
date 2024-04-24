@@ -23,8 +23,8 @@ public class ShopSelectMenu_UI : MonoBehaviour
             if (!targetSlot.IsEmpty)
             {
                 // ShopBuyMenuUI 활성화 및 설정
-                shopBuyMenuUI.gameObject.SetActive(true);
-                shopBuyMenuUI.Setup(targetSlot);
+                //shopBuyMenuUI.gameObject.SetActive(true);
+               // shopBuyMenuUI.Setup(targetSlot);
                 // 구매 이벤트 호출
                 onItemPurchase?.Invoke(targetSlot);
             }

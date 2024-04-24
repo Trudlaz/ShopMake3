@@ -24,7 +24,7 @@ public class DropSlotUI : MonoBehaviour
         get => dropCount;
         set
         {
-            if(dropCount != value)
+            if (dropCount != value)
             {
                 dropCount = Math.Clamp(value, MinItemCount, MaxItemCount);
                 inputField.text = dropCount.ToString();
@@ -45,7 +45,7 @@ public class DropSlotUI : MonoBehaviour
         inputField = child.GetComponent<TMP_InputField>();
         inputField.onValueChanged.AddListener((text) =>
         {
-            if ( uint.TryParse(text, out uint value) )
+            if (uint.TryParse(text, out uint value))
             {
                 DropCount = value;
             }
@@ -72,8 +72,8 @@ public class DropSlotUI : MonoBehaviour
         Button minus = child.GetComponent<Button>();
         minus.onClick.AddListener(() =>
         {
-            if(DropCount >0)
-            DropCount--;
+            if (DropCount > 0)
+                DropCount--;
         });
         child = transform.GetChild(5);
         Button ok = child.GetComponent<Button>();

@@ -5,32 +5,42 @@ using UnityEngine;
 
 public class WorldInventory
 {
+    // 기본 인벤토리 크기 설정
     const int Default_Inventory_Size = 144;
 
+    // 아이템 슬롯 배열
     ItemSlot[] slots;
 
+    // 인덱스 접근을 위한 인덱서
     public ItemSlot this[uint index] => slots[index];
+    // 슬롯 개수 반환
     int SlotCount => slots.Length;
 
+    // 드래그 중인 아이템 슬롯
     DragSlot dragSlot;
-
+    // 드래그 슬롯 인덱스 초기값
     uint dragSlotIndex = 999999999;
-
+    // 드래그 슬롯 접근 프로퍼티
     public DragSlot DragSlot => dragSlot;
 
+    // 아이템 데이터 관리자
     ItemDataManager itemDataManager;
 
+    // 인벤토리 소유자
     Player owner;
-
+    // 소유자 접근 프로퍼티
     public Player Owner => owner;
 
+    // 월드 인벤토리 UI 접근
     WorldInventory_UI worldInven;
 
+    // 아이템 개수 감소 시 호출되는 이벤트
     public Action<ItemSlot> onMinusValue;
-
+    // 아이템 개수 증가 시 호출되는 이벤트
     public Action<ItemSlot> onPlusValue;
 
-    public WorldInventory(Player owner, uint size = Default_Inventory_Size)
+    // 생성자
+    public WorldInventory(Player owner = null, uint size = Default_Inventory_Size)
     {
         slots = new ItemSlot[size];
         for (uint i = 0; i < slots.Length; i++)
@@ -43,11 +53,7 @@ public class WorldInventory
         this.owner = owner;
     }
 
-    /// <summary>
-    /// 인벤토리에 특정아이템을 1개 추가하는 함수
-    /// </summary>
-    /// <param Name="code">추가할 아이템의 코드</param>
-    /// <returns>true면 성공 false면 추가 실패</returns>
+    // 아이템 추가 메서드
     public bool AddItem(ItemCode code)
     {
         for (int i = 0; i < SlotCount; i++)
@@ -60,49 +66,34 @@ public class WorldInventory
         return false;
     }
 
-    /// <summary>
-    /// 인벤토리의 특정 슬롯에 특정 아이템을 1개 추가하는 함수
-    /// </summary>
-    /// <param Name="code">추가할 아이템의 코드</param>
-    /// <param Name="slotIndex">아이템을 추가할 슬롯의 인덱스</param>
-    /// <returns>true면 성공 false면 추가 실패</returns>
+    // 특정 슬롯에 아이템 추가 메서드
     public bool AddItem(ItemCode code, uint slotIndex)
     {
         bool result = false;
 
-        if (IsValidIndex(slotIndex))    // 인덱스가 적절한지 확인
+        if (IsValidIndex(slotIndex))
         {
             ItemData data = itemDataManager[code];
-            ItemSlot slot = slots[slotIndex];      // 슬롯 가져오기
+            ItemSlot slot = slots[slotIndex];
             if (slot.IsEmpty)
             {
-                // 슬롯이 비었으면
-                slot.AssignSlotItem(data);          // 그대로 아이템 설정
+                slot.AssignSlotItem(data);
                 PlusMoney(slot);
                 result = true;
             }
             else
             {
-                // 슬롯이 안비어있다.
                 if (slot.ItemData == data)
                 {
-                    // 같은 종류의 아이템이면
                     PlusMoney(slot);
-                    result = slot.SetSlotCount(out _);   // 아이템 증가 시도
-                }
-                else
-                {
-                    // 다른 종류의 아이템
+                    result = slot.SetSlotCount(out _);
                 }
             }
-        }
-        else
-        {
-            // 잘못된 슬롯
         }
         return result;
     }
 
+    // 아이템 제거 메서드
     public void RemoveItem(uint slotIndex, uint count = 1)
     {
         if (IsValidIndex(slotIndex))
@@ -112,7 +103,7 @@ public class WorldInventory
         }
     }
 
-
+    // 아이템 이동 메서드
     public void MoveItem(ItemSlot from, ItemSlot to)
     {
         if ((from != to) && IsValidIndex(from) && IsValidIndex(to))
@@ -171,6 +162,7 @@ public class WorldInventory
         }
     }
 
+    // 슬롯 간 아이템 교체 메서드
     public void SwapSlot(ItemSlot slotA, ItemSlot slotB)
     {
         ItemData dragData = slotA.ItemData;
@@ -181,22 +173,20 @@ public class WorldInventory
         slotB.AssignSlotItem(dragData, dragCount, dragEquiped);
     }
 
+    // 슬롯 정렬 메서드
     public void SlotSorting(ItemType type, bool isAcending)
     {
-        // 정렬을 위한 임시 리스트
-        List<ItemSlot> temp = new List<ItemSlot>(slots);  // slots를 기반으로 리스트 생성
-
-        // 정렬방법에 따라 임시 리스트 정렬
+        List<ItemSlot> temp = new List<ItemSlot>(slots);
         switch (type)
         {
             case ItemType.Buff:
-                temp.Sort((current, other) =>       // current, y는 temp리스트에 들어있는 요소 중 2개
+                temp.Sort((current, other) =>
                 {
-                    if (current.ItemData == null)   // 비어있는 슬롯을 뒤쪽으로 보내기
+                    if (current.ItemData == null)
                         return 1;
                     if (other.ItemData == null)
                         return -1;
-                    if (isAcending)                 // 오름차순/내림차순에 따라 처리  
+                    if (isAcending)
                     {
                         return current.ItemData.itemType.CompareTo(other.ItemData.itemType);
                     }
@@ -207,21 +197,21 @@ public class WorldInventory
                 });
                 break;
         }
-        // 임시 리스트의 내용을 슬롯에 설정
-        List<(ItemData, uint, bool)> sortedData = new List<(ItemData, uint, bool)>(SlotCount);  // 튜플 사용
+        List<(ItemData, uint, bool)> sortedData = new List<(ItemData, uint, bool)>(SlotCount);
         foreach (var slot in temp)
         {
-            sortedData.Add((slot.ItemData, slot.ItemCount, slot.IsEquiped));    // 필요 데이터만 복사해서 가지기
+            sortedData.Add((slot.ItemData, slot.ItemCount, slot.IsEquiped));
         }
 
         int index = 0;
         foreach (var data in sortedData)
         {
-            slots[index].AssignSlotItem(data.Item1, data.Item2, data.Item3);     // 복사한 내용을 슬롯에 설정
+            slots[index].AssignSlotItem(data.Item1, data.Item2, data.Item3);
             index++;
         }
     }
 
+    // 슬롯 초기화 메서드
     public void ClearSlot(uint slotIndex)
     {
         if (IsValidIndex(slotIndex))
@@ -231,6 +221,7 @@ public class WorldInventory
         }
     }
 
+    // 전체 인벤토리 초기화 메서드
     public void ClearInventory()
     {
         foreach (var slot in slots)
@@ -239,17 +230,19 @@ public class WorldInventory
         }
     }
 
+    // 유효한 인덱스 검사 메서드
     bool IsValidIndex(uint index)
     {
         return (index < SlotCount) || (index == dragSlotIndex);
     }
 
+    // 유효한 슬롯 검사 메서드
     bool IsValidIndex(ItemSlot slot)
     {
         return (slot != null) || (slot == dragSlot);
     }
 
-
+    // 아이템 병합 메서드
     public void MergeItems()
     {
         uint count = (uint)slots.Length - 1;
@@ -258,14 +251,12 @@ public class WorldInventory
             ItemSlot target = slots[i];
             for (uint j = count - 1; j > i; j--)
             {
-                // 같은 종류의 아이템이면
                 if (target.ItemData == slots[j].ItemData)
                 {
-                    MoveItem(slots[j], target);     // j에 있는 것을 i에 넣기
+                    MoveItem(slots[j], target);
 
                     if (!slots[j].IsEmpty)
                     {
-                        // 남은 아이템이 있으면 i의 다음 슬롯과 교체하기
                         SwapSlot(slots[i + 1], slots[j]);
                         break;
                     }
@@ -274,12 +265,7 @@ public class WorldInventory
         }
     }
 
-
-    /// <summary>
-    /// 인벤토리 내부에서 특정 한 아이템을 찾는 함수
-    /// </summary>
-    /// <param name="itemType">특정한 아이템의 타입</param>
-    /// <returns>true면 아이템이 인벤토리 내부에 있다, false면 없다.</returns>
+    // 특정 아이템 찾기 메서드
     public bool FindItem(ItemType itemType)
     {
         for (int i = 0; i < SlotCount; i++)
@@ -287,39 +273,24 @@ public class WorldInventory
             if (!slots[i].IsEmpty && slots[i].ItemData.itemType == itemType)
             {
                 Debug.Log("열쇠 확인");
-                return true; // 아이템을 찾았으면 즉시 true를 반환하고 종료
+                return true;
             }
         }
         Debug.Log("열쇠 찾지 못함");
-        return false; // 루프를 끝까지 돌았는데도 아이템을 찾지 못했으면 false 반환
+        return false;
     }
 
-
-
-
-
 #if UNITY_EDITOR
+    // 인벤토리 상태 출력 메서드
     public void Test_InventoryPrint()
     {
         string invenInfo = "";
         string dataName = "";
         foreach (var slot in slots)
         {
-
             if (slot.ItemData != null)
             {
-                if (slot.ItemData.itemType == ItemType.Buff) dataName = "버프아이템";
-
-                else if (slot.ItemData.itemType == ItemType.Grenade) dataName = "투척무기";
-
-                else if (slot.ItemData.itemType == ItemType.Bullet) dataName = "총기";
-
-                else if (slot.ItemData.itemType == ItemType.Trap) dataName = "함정";
-
-                else if (slot.ItemData.itemType == ItemType.Key) dataName = "열쇠";
-
-                else if (slot.ItemData.itemType == ItemType.Price) dataName = "화폐";
-
+                dataName = slot.ItemData.itemType.ToString();
                 invenInfo += $"{dataName}({slot.ItemCount}/{slot.ItemData.maxItemCount}) ";
             }
             else
@@ -330,32 +301,22 @@ public class WorldInventory
         Debug.Log($"[{invenInfo}]");
     }
 
-    /// <summary>
-    /// 임시로 쓰는 함수, 나중에 돈 개수로 바꾸기 위해 이곳에 배치
-    /// </summary>
-    /// <param name="slot"></param>
+    // 아이템 가치에 따라 돈 증가 메서드
     public void PlusMoney(ItemSlot slot, int count = 1)
     {
         if (slot.ItemData != null)
         {
-            //if (slot.ItemData.itemType == ItemType.Price)
-            //{
-                worldInven.Money += (int)(slot.ItemData.Price * count);
-            //}
+            worldInven.Money += (int)(slot.ItemData.Price * count);
         }
     }
 
+    // 아이템 가치에 따라 돈 감소 메서드
     public void MinusMoney(ItemSlot slot, int count = 1)
     {
         if (slot.ItemData != null)
         {
-            //if (slot.ItemData.itemType == ItemType.Price)
-            //{
-                worldInven.Money -= (int)(slot.ItemData.Price * count);
-            //}
+            worldInven.Money -= (int)(slot.ItemData.Price * count);
         }
     }
-
 #endif
-
 }

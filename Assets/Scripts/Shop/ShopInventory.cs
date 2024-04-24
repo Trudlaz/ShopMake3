@@ -1,51 +1,111 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class ShopInventory : MonoBehaviour
 {
+    private static readonly int Default_Inventory_Size = 144; // 고정 인벤토리 크기
     [SerializeField]
-    private List<ItemSlot> items = new List<ItemSlot>(); // 상점에서 판매할 아이템 목록
+    private ItemSlot[] items; // 상점에서 판매할 아이템 슬롯 배열
 
     private ItemDataManager itemDataManager;
-    private ShopInventoryUI shopInven;
-
-    public List<ItemSlot> Items => items; // 외부 접근을 위한 프로퍼티
+    private ShopInventoryUI shopInvenUI;
 
     void Awake()
     {
-        // GameManager로부터 데이터 매니저와 UI 컴포넌트 가져오기
+        items = new ItemSlot[Default_Inventory_Size]; // 배열 초기화
+        InitializeInventory();
         itemDataManager = GameManager.Instance.ItemData;
-        shopInven = GameManager.Instance.ShopInventoryUI; // 이 부분은 ShopInventory_UI가 있다고 가정
+        shopInvenUI = GameManager.Instance.ShopInventoryUI;
     }
 
-    public void AddItem(ItemData itemData)
+    private void InitializeInventory()
     {
-        // 새 아이템을 인벤토리에 추가
-        items.Add(new ItemSlot(itemData));
-    }
-
-    public void RemoveItem(int index)
-    {
-        // 인덱스에 따라 아이템 제거
-        if (IsValidIndex(index))
+        for (int i = 0; i < items.Length; i++)
         {
-            items.RemoveAt(index);
+            items[i] = new ItemSlot((uint)i); // 각 슬롯 초기화
+        }
+    }
+
+    public void AddItem(ItemCode code)
+
+    {
+        if (itemDataManager == null)
+        {
+            Debug.LogError("ItemDataManager is not initialized.");
+            return;
+        }
+        ItemData data = itemDataManager[code];
+        if (data != null)
+        {
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (items[i].IsEmpty)
+                {
+                    items[i].AssignSlotItem(data);
+                    UpdateUI();
+                    return;
+                }
+                else if (items[i].ItemData == data)
+                {
+                    // 아이템이 같은 경우 수량 증가
+                    if (items[i].SetSlotCount(out uint overCount, 1))
+                    {
+                        UpdateUI();
+                        return;
+                    }
+                }
+            }
+            Debug.LogError("No empty slots or space available to add new item.");
         }
         else
         {
-            Debug.LogError("Invalid index: " + index);
+            Debug.LogError($"Item with code {code} not found.");
         }
     }
 
-    public bool IsValidIndex(int index)
+    public ItemData GetItem(ItemCode code)
     {
-        // 인덱스가 유효한 범위 내에 있는지 확인
-        return index >= 0 && index < items.Count;
+        foreach (var slot in items)
+        {
+            if (!slot.IsEmpty && slot.ItemData.itemId == code)
+            {
+                return slot.ItemData;
+            }
+        }
+        return null;
     }
 
-    public ItemSlot GetItemSlot(int index)
+    public void RemoveItem(ItemCode code)
     {
-        // 유효한 인덱스면 해당 아이템 슬롯 반환, 그렇지 않으면 null 반환
-        return IsValidIndex(index) ? items[index] : null;
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (!items[i].IsEmpty && items[i].ItemData.itemId == code)
+            {
+                items[i].ClearSlot();
+                UpdateUI();
+                return;
+            }
+        }
     }
+
+    private void UpdateUI()
+    {
+        if (shopInvenUI != null)
+        {
+            // 각 슬롯에 대해 UI 갱신 요청
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (shopInvenUI.shopSlots.Length > i && shopInvenUI.shopSlots[i] != null)
+                {
+                    // 각 Slot_UI 객체에 ItemSlot 정보를 기반으로 UI를 갱신하도록 요청
+                    shopInvenUI.shopSlots[i].InitializeSlot(items[i]);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("ShopInventoryUI component is not initialized.");
+        }
+    }
+
 }

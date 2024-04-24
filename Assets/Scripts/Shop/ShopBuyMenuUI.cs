@@ -1,79 +1,122 @@
-using TMPro;
+using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using TMPro;
 
 public class ShopBuyMenuUI : MonoBehaviour
 {
-    public TextMeshProUGUI itemNameText;         // 아이템 이름을 표시할 텍스트 필드
-    public Image itemIcon;                // 아이템 아이콘을 표시할 이미지
-    public TextMeshProUGUI itemPriceText;        // 아이템 가격을 표시할 텍스트 필드
-    public TMP_InputField quantityInput;      // 구매할 수량을 입력받을 인풋 필드
-    public Button purchaseButton;         // 구매를 실행할 버튼
-    public Button cancelButton;           // 구매 취소 혹은 창 닫기 버튼
-    public Slider quantitySlider;         // 수량을 조절할 슬라이더 (추가됨)
+    public TextMeshProUGUI itemNameText; // 아이템 이름 표시
+    public Image itemIcon; // 아이템 아이콘 표시
+    public TextMeshProUGUI itemPriceText; // 아이템 가격 표시
+    public TMP_InputField quantityInput; // 수량 입력
+    public Button purchaseButton; // 구매 버튼
+    public Button cancelButton; // 취소 버튼
+    public Slider quantitySlider; // 수량 슬라이더
 
-    private ItemSlot currentItemSlot;     // 현재 선택된 아이템 슬롯
+    private ItemSlot currentItemSlot; // 현재 선택된 아이템 슬롯
+    private PlayerInput inputActions; // 입력 시스템
 
-    public uint MinItemCount = 1;         // 최소 구매 수량
-    public uint MaxItemCount = 100;       // 최대 구매 수량
+    public uint MinItemCount = 1; // 최소 구매 수량
+    public uint MaxItemCount = 100; // 최대 구매 수량
 
-    // 아이템 구매 이벤트를 위한 델리게이트와 이벤트
-    public delegate void BuyAction(ItemSlot slot, uint quantity);
-    public event BuyAction OnBuyItem;
+    public event Action<ItemSlot, uint> OnBuyItem; // 구매 이벤트
+
+    private void Awake()
+    {
+        inputActions = new PlayerInput(); // 입력 시스템 초기화
+
+        purchaseButton.onClick.AddListener(() => AttemptPurchase());
+        cancelButton.onClick.AddListener(Close);
+    }
 
     private void Start()
     {
-        // 버튼에 클릭 이벤트 리스너 추가
-        purchaseButton.onClick.AddListener(() => AttemptPurchase());
-        cancelButton.onClick.AddListener(CloseMenu);
     }
 
-    // UI 설정
-    public void Setup(ItemSlot itemSlot)
+    private void OnEnable()
     {
-        // 현재 아이템 슬롯 설정
-        currentItemSlot = itemSlot;
-        // UI 요소에 아이템 정보 설정
-        itemNameText.text = itemSlot.ItemData.itemName;
-        itemIcon.sprite = itemSlot.ItemData.itemImage;
-        itemPriceText.text = $"가격 : {itemSlot.ItemData.Price}";
-        quantityInput.text = "1";  // Default quantity
+        // 입력 시스템 활성화
+        inputActions.UI.Enable();
+        inputActions.UI.Click.performed += OnClick;
     }
 
-    // 구매 메뉴 열기
-    public bool OpenBuyMenu(ItemSlot target)
+    private void OnDisable()
     {
-        bool result = false;
-        if (!target.IsEmpty && target.ItemCount >= MinItemCount)
+        // 입력 시스템 비활성화
+        inputActions.UI.Click.performed -= OnClick;
+        inputActions.UI.Disable();
+    }
+
+
+    public void Open(ItemSlot target)
+    {
+        if (!target.IsEmpty)
         {
-            Setup(target);  // Setup 호출로 UI 요소 설정
+            currentItemSlot = target;
+            gameObject.SetActive(true);
+
+            // UI 세팅
+            itemNameText.text = target.ItemData.itemName;
+            itemIcon.sprite = target.ItemData.itemImage;
+            itemPriceText.text = $"가격 : {target.ItemData.Price}";
+            quantityInput.text = "1";
             quantitySlider.minValue = MinItemCount;
             quantitySlider.maxValue = Mathf.Min(MaxItemCount, target.ItemCount);
             quantitySlider.value = MinItemCount;
 
-            result = true;
-            gameObject.SetActive(true);
+            MovePosition(Mouse.current.position.ReadValue());
         }
-        return result;
     }
 
-    // 구매 시도
+    public void Close()
+    {
+        gameObject.SetActive(false);
+    }
+
     private void AttemptPurchase()
     {
-        // 수량 입력값이 유효한지 확인 후 이벤트 호출
         if (uint.TryParse(quantityInput.text, out uint quantity) && quantity >= MinItemCount && quantity <= MaxItemCount)
         {
             OnBuyItem?.Invoke(currentItemSlot, quantity);
         }
         else
         {
-            Debug.LogError("잘못된 수량 입니다.");
+            Debug.LogError("Invalid quantity.");
         }
     }
 
-    // 메뉴 닫기
-    private void CloseMenu()
+    private void OnClick(InputAction.CallbackContext context)
     {
-        this.gameObject.SetActive(false);
+        if (Mouse.current != null && !MousePointInRect())
+        {
+            Close();
+        }
     }
+
+    private bool MousePointInRect()
+    {
+        Vector2 screenPos = Mouse.current.position.ReadValue();
+        Vector2 diff = screenPos - (Vector2)transform.position;
+
+        RectTransform rectTransform = (RectTransform)transform;
+        return rectTransform.rect.Contains(diff);
+    }
+
+    public void MovePosition(Vector2 screenPos)
+    {
+        RectTransform rect = (RectTransform)transform;
+        Vector2 adjustedPos = screenPos;
+
+        // 가로 방향 조정
+        int horizontalOver = (int)(adjustedPos.x + rect.sizeDelta.x) - Screen.width;
+        adjustedPos.x -= Mathf.Max(0, horizontalOver);
+
+        // 세로 방향 조정
+        int verticalOver = (int)(adjustedPos.y + rect.sizeDelta.y) - Screen.height;
+        adjustedPos.y -= Mathf.Max(0, verticalOver);
+
+        rect.position = adjustedPos;
+    }
+
 }

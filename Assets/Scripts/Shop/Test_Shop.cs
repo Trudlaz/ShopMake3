@@ -1,18 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Test_Shop : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public ItemCode code = ItemCode.SmallHeal;
+    ShopInventory shopInventory;    // 상점 인벤토리
+    public ShopInventoryUI shopInventoryUI;
+    WorldInventory worldInventory;  // 월드 인벤토리
+    public WorldInventory_UI worldInventoryUI;
+
     void Start()
     {
-        
+        InitializeShopInventory();
+        worldInventory = new WorldInventory();
     }
 
-    // Update is called once per frame
-    void Update()
+    void InitializeShopInventory()
     {
-        
+        shopInventory = gameObject.AddComponent<ShopInventory>();
+        shopInventory.AddItem(ItemCode.Pistol);
+        shopInventory.AddItem(ItemCode.Rifle);
+        shopInventory.AddItem(ItemCode.Shotgun);
+        shopInventory.AddItem(ItemCode.Sniper);
+        shopInventory.AddItem(ItemCode.Key);
+
+        if (shopInventoryUI != null)
+        {
+            shopInventoryUI.InitializeShop();
+        }
+        else
+        {
+            Debug.LogError("ShopInventoryUI is not initialized!");
+            // 적절한 에러 핸들링 또는 UI 메시지 출력
+        }
     }
+
+    void BuyItem(ItemCode itemCode)
+    {
+        ItemData itemData = shopInventory.GetItem(itemCode);
+        if (itemData != null && worldInventory.AddItem(itemCode))
+        {
+            shopInventory.RemoveItem(itemCode);
+            Debug.Log($"Purchased {itemCode} and added to the world inventory.");
+        }
+        else
+        {
+            Debug.Log("Item not available or insufficient funds");
+            // 사용자에게 실패 사유를 보다 명확히 알려주는 처리
+        }
+    }
+
 }

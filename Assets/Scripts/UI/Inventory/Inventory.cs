@@ -19,7 +19,7 @@ public class Inventory
 
     ItemDataManager itemDataManager;
 
-    Inventory_UI invenUI;
+    Shop_UI invenUI;
 
     Player owner;
 
@@ -361,7 +361,6 @@ public class Inventory
         if (slot.ItemData != null)
         {
             invenUI.Money += (int)(slot.ItemData.Price) * count;
-            invenUI.Weight += (int)(slot.ItemData.weight) * count;
         }
     }
 
@@ -370,7 +369,6 @@ public class Inventory
         if (slot.ItemData != null)
         {
             invenUI.Money -= (int)(slot.ItemData.Price * count);
-            invenUI.Weight -= (int)(slot.ItemData.weight * count);
         }
 
     }

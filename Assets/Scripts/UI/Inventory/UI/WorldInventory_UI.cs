@@ -14,7 +14,7 @@ public class WorldInventory_UI : MonoBehaviour
     Slot_UI[] worldSlotUI;
     InventoryManager invenManager;
     WorldSelectMenuUI worldSelect;
-    DropSlotUI worldDropSlot;
+    PurchaseSlotUI worldDropSlot;
     SellItemUI worldSellItem;
     Scrollbar scrollbar;
     MoneyPanel_UI moneyPanel;
@@ -48,7 +48,7 @@ public class WorldInventory_UI : MonoBehaviour
         Transform child = transform.GetChild(0);
         worldSlotUI = child.GetComponentsInChildren<Slot_UI>();
         worldSelect = GetComponentInChildren<WorldSelectMenuUI>();
-        worldDropSlot = GetComponentInChildren<DropSlotUI>();
+        worldDropSlot = GetComponentInChildren<PurchaseSlotUI>();
         worldSellItem = GetComponentInChildren<SellItemUI>();
         moneyPanel = GetComponentInChildren<MoneyPanel_UI>();
         scrollbar = GetComponentInChildren<Scrollbar>();
@@ -59,6 +59,17 @@ public class WorldInventory_UI : MonoBehaviour
 
     public void InitializeWorldInventory(WorldInventory playerInventory)
     {
+        if (playerInventory == null)
+        {
+            Debug.LogError("playerInventory is null");
+            return;
+        }
+        // 다른 필드나 객체도 검사
+        if (worldSlotUI == null)
+        {
+            Debug.LogError("worldSlotUI is null");
+            return;
+        }
         worldInven = playerInventory;
 
         // 슬롯 UI 초기화 및 이벤트 연결
@@ -66,15 +77,47 @@ public class WorldInventory_UI : MonoBehaviour
         {
             worldSlotUI[i].InitializeSlot(worldInven[i]);
             worldSlotUI[i].onDragBegin += OnItemMoveBegin;
-            worldSlotUI[i].onDragEnd += OnItemMoveEnd;
+          
             worldSlotUI[i].onRightClick += OnRightClick;
             worldSlotUI[i].OnClick += OnClick;
         }
         invenManager.DragSlot.InitializeSlot(worldInven.DragSlot);
+        Debug.Log("Initializing World Inventory...");
 
+        if (playerInventory == null)
+        {
+            Debug.LogError("playerInventory is null!");
+            return;
+        }
+
+        Debug.Log("Player inventory is not null.");
+
+        // 다른 필요한 객체들도 검사
+        if (worldSlotUI == null)
+        {
+            Debug.LogError("worldSlotUI is null!");
+            return;
+        }
+
+        Debug.Log("worldSlotUI is initialized.");
+
+        // 문제가 발생하는 줄 전에 객체 상태 로깅
+        Debug.Log($"Checking objects at line 88: {worldSlotUI.Length}, {playerInventory}");
+
+        // 실제 초기화 코드
+        for (uint i = 0; i < worldSlotUI.Length; i++)
+        {
+            if (worldSlotUI[i] == null)
+            {
+                Debug.LogError($"worldSlotUI at index {i} is null.");
+                continue;
+            }
+            worldSlotUI[i].InitializeSlot(playerInventory[i]);
+        }
         // 다양한 UI 이벤트 연결
         worldSelect.onItemDrop += OnItemDrop;
-        worldDropSlot.onDropOk += OnDropOk;
+        worldDropSlot.onPurchaseConfirmed += OnPurchaseConfirmed;
+
         worldDropSlot.Close();
         worldSelect.onItemSort += (by) =>
         {
@@ -97,7 +140,7 @@ public class WorldInventory_UI : MonoBehaviour
         worldInven.PlusMoney(slot, (int)slot.ItemCount);
     }
 
-    public void cleanInventory(Inventory_UI inven)
+    public void cleanInventory(Shop_UI inven)
     {
         Money += inven.Money;
     }
@@ -110,32 +153,41 @@ public class WorldInventory_UI : MonoBehaviour
         invenManager.DragSlot.Open();
     }
 
-    // 아이템 드래그 끝날 때 호출
-    private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
-    {
-        worldInven.MoveItem(invenManager.DragSlot.ItemSlot, slot);
-
-        Inventory_UI inven = rect.GetComponentInParent<Inventory_UI>();
-        if (inven != null)
-        {
-            worldInven.MinusMoney(slot, (int)slot.ItemCount);
-            inven.PlusValue(slot);
-        }
-
-        if (invenManager.DragSlot.ItemSlot.IsEmpty)
-        {
-            invenManager.DragSlot.Close();
-        }
-    }
+   
 
     // 슬롯 클릭시 호출
     private void OnClick(ItemSlot slot, RectTransform rect)
     {
         if (!invenManager.DragSlot.ItemSlot.IsEmpty)
         {
-            OnItemMoveEnd(slot, rect);
         }
     }
+    private void OnPurchaseConfirmed(ItemSlot slot, uint count)
+    {
+        // 구매 로직을 여기에 구현합니다.
+        // 예: 돈 차감, 아이템 수량 갱신 등
+        int cost = (int)(slot.ItemData.Price * count);
+        if (Money >= cost)
+        {
+            Money -= cost;
+            // 아이템 추가
+            if (worldInven.AddItem(slot.ItemData.itemId))
+            {
+                Debug.Log("아이템을 성공적으로 추가했습니다.");
+                worldDropSlot.Close();
+            }
+            else
+            {
+                Debug.Log("아이템 추가에 실패했습니다. 인벤토리가 가득 찼을 수 있습니다.");
+            }
+        }
+        else
+        {
+            Debug.Log("돈이 부족합니다.");
+            // 충분한 돈이 없을 경우 UI에 메시지 표시 등의 추가 처리
+        }
+    }
+
 
     // 슬롯 우클릭시 호출
     private void OnRightClick(uint index)

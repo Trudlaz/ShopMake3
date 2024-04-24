@@ -25,6 +25,6 @@ public class ResultButton_UI : MonoBehaviour
 
     void OnClick()
     {
-        gameManager.InventoryUI.InventoryResult();
+        //gameManager.InventoryUI.InventoryResult();
     }
 }

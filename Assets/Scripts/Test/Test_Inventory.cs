@@ -15,7 +15,7 @@ public class Test_Inventory : TestBase
 
     Inventory inven;
 
-    public Inventory_UI inventoryUI;
+    public Shop_UI inventoryUI;
 
     Player player;
 
@@ -55,7 +55,7 @@ public class Test_Inventory : TestBase
         inven.AddItem(ItemCode.TenThousandDol);
         inven.Test_InventoryPrint();
 
-        inventoryUI.InitializeInventory(inven);
+        //inventoryUI.InitializeInventory(inven);
 
         
     }
