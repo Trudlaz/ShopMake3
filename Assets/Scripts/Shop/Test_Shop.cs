@@ -10,11 +10,12 @@ public class Test_Shop : MonoBehaviour
     public ShopInventoryUI shopInventoryUI;
     WorldInventory worldInventory;  // 월드 인벤토리
     public WorldInventory_UI worldInventoryUI;
+    public Player player;
 
     void Start()
     {
         InitializeShopInventory();
-        worldInventory = new WorldInventory();
+        worldInventory = new WorldInventory(player);
     }
 
     void InitializeShopInventory()

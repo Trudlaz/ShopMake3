@@ -13,7 +13,7 @@ public class HealthBar : MonoBehaviour
 
     TextMeshProUGUI hpText;
     TextMeshProUGUI maxHpText;
-    
+
 
     private void Awake()
     {
@@ -30,17 +30,15 @@ public class HealthBar : MonoBehaviour
     {
         player = GameManager.Instance.Player;
 
-        maxHpText.text = player.maxHp.ToString();
+        maxHpText.text = player.MaxHp.ToString();
         hpText.text = player.Hp.ToString("f0");
-        slider.value = player.Hp / player.maxHp;
-        player.OnHealthChange += Refresh;
+        
+        player.onHealthChange += Refresh;
     }
 
     public void Refresh(float ratio)
     {
-        //slider.value = player.HP
-        ratio = Mathf.Clamp01(ratio);
-        slider.value = ratio;
-        hpText.text = $"{(ratio * player.maxHp):f0}";
+        slider.value = ratio / player.MaxHp;
+        hpText.text = $"{(ratio):f0}";
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
@@ -26,7 +27,7 @@ public class PlayerNoiseSystem : RecycleObject
     private void Awake()
     {
         sphere = GetComponent<SphereCollider>();
-        origin = GetComponentInParent<Transform>();
+        origin = transform.parent.GetComponent<Transform>();
         sphere.radius = radius;
     }
 

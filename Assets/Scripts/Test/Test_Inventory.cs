@@ -15,7 +15,7 @@ public class Test_Inventory : TestBase
 
     Inventory inven;
 
-    public Shop_UI inventoryUI;
+    public Inventory_UI inventoryUI;
 
     Player player;
 
@@ -55,7 +55,7 @@ public class Test_Inventory : TestBase
         inven.AddItem(ItemCode.TenThousandDol);
         inven.Test_InventoryPrint();
 
-        //inventoryUI.InitializeInventory(inven);
+        inventoryUI.InitializeInventory(inven);
 
         
     }
@@ -77,7 +77,7 @@ public class Test_Inventory : TestBase
     protected override void OnTest3(InputAction.CallbackContext context)
     {
         // 이동
-        inven.FindItem(ItemType.Key);
+        inven.FindItem(ItemCode.Key);
     }
 
     protected override void OnTest4(InputAction.CallbackContext context)

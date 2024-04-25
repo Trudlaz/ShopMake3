@@ -4,8 +4,4 @@ using UnityEngine;
 
 public class ZombiePool : ObjectPool<EnemyBace>
 {
-    protected override void OnGenerateObject(EnemyBace comp)
-    {
-        comp.Start();
-    }
 }

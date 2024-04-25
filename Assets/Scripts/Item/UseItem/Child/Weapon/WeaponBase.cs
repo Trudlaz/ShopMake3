@@ -38,7 +38,7 @@ public class WeaponBase : ItemBase
     int currentAmmo = 0;
     float coolTime = 0f;
     public bool canFire => coolTime < fireRate && currentAmmo > 0;
-    public Action<BulletType, int> onReload;    //장비창에 장착될때 인벤토리의 리로딩 함수와 연결 
+    public Action<ItemCode, int> onReload;    //장비창에 장착될때 인벤토리의 리로딩 함수와 연결 
 
     private void Update()
     {
@@ -47,12 +47,29 @@ public class WeaponBase : ItemBase
 
     public override void Use() //리로딩
     {
-        onReload?.Invoke(ammunitionType, maxAmmo);
+        int needAmmor = maxAmmo - currentAmmo;
+        ItemCode needType = ItemCode.PistolBullet;
+        switch (ammunitionType) 
+        {
+            case BulletType.Pistolbullet:
+                needType = ItemCode.PistolBullet;
+                break;
+            case BulletType.Riflebullet:
+                needType = ItemCode.RifleBullet;
+                break;
+            case BulletType.Sniperbullet:
+                needType = ItemCode.SniperBullet;
+                break;
+            case BulletType.Shotgunbullet:
+                needType = ItemCode.ShotgunBullet;
+                break;
+        }
+        onReload?.Invoke(needType, needAmmor);
     }
 
     public void ReLoad(int ammo)
     {
-        currentAmmo = ammo;
+        currentAmmo += ammo;
     }
 
     public virtual void Fire() 

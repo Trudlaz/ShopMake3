@@ -21,7 +21,7 @@ public class Test_InvenInterection : TestBase
 
     Inventory inven;
 
-    public Shop_UI inventoryUI;
+    public Inventory_UI inventoryUI;
 
     WorldInventory invenWorld;
 
@@ -36,7 +36,7 @@ public class Test_InvenInterection : TestBase
 
         // [ 루비(1/10), 사파이어(2/3), (빈칸), 에메랄드(3/5), (빈칸), (빈칸) ] 
         inven = new Inventory(player);
-        //inventoryUI.InitializeInventory(inven);
+        inventoryUI.InitializeInventory(inven);
 
         invenWorld = new WorldInventory(player);
         invenWorld.AddItem(ItemCode.SmallHeal);
@@ -90,7 +90,7 @@ public class Test_InvenInterection : TestBase
     protected override void OnTest3(InputAction.CallbackContext context)
     {
         // 이동
-        inven.FindItem(ItemType.Key);
+        inven.FindItem(ItemCode.Key);
     }
 
     protected override void OnTest4(InputAction.CallbackContext context)

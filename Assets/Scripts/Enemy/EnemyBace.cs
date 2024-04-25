@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -59,6 +61,7 @@ public class EnemyBace : RecycleObject
     float cooltime = 0;
     float chaseTime = 0.0f;
     float chaseAmpl = 1.0f;     //n
+    int wanderCount = 0;
     float nightAmpl = 1.0f;
     bool IsAlive => hp > 0;
 
@@ -66,7 +69,7 @@ public class EnemyBace : RecycleObject
     Transform modle;
     NavMeshAgent agent;
     Transform target;
-    Player player;
+    Vector3 wanderDestination;
 
     protected enum EnemyState 
     {
@@ -94,6 +97,7 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, false);
                         animator.SetBool(Run_Hash, false);
                         onStateUpdate = Update_Wait;
+                        Debug.Log("wait");
                         break;
                     case EnemyState.Alert:
                         agent.isStopped = false;
@@ -101,6 +105,7 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, true);
                         CurrentMoveSpeed = moveSpeed;
                         onStateUpdate = Update_Alert;
+                        Debug.Log("alert");
                         break;
                     case EnemyState.Chase:
                         agent.isStopped = false;
@@ -108,19 +113,24 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Run_Hash, true);
                         CurrentMoveSpeed += runIncrease;
                         onStateUpdate = Update_Chase;
+                        Debug.Log("chase");
                         break;
                     case EnemyState.Wander:
                         agent.isStopped = false;
                         animator.SetBool(Run_Hash, false);
                         animator.SetBool(Move_Hash, true);
+                        wanderCount = 0;
                         onStateUpdate = Update_Wander;
+                        Debug.Log("wander");
                         break;
                     case EnemyState.Attack:
-                        agent.isStopped = false;
+                        agent.isStopped = true;
+                        agent.velocity = Vector3.zero;
                         animator.SetBool(Run_Hash, false);
-                        animator.SetBool(Move_Hash, true);
-                        CurrentMoveSpeed = moveSpeed;
+                        animator.SetBool(Move_Hash, false);
+                        CurrentMoveSpeed = 0.0f;
                         onStateUpdate = Update_Attack;
+                        Debug.Log("attack");
                         break;
                     case EnemyState.Dead:
                         agent.isStopped = true;
@@ -129,6 +139,7 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Run_Hash, false);
                         animator.SetBool(Die_Hash, true);
                         onStateUpdate = Update_Dead;
+                        Debug.Log("dead");
                         break;
                 }
             }
@@ -142,6 +153,10 @@ public class EnemyBace : RecycleObject
     readonly int Attack_Hash = Animator.StringToHash("Attack");
 
     const float MaxChaseAmpl = 5.0f;
+    const float BaceChaseTime = 7.0f;
+    const float BaceChaseDistance = 10.0f;
+    const int BaceWanderCount = 3;
+    const float WanderRange = 30.0f;
 
     private void Awake()
     {
@@ -154,12 +169,17 @@ public class EnemyBace : RecycleObject
     {
         base.OnEnable();
         OnInitialize();
+        if (GameManager.Instance.TimeSystem != null) 
+        {
+            GameManager.Instance.TimeSystem.onNightchange += OnNight;
+        }
     }
 
     protected virtual void OnInitialize() 
     {
         animator.SetBool(Die_Hash, false);
         Hp = maxHP * nightAmpl;
+        CurrentMoveSpeed = moveSpeed;
         State = EnemyState.Wait;
     }
 
@@ -170,9 +190,8 @@ public class EnemyBace : RecycleObject
 
     public void Start()
     {
+        CurrentMoveSpeed = moveSpeed;
         GameManager.Instance.TimeSystem.onNightchange += OnNight;
-        player = GameManager.Instance.Player;
-        CurrentMoveSpeed = moveSpeed;  
     }
 
     private void Update()
@@ -189,32 +208,35 @@ public class EnemyBace : RecycleObject
         if (agent.remainingDistance < agent.stoppingDistance) 
         {
             StartCoroutine(AlatWait());
+            State = EnemyState.Wait;
         }
     }
 
     void Update_Chase()
     {
         chaseTime += Time.deltaTime;
-        Trace();//거리차이 기록, 추적 종료조건 설정 -> 경계로
+        Trace();
+        if ((chaseTime > chaseAmpl *BaceChaseTime) || agent.remainingDistance > BaceChaseDistance * chaseAmpl) 
+        {
+            State = EnemyState.Alert;
+        }
     }
 
     void Update_Wander()
     {
-        //n초간 배회후 대기상태로
+        if (wanderCount < chaseAmpl * BaceWanderCount)
+        {
+            Wandering();
+        }
+        else if ((wanderCount >= chaseAmpl * BaceWanderCount) && (agent.remainingDistance <= agent.stoppingDistance)) 
+        {
+            State = EnemyState.Wait;
+        }
     }
 
     void Update_Attack()
     {
         cooltime -= Time.deltaTime;
-        Trace();
-        if (agent.remainingDistance > agent.stoppingDistance)
-        {
-            CurrentMoveSpeed = moveSpeed;
-        }
-        else 
-        {
-            CurrentMoveSpeed = 0.0f;
-        }
         if (cooltime < 0)
         {
             Attack();
@@ -240,6 +262,7 @@ public class EnemyBace : RecycleObject
     {
         if (other.CompareTag("Player"))
         {
+            target = other.transform;
             State = EnemyState.Chase;
         }
     }
@@ -263,9 +286,13 @@ public class EnemyBace : RecycleObject
 
     protected virtual void Attack() 
     {
-        player.Damege(attackDamege);
-        animator.SetTrigger(Attack_Hash);
-        cooltime = maxCoolTime;
+        Player player = target.GetComponent<Player>();
+        if (player != null)
+        {
+            player.Damege(attackDamege);
+            animator.SetTrigger(Attack_Hash);
+            cooltime = maxCoolTime;
+        }
     }
 
     protected virtual void Trace() 
@@ -275,6 +302,18 @@ public class EnemyBace : RecycleObject
         lookRotation.y = transform.position.y;
         lookRotation.z = target.position.z;
         transform.LookAt(lookRotation);
+    }
+
+    protected virtual void Wandering() 
+    {
+        if (agent.remainingDistance <= agent.stoppingDistance) 
+        {
+            if (RandomPoint(transform.position, WanderRange, out wanderDestination))
+            {
+                agent.SetDestination(wanderDestination);
+                wanderCount++;
+            }
+        }
     }
 
     void ItemDrop() 
@@ -289,27 +328,42 @@ public class EnemyBace : RecycleObject
         }
     }
 
-    public void OnDetect(Transform targeting, float radi)       //거리가 0에 가까울수록 n은 커진다
+    public void OnDetect(Transform targeting, float radi)
     {
         Vector3 dir = targeting.position - transform.position;
-        float findDistance = radi * findDistanceRange;          
-        chaseAmpl += MaxChaseAmpl - (dir.sqrMagnitude);         //최대 5 최소 1
-        if ((dir.sqrMagnitude > findDistance * findDistance) && (State != EnemyState.Alert || State != EnemyState.Chase))
-        {
-            State = EnemyState.Alert;
-            agent.SetDestination(targeting.position);
-        }
-        else 
+        float distance = dir.magnitude;
+        float findDistance = radi * findDistanceRange;                                                            //chase상태로 넘어가는 거리 한계
+        if ( State == EnemyState.Chase || State == EnemyState.Wander)
         {
             State = EnemyState.Chase;
             target = targeting;             //추적시간 초기화
             chaseTime = 0.0f;
+            //Debug.Log("In");
+        }
+        else if(State == EnemyState.Wait || State == EnemyState.Alert)
+        {
+            if (distance < findDistance)
+            {
+                State = EnemyState.Chase;
+                target = targeting;             //추적시간 초기화
+                chaseTime = 0.0f;
+                //chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
+                //Debug.Log("middle");
+            }
+            else
+            {
+                State = EnemyState.Alert;
+                agent.SetDestination(targeting.position);
+                //chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
+                //Debug.Log("Out");
+            }
         }
     }
 
     public void OnDetect(Vector3 targetPos)
     {
         State = EnemyState.Alert;
+        chaseAmpl = 3.0f;
         agent.SetDestination(targetPos);
     }
 
@@ -318,7 +372,7 @@ public class EnemyBace : RecycleObject
         nightAmpl = Ampl;
     }
 
-    IEnumerator AlatWait() 
+    IEnumerator AlatWait()      //원더 업데이트 1틱 돌고서 여기로 빠짐 왜?
     {
         yield return new WaitForSeconds(alatWaitTime);
         if (target == null) 
@@ -331,4 +385,35 @@ public class EnemyBace : RecycleObject
             target = null;                              //놓혔을때 타겟을 눌로 바꿔줌
         }
     }
+
+    bool RandomPoint(Vector3 center, float range, out Vector3 result) 
+    {
+        bool isOk = false;
+        for(int i = 0; i < 30; i++) 
+        {
+            Vector2 random = Random.insideUnitCircle * range;                               //구형이다보니까(insideUnitSphere) 레인지 60이라 위쪽 허공에 찍히면 그 지점중 반경 1안에 땅이 없던것,
+            Vector3 randomPoint = center;                                                   //구형말고 평면으로 바꾸고, 층고를 다른방법으로 덮어써서 점을 만들고 반경을 줄일것
+            randomPoint.x += random.x;
+            randomPoint.z += random.y;
+            NavMeshHit hit;                                                                 
+            if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))      //랜덤포인트기준 3변수(10.0f) 반경안에서 가장 가까운 점 리턴 없으면 flase
+            {
+                result = hit.position; 
+                isOk = true;
+                break;          //return true
+            }
+        }
+        result = Vector3.zero;
+        return isOk;
+    }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Handles.color = Color.green;
+        Handles.DrawWireDisc(transform.position, transform.up, 2.0f);
+        Handles.color = Color.blue;
+        Handles.DrawWireDisc(transform.position, transform.up, 0.7f);
+    }
+#endif
 }

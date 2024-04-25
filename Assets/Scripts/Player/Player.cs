@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,11 +16,23 @@ public class Player : MonoBehaviour
     /// </summary>
     public float jumpPower = 5f;
 
+    // 인벤토리 및 플레이어 UI 하면서 건든거 ----------------------------------------------------------------------/
+
+    Inventory inven;
+
+    public Inventory Inventory => inven;
+
+    /// <summary>
+    /// 플레이어의 최대 체력
+    /// </summary>
+    float maxHp = 100;
+
+    public float MaxHp => maxHp;
+
     /// <summary>
     /// 플레이어 체력
     /// </summary>
     float hp = 100;
-    public float maxHp = 100;
     public float Hp
     {
         get => hp;
@@ -29,7 +42,7 @@ public class Player : MonoBehaviour
             {
                 hp = value;
                 hp = Mathf.Clamp(hp, 0, maxHp);
-                OnHealthChange?.Invoke(hp);
+                onHealthChange?.Invoke(hp);
                 if (hp < 0.1)
                 {
                     Die();
@@ -37,6 +50,28 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+
+    /// <summary>
+    /// 플레이어의 무게
+    /// </summary>
+    float weight = 0;
+
+    public float Weight
+    {
+        get => weight;
+        set
+        {
+            if(weight != value)
+            {
+                weight = value;
+                onWeightChange?.Invoke(weight);
+                // 현재 무게에 따라 이속속도 가변하는 것 추가하기
+            }
+        }
+    }
+
+    // ---------------------------------------------------------------------------------------------------------/
 
     /// <summary>
     /// 달릴시 빨라지는 속도 
@@ -81,7 +116,9 @@ public class Player : MonoBehaviour
     /// 플레이어의 사망을 알리는 델리게이트
     /// </summary>
     public Action onDie;
-    public Action<float> OnHealthChange { get; set; }
+    public Action<float> onHealthChange { get; set; }
+
+    public Action<float> onWeightChange { get; set; }
 
     public float defense = 0.0f;
 
@@ -98,6 +135,8 @@ public class Player : MonoBehaviour
     /// 플레이어가 공중에 있었는지 확인하는 변수
     /// </summary>
     private bool wasInAir = false;
+
+
     private void Awake()
     {
         inputActions = new PlayerMove();
@@ -140,6 +179,16 @@ public class Player : MonoBehaviour
         inputActions.Player.RightMouse.performed -= OnRightMouse;
         inputActions.Player.HotbarKey.performed -= OnHotbarKey;
         inputActions.Player.Disable();
+    }
+
+    private void Start()
+    {
+        cc = GetComponent<CharacterController>();
+        inven = new Inventory(this);
+        if(GameManager.Instance.InventoryUI != null )
+        {
+            GameManager.Instance.InventoryUI.InitializeInventory(Inventory);
+        }
     }
 
     private void OnMovePerformed(InputAction.CallbackContext ctx)
@@ -224,10 +273,7 @@ public class Player : MonoBehaviour
     }
 
 
-    private void Start()
-    {
-        cc = GetComponent<CharacterController>();
-    }
+
 
     private void FixedUpdate()
     {
@@ -300,4 +346,14 @@ public class Player : MonoBehaviour
         yield return LangingSoundInterval;
         noise.gameObject.SetActive(false);
     }
+
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Handles.color = Color.yellow;
+        Handles.DrawWireDisc(transform.position, transform.up, 5.0f);
+        Handles.color = Color.red;
+        Handles.DrawWireDisc(transform.position, transform.up, 5.0f * 0.6f); 
+    }
+#endif
 }

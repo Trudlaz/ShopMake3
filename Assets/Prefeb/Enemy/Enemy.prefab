@@ -106,7 +106,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 1.5
+  m_Radius: 2
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!195 &3380240674081462802
 NavMeshAgent:
@@ -121,7 +121,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 4
   avoidancePriority: 50
-  m_AngularSpeed: 60
+  m_AngularSpeed: 90
   m_StoppingDistance: 0.3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -148,6 +148,7 @@ MonoBehaviour:
   attackDamege: 25
   maxCoolTime: 1.5
   findDistanceRange: 0.6
+  alatWaitTime: 5
   dropItems:
   - code: 19
     dropRatio: 0.1
