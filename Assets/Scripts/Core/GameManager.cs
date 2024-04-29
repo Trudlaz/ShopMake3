@@ -4,6 +4,7 @@ public class GameManager : Singleton<GameManager>
     private Player player;
     private ItemDataManager itemDataManager;
     private Inventory_UI inventoryUI;
+    private WorldInventory worldInventory;
     private WorldInventory_UI worldInventoryUI;
     private TimeSystem timeSys;
     private WeaponBase weaponBase;
@@ -13,6 +14,7 @@ public class GameManager : Singleton<GameManager>
     public Player Player => player;
     public ItemDataManager ItemData => itemDataManager;
     public Inventory_UI InventoryUI => inventoryUI;
+    public WorldInventory WorldInventory => worldInventory;
     public WorldInventory_UI WorldInventory_UI => worldInventoryUI;
     public TimeSystem TimeSystem => timeSys;
     public WeaponBase WeaponBase => weaponBase;
