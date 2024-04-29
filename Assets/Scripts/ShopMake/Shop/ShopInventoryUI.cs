@@ -5,9 +5,11 @@ using UnityEngine.InputSystem;
 public class ShopInventoryUI : MonoBehaviour
 {
     public Slot_UI[] shopSlots; // 상점 슬롯 배열
-    public RectTransform shopTransform; // 상점의 RectTransform
+    public RectTransform shopTransform; // 상점의RectTransform
     public CanvasGroup canvas; // 상점 UI의 CanvasGroup
     public ShopBuyMenuUI shopBuyMenu; // ShopBuyMenuUI 컴포넌트 참조
+
+    public ShopInventory shopInventory; // ShopInventory 참조
 
     private void Awake()
     {
@@ -30,13 +32,21 @@ public class ShopInventoryUI : MonoBehaviour
 
     private void OnItemRightClick(uint index)
     {
-        if (index < shopSlots.Length)
+        Slot_UI target = shopSlots[index];
+        shopBuyMenu.Open(target.ItemSlot);
+        shopBuyMenu.MovePosition(Mouse.current.position.ReadValue());
+            
+    }
+
+
+    public void UpdateSlots(ItemSlot[] updatedSlots)
+    {
+        // 인벤토리 슬롯 배열을 업데이트하는 로직
+        for (int i = 0; i < shopSlots.Length && i < updatedSlots.Length; i++)
         {
-            Slot_UI targetSlot = shopSlots[index];
-            if (!targetSlot.ItemSlot.IsEmpty)
+            if (updatedSlots[i] != null)
             {
-                shopBuyMenu.Open(targetSlot.ItemSlot);
-                shopBuyMenu.MovePosition(Mouse.current.position.ReadValue());
+                shopSlots[i].InitializeSlot(updatedSlots[i]);
             }
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -116,7 +117,7 @@ public class WorldInventory_UI : MonoBehaviour
 
         scrollbar.value = 1;
 
-        //Close();
+        // Close(); // 월드 인벤토리가 꺼진 상태에서 시작해야할 시 사용
     }
 
 
@@ -180,6 +181,7 @@ public class WorldInventory_UI : MonoBehaviour
     /// <param name="index">우클릭한 슬롯의 index</param>
     private void OnRightClick(uint index)
     {
+        Debug.Log("월드 인벤토리UI에서 우클릭 감지");
         // 버리기, 상세보기 등 UI따로 띄우기
         Slot_UI target = worldSlotUI[index];
         worldSelect.Open(target.ItemSlot);
