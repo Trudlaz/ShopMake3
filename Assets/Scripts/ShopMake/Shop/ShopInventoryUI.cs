@@ -27,6 +27,7 @@ public class ShopInventoryUI : MonoBehaviour
         foreach (Slot_UI slot in shopSlots)
         {
             slot.onRightClick += OnItemRightClick; // 우클릭 이벤트 연결
+            shopBuyMenu.Close();
         }
     }
 

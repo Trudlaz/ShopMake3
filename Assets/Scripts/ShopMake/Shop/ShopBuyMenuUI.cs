@@ -32,6 +32,7 @@ public class ShopBuyMenuUI : MonoBehaviour
 
     private void Start()
     {
+        
     }
 
     private void OnEnable()
@@ -56,7 +57,16 @@ public class ShopBuyMenuUI : MonoBehaviour
             currentItemSlot = target;
             gameObject.SetActive(true);
 
-            // UI 세팅
+            // UI 요소들을 활성화
+            itemNameText.gameObject.SetActive(true);
+            itemIcon.gameObject.SetActive(true);
+            itemPriceText.gameObject.SetActive(true);
+            quantityInput.gameObject.SetActive(true);
+            purchaseButton.gameObject.SetActive(true);
+            cancelButton.gameObject.SetActive(true);
+            quantitySlider.gameObject.SetActive(true);
+
+            // UI 정보 설정
             itemNameText.text = target.ItemData.itemName;
             itemIcon.sprite = target.ItemData.itemImage;
             itemPriceText.text = $"가격 : {target.ItemData.Price}";
@@ -65,9 +75,12 @@ public class ShopBuyMenuUI : MonoBehaviour
             quantitySlider.maxValue = Mathf.Min(MaxItemCount, target.ItemCount);
             quantitySlider.value = MinItemCount;
 
+
             MovePosition(Mouse.current.position.ReadValue());
         }
     }
+
+
 
     public void Close()
     {

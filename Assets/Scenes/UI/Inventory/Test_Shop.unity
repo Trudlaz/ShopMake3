@@ -1158,6 +1158,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2900593464477608163, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 2900593464477608163, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3939324926400356737, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 2900593464477608163, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2989108220538023206, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1273,6 +1285,10 @@ PrefabInstance:
     - target: {fileID: 3457601463528712420, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3587483178846149347, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_Text
+      value: fefefe
       objectReference: {fileID: 0}
     - target: {fileID: 3598273394822860836, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1408,6 +1424,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4394109922399703619, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472087206129606845, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472087206129606845, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 4472087206129606845, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3939324926400356737, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 4472087206129606845, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4666938753689440054, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
@@ -1786,6 +1818,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6979253685200767946, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 6979253685200767946, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 3939324926400356737, guid: c42e6305bb48bb24fa9f5db9cfd67cfc, type: 2}
+    - target: {fileID: 6979253685200767946, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7126192321826355340, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
       propertyPath: m_Name
       value: ShopCanvas
@@ -2070,7 +2114,9 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3587483178846149347, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
+    - {fileID: 1466843283859504131, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3052030925922915390, guid: b980ff1f5b8638e4cb385296b42d4ceb, type: 3}
