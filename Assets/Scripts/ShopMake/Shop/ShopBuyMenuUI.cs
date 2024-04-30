@@ -16,6 +16,7 @@ public class ShopBuyMenuUI : MonoBehaviour
     public Slider quantitySlider; // 수량 조절을 위한 슬라이더
     public Button plusButton; // 수량 증가 버튼
     public Button minusButton; // 수량 감소 버튼
+    
 
     // 아이템 슬롯 정보
     private ItemSlot currentItemSlot; // 현재 선택된 아이템 슬롯
@@ -136,31 +137,42 @@ public class ShopBuyMenuUI : MonoBehaviour
     {
         if (uint.TryParse(quantityInput.text, out uint quantity) && quantity >= MinItemCount && quantity <= MaxItemCount)
         {
-            Debug.Log("Quantity parsed successfully: " + quantity);
+            Debug.Log("수량이 성공적으로 전달되었습니다 : " + quantity);
 
             if (currentItemSlot == null || currentItemSlot.ItemData == null)
             {
-                Debug.LogError("currentItemSlot or ItemData is null");
+                Debug.LogError("현재 아이템 슬롯 또는 아이템 데이터가 null 입니다.");
                 return; // 데이터가 없으므로 추가 처리 중단
             }
 
             ItemCode purchasedItemCode = currentItemSlot.ItemData.itemId;
-            Debug.Log("Purchased ItemCode: " + purchasedItemCode);
+            Debug.Log("구매한 아이템 코드 : " + purchasedItemCode);
 
-            bool itemAdded = GameManager.Instance.WorldInventory.AddItem(purchasedItemCode, quantity);
-            if (itemAdded)
+            bool allItemsAdded = true;
+            for (uint i = 0; i < quantity; i++)
+            {
+                bool itemAdded = GameManager.Instance.WorldInventory_UI.worldInven.AddItem(purchasedItemCode);
+                if (!itemAdded)
+                {
+                    allItemsAdded = false;
+                    Debug.LogError("월드인벤토리에 아이템을 추가하지 못 했습니다.");
+                    break; // 하나라도 추가 실패하면 더 이상 추가하지 않고 중단
+                }
+            }
+
+            if (allItemsAdded)
             {
                 OnBuyItem?.Invoke(currentItemSlot, quantity);
-                Debug.Log("Item successfully purchased and added to the world inventory.");
+                Debug.Log("모든 아이템을 성공적으로 인벤토리에 추가했습니다.");
             }
             else
             {
-                Debug.LogError("Failed to add item to world inventory.");
+                Debug.LogError("모든 아이템을 성공적으로 인벤토리에 추가하지 못 했습니다.");
             }
         }
         else
         {
-            Debug.LogError("Invalid quantity input.");
+            Debug.LogError("잘못된 수량을 입력하셨습니다.");
         }
     }
 

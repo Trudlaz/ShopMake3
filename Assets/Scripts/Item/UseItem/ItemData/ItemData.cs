@@ -14,5 +14,5 @@ public class ItemData : ScriptableObject
     public uint maxItemCount;       // 최대로 가질 수 있는 아이템의 개수
     public GameObject itemPrefab;   // 아이템
     public uint Price;              // 가격
-    
+    public uint defaultAddCount;    // 기본 추가 수량
 }

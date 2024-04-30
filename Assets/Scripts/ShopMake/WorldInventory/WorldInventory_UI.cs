@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class WorldInventory_UI : MonoBehaviour
 {
 
-    WorldInventory worldInven;
+    public WorldInventory worldInven;
 
     Slot_UI[] worldSlotUI;
 
