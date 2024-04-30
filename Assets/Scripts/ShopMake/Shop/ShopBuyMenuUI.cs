@@ -136,25 +136,34 @@ public class ShopBuyMenuUI : MonoBehaviour
     {
         if (uint.TryParse(quantityInput.text, out uint quantity) && quantity >= MinItemCount && quantity <= MaxItemCount)
         {
-            // currentItemSlot에서 아이템 코드를 추출
-            ItemCode purchasedItemCode = currentItemSlot.ItemData.itemId; // 실제 데이터 구조에 맞게 이 줄을 수정하세요.
+            Debug.Log("Quantity parsed successfully: " + quantity);
+
+            if (currentItemSlot == null || currentItemSlot.ItemData == null)
+            {
+                Debug.LogError("currentItemSlot or ItemData is null");
+                return; // 데이터가 없으므로 추가 처리 중단
+            }
+
+            ItemCode purchasedItemCode = currentItemSlot.ItemData.itemId;
+            Debug.Log("Purchased ItemCode: " + purchasedItemCode);
 
             bool itemAdded = GameManager.Instance.WorldInventory.AddItem(purchasedItemCode, quantity);
             if (itemAdded)
             {
-                OnBuyItem?.Invoke(currentItemSlot, quantity); // 구매 이벤트를 리스너에게 알립니다.
-                Debug.Log("아이템이 성공적으로 구매되어 월드 인벤토리에 추가되었습니다.");
+                OnBuyItem?.Invoke(currentItemSlot, quantity);
+                Debug.Log("Item successfully purchased and added to the world inventory.");
             }
             else
             {
-                Debug.LogError("월드 인벤토리에 아이템 추가 실패.");
+                Debug.LogError("Failed to add item to world inventory.");
             }
         }
         else
         {
-            Debug.LogError("잘못된 수량 입력.");
+            Debug.LogError("Invalid quantity input.");
         }
     }
+
 
     // 클릭 위치 확인
     private void OnClick(InputAction.CallbackContext context)

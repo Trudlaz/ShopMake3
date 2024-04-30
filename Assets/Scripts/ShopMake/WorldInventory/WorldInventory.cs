@@ -50,6 +50,7 @@ public class WorldInventory
     /// <returns>true면 성공 false면 추가 실패</returns>
     public bool AddItem(ItemCode code)
     {
+        Debug.Log(code);
         for (int i = 0; i < SlotCount; i++)
         {
             if (AddItem(code, (uint)i))
@@ -72,6 +73,7 @@ public class WorldInventory
 
         if (IsValidIndex(slotIndex))    // 인덱스가 적절한지 확인
         {
+            Debug.Log("Fetching item data for code: " + code);
             ItemData data = itemDataManager[code];
             ItemSlot slot = slots[slotIndex];      // 슬롯 가져오기
             if (slot.IsEmpty)
@@ -99,6 +101,9 @@ public class WorldInventory
         else
         {
             // 잘못된 슬롯
+            Debug.LogError("No data found for item code: " + code);
+            Debug.LogError("Invalid slot index: " + slotIndex);
+            return false;  // 인덱스가 유효하지 않은 경우 처리 중단
         }
         return result;
     }
