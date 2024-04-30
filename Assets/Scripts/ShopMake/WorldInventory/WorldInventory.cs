@@ -341,9 +341,13 @@ public class WorldInventory
     /// <param name="slot"></param>
     public void PlusMoney(ItemSlot slot, int count = 1)
     {
-        if (slot.ItemData != null)
+        if (slot.ItemData != null && worldInven != null)
         {
             worldInven.Money += (int)(slot.ItemData.Price * count);
+        }
+        else
+        {
+            Debug.LogError("Attempted to modify money with a null reference to worldInven or slot.ItemData");
         }
     }
 

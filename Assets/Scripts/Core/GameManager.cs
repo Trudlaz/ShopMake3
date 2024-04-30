@@ -24,8 +24,11 @@ public class GameManager : Singleton<GameManager>
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
+        
         inventoryUI = FindAnyObjectByType<Inventory_UI>();
         worldInventoryUI = FindAnyObjectByType<WorldInventory_UI>();
+        // WorldInventory 객체 생성
+        worldInventory = new WorldInventory(player);
         timeSys = FindAnyObjectByType<TimeSystem>();
         weaponBase = FindAnyObjectByType<WeaponBase>();
         shopInventoryUI = FindAnyObjectByType<ShopInventoryUI>(); // 샵 인벤토리 UI 초기화
