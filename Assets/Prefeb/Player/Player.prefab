@@ -51,7 +51,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1170557410350977315
 Transform:
   m_ObjectHideFlags: 0
@@ -134,7 +134,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   jumpPower: 5
-  maxHp: 100
   runningSpeed: 2
   limitWeight: 20
   MaxWeight: 40
