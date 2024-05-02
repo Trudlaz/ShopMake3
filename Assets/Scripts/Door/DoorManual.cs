@@ -10,11 +10,11 @@ public class DoorManual : DoorBase
     float currentCoolTime = 0;
     bool CanUse => currentCoolTime < 0.0f;
 
-    Animator animator;
+    protected Animator animator;
 
-    readonly int IsOpenHash = Animator.StringToHash("IsOpen");
+    protected readonly int IsOpenHash = Animator.StringToHash("IsOpen");
 
-    private void Awake()
+    protected virtual void Awake()
     {
         animator = GetComponent<Animator>(); ;
     }
@@ -42,7 +42,7 @@ public class DoorManual : DoorBase
         }        
     }
 
-    protected virtual void Open()
+    protected override void Open()
     {
         if(preOpen()) animator.SetBool(IsOpenHash, true);
     }

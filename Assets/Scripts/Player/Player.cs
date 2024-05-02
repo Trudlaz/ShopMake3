@@ -315,12 +315,12 @@ public class Player : MonoBehaviour
 
         bool isGroundedNow = IsGrounded();
 
-        if (wasInAir && isGroundedNow)
-        {
-            Debug.Log("노이즈 발생!");
-            // 공중에서 땅에 착지했을 때
-            StartCoroutine(LandingNoise());
-        }
+        //if (wasInAir && isGroundedNow)
+        //{
+        //    Debug.Log("노이즈 발생!");
+        //    // 공중에서 땅에 착지했을 때
+        //    StartCoroutine(LandingNoise());
+        //}
         wasInAir = !isGroundedNow; // 현재 공중에 있는지 여부를 업데이트
     }
 
@@ -339,13 +339,13 @@ public class Player : MonoBehaviour
         onDie?.Invoke();
     }
 
-    IEnumerator LandingNoise()
-    {
-        noise.Radius = landingSoundRange;
-        noise.gameObject.SetActive(true);
-        yield return LangingSoundInterval;
-        noise.gameObject.SetActive(false);
-    }
+    //IEnumerator LandingNoise()
+    //{
+    //    noise.Radius = landingSoundRange;
+    //    noise.gameObject.SetActive(true);
+    //    yield return LangingSoundInterval;
+    //    noise.gameObject.SetActive(false);
+    //}
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

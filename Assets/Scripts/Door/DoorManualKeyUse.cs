@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class DoorManualKeyUse : DoorManual
 {
+    public bool isExitDoor = false;
+    bool isOpend = false;
+
     public override void Interect()
     {
         Open();
@@ -11,17 +14,30 @@ public class DoorManualKeyUse : DoorManual
 
     protected override bool preOpen()
     {
-        bool result = true;
-        //플레이어 인벤토리 검사 (키있을시 true)
-        return result;
+        return true; //GameManager.Instance.InventoryUI.Inventory.FindItem(ItemCode.Key);   합치면 풉시다
     }
 
     protected override void Open()
     {
-        if (preOpen()) 
+        if (isExitDoor)
         {
-            Debug.Log("탈출");
-            //화면전환(게임메뉴)
+            if (preOpen())
+            {
+                Debug.Log("탈출");
+                //화면전환(게임메뉴)
+            }
+        }
+        else 
+        {
+
+            if (!isOpend)
+            {
+                if (preOpen())
+                {
+                    animator.SetBool(IsOpenHash, true);
+                    isOpend = true;
+                }
+            }
         }
     }
 }

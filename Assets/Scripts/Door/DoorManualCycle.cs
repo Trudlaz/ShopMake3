@@ -59,5 +59,9 @@ public class DoorManualCycle : DoorManual
             Debug.Log("탈출");
             //화면전환(게임메뉴)
         }
+        else 
+        {
+            Debug.Log("Not In Time");
+        }
     }
 }

@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.19999999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.19999999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.19999999
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -48,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
       propertyPath: m_Name
       value: SniperSilencer
@@ -56,5 +72,55 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 8513859187771203891, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4129471766574743510}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8844221833150089213}
   m_SourcePrefab: {fileID: 100100000, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+--- !u!1 &1135000289478528142 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a890dd54873c03f4288247eeda4faf1e, type: 3}
+  m_PrefabInstance: {fileID: 216521800121086431}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &-4129471766574743510
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135000289478528142}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 4}
+  m_Center: {x: 0, y: 0, z: -0.2}
+--- !u!114 &-8844221833150089213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135000289478528142}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77339320218cdec4e8684c90ad051db5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1000
+  Weight: 3
+  maxAmmo: 0
+  accuracy: 0
+  recoil: 0
+  noiseRadius: 0

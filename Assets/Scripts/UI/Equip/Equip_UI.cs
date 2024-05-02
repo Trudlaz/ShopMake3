@@ -8,57 +8,32 @@ using UnityEngine.UI;
 
 public class Equip_UI : MonoBehaviour
 {
-    //PlayerInput inputActions;
+    Equip equip;
 
-    //Equip equip;
+    PlayerInput inputActions;
 
-    //public Equip Equip => equip;
+    public Equip Equip => equip;
 
-    //EquipSlot_UI[] equipSlot_UI;
+    [SerializeField] EquipSlot_UI[] equipSlot_UI;
 
-    //DropSlotUI dropSlot;
+    [SerializeField] DropSlotUI dropSlot;
 
-    //WeightPanel_UI weightPanel;
+    [SerializeField] InventoryManager invenManager;
 
-    //InventoryManager invenManager;
+    [SerializeField] RectTransform invenTransform;
 
-    //RectTransform invenTransform;
+    [SerializeField] CanvasGroup canvas;
+
+    public ItemData data01;
+    public ItemData data02;
+    public ItemData data03;
+    public ItemData data04;
+    public ItemData data05;
 
     //Button sortButton;
 
-    //Player Owner => equip.Owner;
+    Player Owner => equip.Owner;
 
-    //CanvasGroup canvas;
-
-
-    //int money = 0;
-
-    ///// <summary>
-    ///// 인벤토리 돈 관리하는 프로퍼티인데 나중에 아이템 개수로 바꿀 예정
-    ///// </summary>
-    //public int Money
-    //{
-    //    get => money;
-    //    set
-    //    {
-    //        if (money != value)
-    //        {
-    //            money = Math.Max(0, value);
-    //            onMoneyChange?.Invoke(money);
-    //        }
-    //    }
-    //}
-
-
-    ///// <summary>
-    ///// 인벤토리의 무게에 변화가 있으면 실행되는 델리게이트
-    ///// </summary>
-    //public Action<int> onWeightChange;
-
-    ///// <summary>
-    ///// 인벤토리의 돈에 변화가 있으면 실행되는 델리게이트
-    ///// </summary>
-    //public Action<int> onMoneyChange;
 
     ///// <summary>
     ///// 아이템을 장비했다고 알리는 델리게이트(ItemSlot : 장비한 아이템의 슬롯에 대한 정보)
@@ -66,71 +41,64 @@ public class Equip_UI : MonoBehaviour
     //public Action<ItemSlot> onEquipped;
 
 
-    //private void Awake()
-    //{
-    //    inputActions = new PlayerInput();
+    private void Awake()
+    {
+        inputActions = new PlayerInput();
 
-    //    Transform child = transform.GetChild(0);
-    //    equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
+        Transform child = transform.GetChild(0);
+        equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
 
-    //    child = transform.GetChild(1);
-    //    dropSlot = child.GetComponent<DropSlotUI>();
+        child = transform.GetChild(1);
+        dropSlot = child.GetComponent< DropSlotUI>();
 
-    //    child = transform.GetChild(2);
-    //    weightPanel = child.GetComponent<WeightPanel_UI>();
+        //child = transform.GetChild(2);
+        // weightPanel = child.GetComponent<WeightPanel_UI>();
 
-    //    child = transform.GetChild(3);
-    //    sortButton = child.GetComponent<Button>();
-    //    sortButton.onClick.AddListener(() =>
-    //    {
-    //        OnItemSort(ItemType.Buff);
-    //    });
+        //child = transform.GetChild(3);
+        //sortButton = child.GetComponent<Button>();
+        //sortButton.onClick.AddListener(() =>
+        //{
+        //    // OnItemSort(ItemType.Buff);
+        //});
 
-    //    invenManager = GetComponentInParent<InventoryManager>();
+        invenManager = GetComponentInParent<InventoryManager>();
 
-    //    invenTransform = GetComponent<RectTransform>();
+        invenTransform = GetComponent<RectTransform>();
 
-    //    canvas = GetComponent<CanvasGroup>();
-    //}
+        canvas = GetComponent<CanvasGroup>();
+    }
 
-    //private void OnEnable()
-    //{
-    //    inputActions.UI.Enable();
-    //    inputActions.UI.equip.performed += InventoryOnOff;
-    //}
-
+    private void OnEnable()
+    {
+        // 정비창 키
+    }
 
 
-    //void OnDisable()
-    //{
-    //    inputActions.UI.equip.performed -= InventoryOnOff;
-    //    inputActions.UI.Disable();
-    //}
 
-    //public void InitializeInventory(Equip playerInventory)
-    //{
-    //    inventory = playerInventory;
+    void OnDisable()
+    {
+        // 정비창 키
+    }
 
-    //    for (uint i = 0; i < slotsUI.Length; i++)
-    //    {
-    //        equipSlot_UI[i].InitializeSlot(equip[i]);
-    //        equipSlot_UI[i].onDragBegin += OnItemMoveBegin;
-    //        equipSlot_UI[i].onDragEnd += OnItemMoveEnd;
-    //        equipSlot_UI[i].onRightClick += OnRightClick;
-    //        equipSlot_UI[i].OnClick += OnClick;
-    //    }
-    //    invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // 임시 슬롯 초기화
+    public void InitializeInventory(Equip playerEquip)
+    {
+        equip = playerEquip;
 
-    //    dropSlot.onDropOk += OnDropOk;
-    //    dropSlot.Close();
+        for (uint i = 0; i < equipSlot_UI.Length; i++)
+        {
+            equipSlot_UI[i].InitializeSlot(equip[i]);
+            equipSlot_UI[i].onDragBegin += OnItemMoveBegin;
+            equipSlot_UI[i].onDragEnd += OnItemMoveEnd;
+            // equipSlot_UI[i].onRightClick += OnRightClick;
+            equipSlot_UI[i].OnClick += OnClick;
+        }
+        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // 임시 슬롯 초기화
 
-    //    Owner.onWeightChange += weightPanel.Refresh;
-    //    weightPanel.Refresh(Owner.Weight);
+        // dropSlot.onDropOk += OnDropOk;
+        dropSlot.Close();
 
-    //    inventory.onReload += GameManager.Instance.WeaponBase.ReLoad;
-
-    //    Close();
-    //}
+        // Close();
+    }
 
     //private void Start()
     //{
@@ -166,58 +134,58 @@ public class Equip_UI : MonoBehaviour
 
 
 
-    ///// <summary>
-    ///// 아이템 드래그 시작하면 실행되는 함수
-    ///// </summary>
-    ///// <param name="index">시작한 슬롯의 index</param>
-    //private void OnItemMoveBegin(ItemSlot slot)
-    //{
-    //    invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // 임시 슬롯 초기화
-    //    equip.MoveItem(slot, invenManager.DragSlot.ItemSlot);
-    //    invenManager.DragSlot.Open();
-    //}
+    /// <summary>
+    /// 아이템 드래그 시작하면 실행되는 함수
+    /// </summary>
+    /// <param name="index">시작한 슬롯의 index</param>
+    private void OnItemMoveBegin(ItemSlot slot)
+    {
+        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // 임시 슬롯 초기화
+        equip.MoveItem(slot, invenManager.DragSlot.ItemSlot);
+        invenManager.DragSlot.Open();
+    }
 
 
 
-    ///// <summary>
-    ///// 아이템 드래그가 끝이나면 실행되는 함수
-    ///// </summary>
-    ///// <param name="index">끝난 슬롯의 index</param>
-    //private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
-    //{
-    //    equip.MoveItem(invenManager.DragSlot.ItemSlot, slot);
+    /// <summary>
+    /// 아이템 드래그가 끝이나면 실행되는 함수
+    /// </summary>
+    /// <param name="index">끝난 슬롯의 index</param>
+    private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
+    {
+        equip.MoveItem(invenManager.DragSlot.ItemSlot, slot);
 
-    //    //WorldInventory_UI worldInven;
-    //    //worldInven = rect.GetComponentInParent<WorldInventory_UI>();
+        Inventory_UI inven;
+        inven = FindObjectOfType<Inventory_UI>();
 
-    //    //if (worldInven != null)
-    //    //{
-    //    //    inventory.MinusValue(slot, (int)slot.ItemCount);
-    //    //    worldInven.PlusValue(slot);
-    //    //}
+        if (inven != null)
+        {
+            //inven.MinusValue(slot, (int)slot.ItemCount);
+            //inven.PlusValue(slot);
+        }
 
-    //    if (invenManager.DragSlot.ItemSlot.IsEmpty)
-    //    {
-    //        invenManager.DragSlot.Close();
-    //    }
+        if (invenManager.DragSlot.ItemSlot.IsEmpty)
+        {
+            invenManager.DragSlot.Close();
+        }
 
-    //    // 마우스를 땟을 때 위치가 장비창이라면 
-    //    // slot.EquipItem();                    장비하고
-    //    // 장비를 장비창에 복사하고(인벤토리에 있는 장비는 그대로 두고)
-    //    // onEquipped?.Invoke(slot);            아이템 슬롯 정보 알려주기
-    //}
+        // 마우스를 땟을 때 위치가 장비창이라면 
+        // slot.EquipItem();                    장비하고
+        // 장비를 장비창에 복사하고(인벤토리에 있는 장비는 그대로 두고)
+        // onEquipped?.Invoke(slot);            아이템 슬롯 정보 알려주기
+    }
 
-    ///// <summary>
-    ///// 슬롯을 클릭하면 실행되는 함수
-    ///// </summary>
-    ///// <param name="index"></param>
-    //private void OnClick(ItemSlot slot, RectTransform rect)
-    //{
-    //    if (!invenManager.DragSlot.ItemSlot.IsEmpty)
-    //    {
-    //        OnItemMoveEnd(slot, rect);
-    //    }
-    //}
+    /// <summary>
+    /// 슬롯을 클릭하면 실행되는 함수
+    /// </summary>
+    /// <param name="index"></param>
+    private void OnClick(ItemSlot slot, RectTransform rect)
+    {
+        if (!invenManager.DragSlot.ItemSlot.IsEmpty)
+        {
+            OnItemMoveEnd(slot, rect);
+        }
+    }
 
     ///// <summary>
     ///// 슬롯을 우클릭 시 실행되는 함수
@@ -231,15 +199,6 @@ public class Equip_UI : MonoBehaviour
     //}
 
     ///// <summary>
-    ///// 인벤토리를 정렬하는 함수
-    ///// </summary>
-    ///// <param name="type">정렬되는 순서</param>
-    ////private void OnItemSort(ItemType type)
-    ////{
-    ////    equip.SlotSorting(type, true);
-    ////}
-
-    ///// <summary>
     ///// 버리기 창에서 확인 버튼을 누르면 실행되는 함수
     ///// </summary>
     ///// <param name="index">아이템을 버릴 슬롯의 index</param>
@@ -250,29 +209,29 @@ public class Equip_UI : MonoBehaviour
     ////    dropSlot.Close();
     ////}
 
-    //public void open()
-    //{
-    //    canvas.alpha = 1;
-    //    canvas.interactable = true;
-    //    canvas.blocksRaycasts = true;
-    //}
+    public void open()
+    {
+        canvas.alpha = 1;
+        canvas.interactable = true;
+        canvas.blocksRaycasts = true;
+    }
 
-    //public void Close()
-    //{
-    //    canvas.alpha = 0;
-    //    canvas.interactable = false;
-    //    canvas.blocksRaycasts = false;
-    //}
+    public void Close()
+    {
+        canvas.alpha = 0;
+        canvas.interactable = false;
+        canvas.blocksRaycasts = false;
+    }
 
-    //private void InventoryOnOff(UnityEngine.InputSystem.InputAction.CallbackContext context)
-    //{
-    //    if (canvas.interactable)
-    //    {
-    //        Close();
-    //    }
-    //    else
-    //    {
-    //        open();
-    //    }
-    //}
+    private void InventoryOnOff(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        if (canvas.interactable)
+        {
+            Close();
+        }
+        else
+        {
+            open();
+        }
+    }
 }

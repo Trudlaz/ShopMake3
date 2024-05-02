@@ -338,7 +338,6 @@ public class EnemyBace : RecycleObject
             State = EnemyState.Chase;
             target = targeting;             //추적시간 초기화
             chaseTime = 0.0f;
-            //Debug.Log("In");
         }
         else if(State == EnemyState.Wait || State == EnemyState.Alert)
         {
@@ -347,15 +346,13 @@ public class EnemyBace : RecycleObject
                 State = EnemyState.Chase;
                 target = targeting;             //추적시간 초기화
                 chaseTime = 0.0f;
-                //chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
-                //Debug.Log("middle");
+                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
             }
             else
             {
                 State = EnemyState.Alert;
                 agent.SetDestination(targeting.position);
-                //chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
-                //Debug.Log("Out");
+                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(최대-현재) / 최대 : (0~1사이값 생성) -> +1(최소값 보정)
             }
         }
     }
@@ -389,6 +386,7 @@ public class EnemyBace : RecycleObject
     bool RandomPoint(Vector3 center, float range, out Vector3 result) 
     {
         bool isOk = false;
+        result = Vector3.zero;
         for(int i = 0; i < 30; i++) 
         {
             Vector2 random = Random.insideUnitCircle * range;                               //구형이다보니까(insideUnitSphere) 레인지 60이라 위쪽 허공에 찍히면 그 지점중 반경 1안에 땅이 없던것,
@@ -403,7 +401,6 @@ public class EnemyBace : RecycleObject
                 break;          //return true
             }
         }
-        result = Vector3.zero;
         return isOk;
     }
 
@@ -411,9 +408,9 @@ public class EnemyBace : RecycleObject
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;
-        Handles.DrawWireDisc(transform.position, transform.up, 2.0f);
+        Handles.DrawWireDisc(transform.position, transform.up, 2.0f);   //공격범위
         Handles.color = Color.blue;
-        Handles.DrawWireDisc(transform.position, transform.up, 0.7f);
+        Handles.DrawWireDisc(transform.position, transform.up, 0.7f);   //스탑디스턴스
     }
 #endif
 }

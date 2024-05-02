@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2985401543329764911}
   - component: {fileID: 6796633063523092594}
   - component: {fileID: 70400329101410599}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DoorFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,10 @@ GameObject:
   - component: {fileID: 8554347243768853174}
   - component: {fileID: 3889035681132413857}
   - component: {fileID: 2009960705048570836}
-  m_Layer: 0
+  - component: {fileID: 2967415022999289142}
+  m_Layer: 9
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,6 +168,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2967415022999289142
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4420510139903699660}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.91890264, y: 1.9499999, z: 0.040926464}
+  m_Center: {x: -0.44891596, y: 0.97499996, z: -0.011339351}
 --- !u!1 &6695565599695259591
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,7 +200,7 @@ GameObject:
   - component: {fileID: 681189161467702367}
   - component: {fileID: 7901456173064186250}
   - component: {fileID: 4223357739380977764}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: doorKnob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,9 +283,9 @@ GameObject:
   - component: {fileID: 8890363256223204011}
   - component: {fileID: 7635156905357703355}
   - component: {fileID: 5834850548805080774}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: NomalDoor
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -278,7 +300,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2985401543329764911}
@@ -297,7 +319,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78535968711fe7e4bbaa501c6628504a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: {fileID: 0}
   coolTime: 0.5
 --- !u!95 &5834850548805080774
 Animator:

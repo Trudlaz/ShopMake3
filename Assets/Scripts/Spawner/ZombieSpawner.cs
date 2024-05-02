@@ -10,28 +10,10 @@ public class ZombieSpawner : MonoBehaviour
     public float interval = 1.5f;
     public int totalSpawn = 4;
 
-    NavMeshAgent navMesh;
-
-
-    private void Start()
-    {
-        MakeZombie();
-    }
-
-    //private void Update()
-    //{
-    //    navMesh.SetDestination(transform.position);
-
-    //}
-
-
-
-
-    private void MakeZombie()
+    public void MakeZombie()
     {
         StartCoroutine(SpawnCoroutine());
     }
-
 
     IEnumerator SpawnCoroutine()
     {
@@ -47,12 +29,12 @@ public class ZombieSpawner : MonoBehaviour
     {
         EnemyBace zombie = Factory.Instance.GetZombie(GetSpawnPosition());
         zombie.transform.SetParent(transform);
+        zombie.OnDetect(GameManager.Instance.Player.transform, 8.0f); 
     }
 
     Vector3 GetSpawnPosition()
     {
         Vector3 pos = transform.position;
-        //pos.z += Random.Range();
 
         return pos;
     }

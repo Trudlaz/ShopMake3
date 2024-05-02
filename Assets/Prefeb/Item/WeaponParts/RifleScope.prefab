@@ -9,6 +9,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
@@ -48,6 +60,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
       propertyPath: m_Name
       value: RifleScope
@@ -55,5 +71,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5657694053461905259}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -5912597294818094024}
   m_SourcePrefab: {fileID: 100100000, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+--- !u!1 &5123609453213631842 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4e0438671ae79024abbb553a9ef1e5ff, type: 3}
+  m_PrefabInstance: {fileID: 5466207176344008755}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &-5657694053461905259
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5123609453213631842}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.001, y: 0.0015, z: 0.001}
+  m_Center: {x: 0, y: 0.0001, z: 0.0003}
+--- !u!114 &-5912597294818094024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5123609453213631842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18bfde9a4f5ae9c45be718ab1d41353c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1000
+  Weight: 3
+  maxAmmo: 0
+  accuracy: 0
+  recoil: 0
+  noiseRadius: 0

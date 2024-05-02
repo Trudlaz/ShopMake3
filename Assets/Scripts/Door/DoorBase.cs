@@ -9,6 +9,10 @@ public class DoorBase : MonoBehaviour
     {
         return true;
     }
+    protected virtual void Open()
+    {
+
+    }
 
     public virtual void Interect() 
     {

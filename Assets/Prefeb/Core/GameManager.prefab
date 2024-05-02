@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4244007500691965016}
   - component: {fileID: 3257360815514568261}
   - component: {fileID: -4203049168521755589}
-  - component: {fileID: 7092098343996077318}
+  - component: {fileID: 7211781670037062535}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nightTime: 1800
   amplif: 60
---- !u!114 &7092098343996077318
+--- !u!114 &7211781670037062535
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

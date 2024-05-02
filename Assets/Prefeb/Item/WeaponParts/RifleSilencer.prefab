@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.03
+      value: 0.02
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
       propertyPath: m_LocalScale.y
@@ -71,5 +71,55 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7283686526970474628}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2091027484803898857}
   m_SourcePrefab: {fileID: 100100000, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
+--- !u!1 &3642780921862210122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 23b0236a33bf36948bef3d9b6e300dba, type: 3}
+  m_PrefabInstance: {fileID: 4489147798438543131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &7283686526970474628
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642780921862210122}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 10, z: 5}
+  m_Center: {x: 15, y: 0, z: 0}
+--- !u!114 &2091027484803898857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3642780921862210122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18bfde9a4f5ae9c45be718ab1d41353c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1000
+  Weight: 3
+  maxAmmo: 0
+  accuracy: 0
+  recoil: 0
+  noiseRadius: 0

@@ -45,8 +45,20 @@ public class RemainBullet : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 현재 사용 가능한 총알수
+    /// </summary>
+    /// <param name="bullet"></param>
     public void Refresh(int bullet) 
     {
         current.text = bullet.ToString();
+    }
+
+    /// <summary>
+    /// 탄창에 들어갈 수 있는 총알의 최대치
+    /// </summary>
+    public void WeaponChange()
+    {
+        max.text = weapon.maxAmmo.ToString();   // 나중에 총알관련 클래스 완성되면 넣어주기
     }
 }

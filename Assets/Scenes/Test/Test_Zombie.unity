@@ -1508,10 +1508,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3380240674081462802, guid: 8ba35392768425b45b2a8ee263af9d20, type: 3}
-      propertyPath: m_StoppingDistance
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 6987181451042910932, guid: 8ba35392768425b45b2a8ee263af9d20, type: 3}
       propertyPath: m_Name
       value: Enemy
