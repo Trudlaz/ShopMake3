@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ShopInventory : MonoBehaviour
+public class ShopInventory
 {
     private static readonly int Default_Inventory_Size = 144;
     private ItemSlot[] items;
