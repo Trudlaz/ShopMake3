@@ -1,11 +1,10 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ChangeScene : MonoBehaviour
 {
-    // 버튼 클릭시 호출될 메서드
-    public void LoadScene(string InGameScene)
+    // 버튼 클릭 시 호출될 메서드
+    public void LoadScene(string inGameScene)
     {
-        SceneManager.LoadScene(InGameScene);
+        GameManager.Instance.LoadSceneAsync(inGameScene);
     }
 }
