@@ -26,6 +26,7 @@ public class DoorManual : DoorBase
 
     public override void Interect()
     {
+        Debug.Log("문 상호작용 실행");
         if(CanUse) 
         {
             if (isOpen)
