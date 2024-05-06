@@ -45,14 +45,16 @@ public class GameManager : Singleton<GameManager>
     // 게임 시작 씬 로딩을 위한 코루틴
     private IEnumerator LoadGameStartScene(string sceneName)
     {
-        yield return StartCoroutine(LoadAsyncScene(sceneName)); // 실제 씬 로딩 처리
+        // 게임 시작 시 씬 로딩 처리
+        yield return StartCoroutine(LoadAsyncScene(sceneName));
         OnGameStartCompleted?.Invoke(); // 씬 로딩 완료 후 이벤트 발생
     }
 
     // 게임 종료 씬 로딩을 위한 코루틴
     private IEnumerator LoadGameEndScene(string sceneName)
     {
-        yield return StartCoroutine(LoadAsyncScene(sceneName)); // 실제 씬 로딩 처리
+        // 게임종료시 실행될 씬 로딩 처리
+        yield return StartCoroutine(LoadAsyncScene(sceneName)); 
     }
 
     // 비동기 씬 로딩 처리를 위한 코루틴
