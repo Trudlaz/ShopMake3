@@ -40,7 +40,6 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
-        ThrowBomb();
     }
 
     private void Fire()
@@ -66,10 +65,5 @@ public class PlayerFire : MonoBehaviour
         }
     }
 
-    private void ThrowBomb()
-    {
-        GameObject bomb = Instantiate(bombFactory, firePosition.transform.position, Quaternion.identity);
-        Rigidbody rb = bomb.GetComponent<Rigidbody>();
-        rb.AddForce(Camera.main.transform.forward * throwPower, ForceMode.Impulse);
-    }
+
 }

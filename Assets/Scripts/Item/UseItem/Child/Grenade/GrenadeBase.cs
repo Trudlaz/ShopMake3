@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GrenadeBase : ItemBase
 {
-    [Tooltip("¼ÒÀ½¹İ°æ")]
+    [Tooltip("ì†ŒìŒë°˜ê²½")]
     public float NoiseRange = 5.0f;
     public GameObject expoltionEffect;
+
+    protected bool isActive = false;
 
     Rigidbody rb;
 
@@ -17,7 +19,10 @@ public class GrenadeBase : ItemBase
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        Explode();
+        if (isActive)
+        {
+            Explode();
+        }
     }
 
     protected virtual void Explode()
@@ -27,11 +32,17 @@ public class GrenadeBase : ItemBase
 
     public override void Use()
     {
-        PlayerFire playerfire = GetComponentInParent<PlayerFire>();         //¹°°ÇÀ» »ç¿ëÇÒ¶§´Â ¹«Á¶°Ç ÀÚ½ÄÀ¸·Î µé¾î°¡ ÀÖÀ»°Í
+        PlayerFire playerfire = GetComponentInParent<PlayerFire>();         //ë¬¼ê±´ì„ ì‚¬ìš©í• ë•ŒëŠ” ë¬´ì¡°ê±´ ìì‹ìœ¼ë¡œ ë“¤ì–´ê°€ ìˆì„ê²ƒ
         Player player = GameManager.Instance.Player;
         Transform cam = player.transform.GetChild(0);
 
         transform.position = playerfire.firePosition.transform.position;
+        isActive = true;
         rb.AddForce(cam.forward * playerfire.throwPower, ForceMode.Impulse);
+    }
+
+    public override void Interaction(ItemCode itemCode)
+    {
+        base.Interaction(itemCode);
     }
 }

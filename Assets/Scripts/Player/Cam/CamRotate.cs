@@ -59,7 +59,7 @@ public class CamRotate : MonoBehaviour
             else
             {
                 // 기본적으로 충돌한 오브젝트에서 Interact 메서드 호출
-                hit.collider.SendMessage("Interact", SendMessageOptions.DontRequireReceiver);
+                hit.collider.SendMessage("Interaction", SendMessageOptions.DontRequireReceiver);
             }
         }
     }
