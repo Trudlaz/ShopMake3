@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4233,6 +4233,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7848487232181878989, guid: 4c107273efed7f04693d468b1ebff110, type: 3}
   m_PrefabInstance: {fileID: 29101993}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &29101995 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3627804662302157771, guid: 4c107273efed7f04693d468b1ebff110, type: 3}
+  m_PrefabInstance: {fileID: 29101993}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da78100a74225346b185a0e1bf1901a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &50185652
 GameObject:
   m_ObjectHideFlags: 0
@@ -12271,15 +12282,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equipSlot_UI: []
-  dropSlot: {fileID: 0}
-  invenManager: {fileID: 0}
-  invenTransform: {fileID: 0}
-  canvas: {fileID: 0}
-  data01: {fileID: 11400000, guid: 1c299d9e61b4d8540b79b5dc9128645e, type: 2}
-  data02: {fileID: 11400000, guid: 661e761b1176cdc4ab71bcc5797e4fa2, type: 2}
-  data03: {fileID: 11400000, guid: 08ec4b412365786499252bed85e2ebdb, type: 2}
-  data04: {fileID: 0}
-  data05: {fileID: 0}
+  dropSlot: {fileID: 902060383}
+  invenManager: {fileID: 29101995}
+  invenTransform: {fileID: 29101994}
+  canvas: {fileID: 1133627628}
 --- !u!1 &1136213178
 GameObject:
   m_ObjectHideFlags: 0
@@ -13177,11 +13183,6 @@ MonoBehaviour:
   invenManager: {fileID: 0}
   invenTransform: {fileID: 0}
   canvas: {fileID: 0}
-  data01: {fileID: 11400000, guid: 1c299d9e61b4d8540b79b5dc9128645e, type: 2}
-  data02: {fileID: 11400000, guid: 661e761b1176cdc4ab71bcc5797e4fa2, type: 2}
-  data03: {fileID: 11400000, guid: 08ec4b412365786499252bed85e2ebdb, type: 2}
-  data04: {fileID: 0}
-  data05: {fileID: 0}
 --- !u!225 &1263958919
 CanvasGroup:
   m_ObjectHideFlags: 0

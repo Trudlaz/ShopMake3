@@ -1,184 +1,84 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Equip_UI : MonoBehaviour
 {
-    Equip equip;
+    // í•„ìš”í•œ ë³€ìˆ˜ë“¤ê³¼ ì»´í¬ë„ŒíŠ¸ì— ëŒ€í•œ ì°¸ì¡°
+    [SerializeField] private EquipSlot_UI[] equipSlot_UI;
+    [SerializeField] private DropSlotUI dropSlot;
+    [SerializeField] private InventoryManager invenManager;
+    [SerializeField] private RectTransform invenTransform;
+    [SerializeField] private CanvasGroup canvas;
+    private Equip equip;
+    private PlayerInput inputActions;
 
-    PlayerInput inputActions;
-
-    public Equip Equip => equip;
-
-    [SerializeField] EquipSlot_UI[] equipSlot_UI;
-
-    [SerializeField] DropSlotUI dropSlot;
-
-    [SerializeField] InventoryManager invenManager;
-
-    [SerializeField] RectTransform invenTransform;
-
-    [SerializeField] CanvasGroup canvas;
-
-    public ItemData data01;
-    public ItemData data02;
-    public ItemData data03;
-    public ItemData data04;
-    public ItemData data05;
-
-    //Button sortButton;
-
-    Player Owner => equip.Owner;
-
-
-    ///// <summary>
-    ///// ¾ÆÀÌÅÛÀ» ÀåºñÇß´Ù°í ¾Ë¸®´Â µ¨¸®°ÔÀÌÆ®(ItemSlot : ÀåºñÇÑ ¾ÆÀÌÅÛÀÇ ½½·Ô¿¡ ´ëÇÑ Á¤º¸)
-    ///// </summary>
-    //public Action<ItemSlot> onEquipped;
-
+    // ì¥ë¹„ì°½ í”Œë ˆì´ì–´ ì†Œìœ ì ì°¸ì¡°
+    private Player Owner => equip.Owner;
 
     private void Awake()
     {
         inputActions = new PlayerInput();
 
+        // EquipSlot_UI ë°°ì—´ ì´ˆê¸°í™”
         Transform child = transform.GetChild(0);
         equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
 
+        // DropSlotUI ì´ˆê¸°í™”
         child = transform.GetChild(1);
-        dropSlot = child.GetComponent< DropSlotUI>();
+        dropSlot = child.GetComponent<DropSlotUI>();
 
-        //child = transform.GetChild(2);
-        // weightPanel = child.GetComponent<WeightPanel_UI>();
-
-        //child = transform.GetChild(3);
-        //sortButton = child.GetComponent<Button>();
-        //sortButton.onClick.AddListener(() =>
-        //{
-        //    // OnItemSort(ItemType.Buff);
-        //});
-
+        // ì¸ë²¤í† ë¦¬ ë§¤ë‹ˆì €ì™€ UI ìš”ì†Œ ì´ˆê¸°í™”
         invenManager = GetComponentInParent<InventoryManager>();
-
         invenTransform = GetComponent<RectTransform>();
-
         canvas = GetComponent<CanvasGroup>();
     }
 
-    private void OnEnable()
-    {
-        // Á¤ºñÃ¢ Å°
-    }
-
-
-
-    void OnDisable()
-    {
-        // Á¤ºñÃ¢ Å°
-    }
-
+    // ì¸ë²¤í† ë¦¬ UI ì´ˆê¸°í™”
     public void InitializeInventory(Equip playerEquip)
     {
         equip = playerEquip;
 
+        // ê° ì¥ë¹„ ìŠ¬ë¡¯ UI ì´ˆê¸°í™” ë° ì´ë²¤íŠ¸ ì—°ê²°
         for (uint i = 0; i < equipSlot_UI.Length; i++)
         {
             equipSlot_UI[i].InitializeSlot(equip[i]);
             equipSlot_UI[i].onDragBegin += OnItemMoveBegin;
             equipSlot_UI[i].onDragEnd += OnItemMoveEnd;
-            // equipSlot_UI[i].onRightClick += OnRightClick;
             equipSlot_UI[i].OnClick += OnClick;
         }
-        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // ÀÓ½Ã ½½·Ô ÃÊ±âÈ­
-
-        // dropSlot.onDropOk += OnDropOk;
+        invenManager.DragSlot.InitializeSlot(equip.DragSlot);
         dropSlot.Close();
-
-        // Close();
     }
 
-    //private void Start()
-    //{
-    //    GameManager.Instance.WeaponBase.onReload += equip.Reload;
-    //}
-
-    ////public void PlusValue(ItemSlot slot)
-    ////{
-    ////    //Money += (int)slot.ItemData.Price;
-    ////    //Owner.Weight += slot.ItemData.weight;
-    ////}
-
-    ///// <summary>
-    ///// °ÔÀÓÀÌ ³¡³­ ÀÌÈÄ ·ÎÄÃÀÎº¥Åä¸® Á¤¸®ÇÏ°í ¸ŞÀÎÈ­¸éÀ¸·Î ³ª°¡´Â ÇÔ¼ö
-    ///// </summary>
-    ////public void InventoryResult()
-    ////{
-    ////    //int tenThousand = Money / 10000;
-    ////    //int Thousand = (Money % 10000) / 1000;
-    ////    //int hundred = (Money % 1000) / 100;
-
-    ////    //Debug.Log($"10000¿ø {tenThousand}Àå 1000¿ø {Thousand}Àå 100¿ø {hundred}°³");
-
-    ////    GameManager game = GameManager.Instance;
-
-    ////    //game.WorldInventory_UI.Money += Money;
-    ////    equip.ClearInventory();
-    ////    //Money = 0;
-    ////    //Owner.Weight = 0;
-
-    ////    // ÀÌÈÄ¿¡ ¸ŞÀÎÈ­¸éÀ¸·Î ³ª°¡±â
-    ////}
-
-
-
     /// <summary>
-    /// ¾ÆÀÌÅÛ µå·¡±× ½ÃÀÛÇÏ¸é ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ë“œë˜ê·¸ ì‹œì‘ ì‹œ í˜¸ì¶œ
     /// </summary>
-    /// <param name="index">½ÃÀÛÇÑ ½½·ÔÀÇ index</param>
     private void OnItemMoveBegin(ItemSlot slot)
     {
-        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // ÀÓ½Ã ½½·Ô ÃÊ±âÈ­
+        invenManager.DragSlot.InitializeSlot(equip.DragSlot);
         equip.MoveItem(slot, invenManager.DragSlot.ItemSlot);
         invenManager.DragSlot.Open();
     }
 
-
-
     /// <summary>
-    /// ¾ÆÀÌÅÛ µå·¡±×°¡ ³¡ÀÌ³ª¸é ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ë“œë˜ê·¸ ì¢…ë£Œ ì‹œ í˜¸ì¶œ
     /// </summary>
-    /// <param name="index">³¡³­ ½½·ÔÀÇ index</param>
     private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
     {
         equip.MoveItem(invenManager.DragSlot.ItemSlot, slot);
-
-        Inventory_UI inven;
-        inven = FindObjectOfType<Inventory_UI>();
-
-        if (inven != null)
-        {
-            //inven.MinusValue(slot, (int)slot.ItemCount);
-            //inven.PlusValue(slot);
-        }
+        Inventory_UI inven = FindObjectOfType<Inventory_UI>();
 
         if (invenManager.DragSlot.ItemSlot.IsEmpty)
         {
             invenManager.DragSlot.Close();
         }
-
-        // ¸¶¿ì½º¸¦ ¶­À» ¶§ À§Ä¡°¡ ÀåºñÃ¢ÀÌ¶ó¸é 
-        // slot.EquipItem();                    ÀåºñÇÏ°í
-        // Àåºñ¸¦ ÀåºñÃ¢¿¡ º¹»çÇÏ°í(ÀÎº¥Åä¸®¿¡ ÀÖ´Â Àåºñ´Â ±×´ë·Î µÎ°í)
-        // onEquipped?.Invoke(slot);            ¾ÆÀÌÅÛ ½½·Ô Á¤º¸ ¾Ë·ÁÁÖ±â
     }
 
     /// <summary>
-    /// ½½·ÔÀ» Å¬¸¯ÇÏ¸é ½ÇÇàµÇ´Â ÇÔ¼ö
+    /// ì•„ì´í…œ ìŠ¬ë¡¯ í´ë¦­ ì‹œ í˜¸ì¶œ
     /// </summary>
-    /// <param name="index"></param>
     private void OnClick(ItemSlot slot, RectTransform rect)
     {
         if (!invenManager.DragSlot.ItemSlot.IsEmpty)
@@ -187,35 +87,15 @@ public class Equip_UI : MonoBehaviour
         }
     }
 
-    ///// <summary>
-    ///// ½½·ÔÀ» ¿ìÅ¬¸¯ ½Ã ½ÇÇàµÇ´Â ÇÔ¼ö
-    ///// </summary>
-    ///// <param name="index">¿ìÅ¬¸¯ÇÑ ½½·ÔÀÇ index</param>
-    //private void OnRightClick(uint index)
-    //{
-    //    // ¹ö¸®±â, »ó¼¼º¸±â µî UIµû·Î ¶ç¿ì±â
-    //    Slot_UI target = slotsUI[index];
-    //    dropSlot.Open(target.ItemSlot);
-    //}
-
-    ///// <summary>
-    ///// ¹ö¸®±â Ã¢¿¡¼­ È®ÀÎ ¹öÆ°À» ´©¸£¸é ½ÇÇàµÇ´Â ÇÔ¼ö
-    ///// </summary>
-    ///// <param name="index">¾ÆÀÌÅÛÀ» ¹ö¸± ½½·ÔÀÇ index</param>
-    ///// <param name="count">¾ÆÀÌÅÛ ¹ö¸± °³¼ö</param>
-    ////private void OnDropOk(uint index, uint count)
-    ////{
-    ////    inventory.RemoveItem(index, count);
-    ////    dropSlot.Close();
-    ////}
-
-    public void open()
+    // ì¸ë²¤í† ë¦¬ ì—´ê¸°
+    public void Open()
     {
         canvas.alpha = 1;
         canvas.interactable = true;
         canvas.blocksRaycasts = true;
     }
 
+    // ì¸ë²¤í† ë¦¬ ë‹«ê¸°
     public void Close()
     {
         canvas.alpha = 0;
@@ -223,6 +103,7 @@ public class Equip_UI : MonoBehaviour
         canvas.blocksRaycasts = false;
     }
 
+    // ì¸ë²¤í† ë¦¬ í† ê¸€
     private void InventoryOnOff(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         if (canvas.interactable)
@@ -231,7 +112,7 @@ public class Equip_UI : MonoBehaviour
         }
         else
         {
-            open();
+            Open();
         }
     }
 }

@@ -40,6 +40,7 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
+        // 여기서 액션을 보내면, 퀵슬롯에서 슬롯을 현재 장비하고 있는 아이템과 연결 해주는 것 
     }
 
     private void Fire()

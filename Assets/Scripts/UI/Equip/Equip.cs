@@ -1,51 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
-//public class Equip : Inventory
+// Equip í´ë˜ìŠ¤ëŠ” ì•„ì´í…œ ì¥ë¹„ ê´€ë¦¬ë¥¼ ë‹´ë‹¹
 public class Equip : MonoBehaviour
 {
-    //[SerializeField] public Slot[] slots;
-    //private QuickSlotUI quickSlotUI;
-
-    //private void Awake()
-    //{
-    //    slots = GetComponentsInChildren<Slot>();
-    //    quickSlotUI = FindObjectOfType<QuickSlotUI>(true);
-    //}
-
-    ///// <summary>
-    ///// ½½·Ô¿¡ ¾ÆÀÌÅÛ Á¤º¸ Ãß°¡.
-    ///// </summary>
-    ///// <param name="item"></param>
-    ///// <param name="index"></param>
-    //public void AddItemToSlot(ItemData item, uint index)
-    //{
-    //    if (slots[index].IsEmpty)
-    //    {
-    //        slots[index].AddItem(item);
-    //        quickSlotUI.QuickSlotImageChange(index);
-    //    }
-    //}
-
-    ///// <summary>
-    ///// ½½·Ô¿¡ ÀÌ¹Ì ¾ÆÀÌÅÛÀÌ Á¸ÀçÇÒ °æ¿ì ±× ¾ÆÀÌÅÛ°ú ÀåÂø ¾ÆÀÌÅÛ º¯°æ.
-    ///// </summary>
-    ///// <param name="from"></param>
-    ///// <param name="to"></param>
-    //public void SwitchItemToSlot(Slot from, Slot to)
-    //{
-    //    if (!from.IsEmpty && to.IsEmpty)
-    //    {
-    //        ItemData temp = from.itemData;
-    //        from.RemoveItem();
-    //        to.EquipItem(temp);
-    //    }
-    //}
-
     private const int Default_Inventory_Size = 8;
     public EquipSlot[] slots;
     public EquipSlot this[uint index] => slots[index];
@@ -57,18 +14,11 @@ public class Equip : MonoBehaviour
     ItemDataManager itemDataManager;
     public Player Owner => owner;
     private Equip_UI equipUI;
-    // private SlotType slotsType;
 
-    //public Equip(Player owner, uint size = Default_Inventory_Size)
-    //    : base (owner, size)
-    //{
-
-    //}
-
+    // ìƒì„±ì
     public Equip(Player owner, GameObject slotsParent, uint size = Default_Inventory_Size)
     {
         slots = new EquipSlot[size];
-
         for (uint i = 0; i < slots.Length; i++)
         {
             slots[i] = new EquipSlot(i);
@@ -81,19 +31,7 @@ public class Equip : MonoBehaviour
         this.owner = owner;
     }
 
-    private void Awake()
-    {
-        //slots[0].AssignSlotItem(equipUI.data01);
-        //MoveItem(slots[1], slots[0]);
-        //slots[0].AssignSlotItem(equipUI.data02);
-        //slots[0].AssignSlotItem(equipUI.data03);
-    }
-
-    /// <summary>
-    /// Á¤ºñÃ¢¿¡ Æ¯Á¤ ¾ÆÀÌÅÛÀ» ÀåÂøÇÏ´Â ÇÔ¼ö.
-    /// </summary>
-    /// <param name="code">ÀåÂø ÇÒ ¾ÆÀÌÅÛ ÄÚµå</param>
-    /// <returns>¼º°øÇÏ¸é true ¸®ÅÏ ½ÇÆĞÇÏ¸é false ¸®ÅÏ</returns>
+    // ì•„ì´í…œì„ ì¥ë¹„í•˜ëŠ” í•¨ìˆ˜, ì¥ë¹„í•  ì•„ì´í…œ ì½”ë“œë¥¼ ë°›ì•„ ì²˜ë¦¬
     public bool AddItem(ItemCode code)
     {
         for (int i = 0; i < SlotCount; i++)
@@ -107,12 +45,7 @@ public class Equip : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Æ¯Á¤ Á¤ºñÃ¢ ½½·Ô¿¡ Æ¯Á¤ ¾ÆÀÌÅÛÀ» 1°³ ÀåÂøÇÏ´Â ÇÔ¼ö
-    /// </summary>
-    /// <param name="code">ÀåÂø ÇÒ ¾ÆÀÌÅÛÀÇ ÄÚµå</param>
-    /// <param name="slotIndex">¾ÆÀÌÅÛÀ» ÀåÂø ÇÒ ½½·ÔÀÇ ÀÎµ¦½º</param>
-    /// <returns>¼º°øÇÏ¸é true ¸®ÅÏ ½ÇÆĞÇÏ¸é false ¸®ÅÏ</returns>
+    // ìŠ¬ë¡¯ì— ì•„ì´í…œì„ ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜, ì‹¤íŒ¨í•  ê²½ìš° false ë°˜í™˜
     public bool AddItem(ItemCode code, uint slotIndex)
     {
         bool result = false;
@@ -124,153 +57,32 @@ public class Equip : MonoBehaviour
 
             if (slot.slotType.Contains(data.itemType))
             {
-                if (slot.slotType.Contains(ItemType.Gun))
-                {
-                    Pistol pistol = gameObject.AddComponent<Pistol>();
-                    //Rifle rifle = gameObject.AddComponent<Rifle>();
-                    //Shotgun shotgun = gameObject.AddComponent<Shotgun>();
-                    //Sniper sniper = gameObject.AddComponent<Sniper>();
-                    var slotItemComponents = slot.ItemData.itemPrefab.GetComponents<Component>();
-
-                    foreach (var gunCom in slotItemComponents)
-                    {
-                        if (gunCom.GetType() == pistol.GetType())
-                        {
-                            //slotIndex = 2;
-                            //slot = slots[slotIndex];
-                            if (slotIndex != 2)
-                            {
-                                result = false;
-
-                                return result;
-                            }
-                        }
-                        else
-                        {
-
-                        }
-                    }
-                }
-
-                //if (slot.slotType.Contains(data.itemType) && slot.IsEmpty)
                 if (slot.IsEmpty)
                 {
-                    //if (slot.slotType.Contains(ItemType.Gun))
-                    //{
-                    //    Pistol pistol = gameObject.AddComponent<Pistol>();
-                    //    //Rifle rifle = gameObject.AddComponent<Rifle>();
-                    //    //Shotgun shotgun = gameObject.AddComponent<Shotgun>();
-                    //    //Sniper sniper = gameObject.AddComponent<Sniper>();
-                    //    var slotItemComponents = slot.ItemData.itemPrefab.GetComponents<Component>();
-
-                    //    foreach (var gunCom in slotItemComponents)
-                    //    {
-                    //        if (gunCom.GetType() == pistol.GetType())
-                    //        {
-                    //            slotIndex = 2;
-                    //            slot = slots[slotIndex];
-                    //        }
-                    //        else
-                    //        {
-
-                    //        }
-                    //    }
-                    //}
-
                     slot.AssignSlotItem(data);
                     result = true;
-                }   
+                }
             }
-        else
-        {
-            if (slot.ItemData == data)
-            {
-                // result = slot.SetSlotCount(out _);  ¾ÆÀÌÅÛ Áõ°¡ ÇÊ¿ä ¾øÀ½.
-            }
-            else
-            {
-                // ´Ù¸¥ Á¾·ùÀÇ ¾ÆÀÌÅÛ
-            }
-        }
-        }
-        else
-        {
-            // Àß¸øµÈ ½½·Ô
         }
 
         return result;
     }
 
+    // ì•„ì´í…œ ì´ë™ í•¨ìˆ˜, ë‘ ì•„ì´í…œ ìŠ¬ë¡¯ì„ ë°›ì•„ ì²˜ë¦¬
     public void MoveItem(ItemSlot from, ItemSlot to)
     {
-        // from ÁöÁ¡°ú toÁöÁ¡Àº ¼­·Î ´Ù¸¥ À§Ä¡ÀÌ°í ¸ğµÎ validÇÑ ½½·ÔÀÌ¾î¾ß ÇÑ´Ù.
-        if ((from != to) && IsValidIndex(from) && IsValidIndex(to))
+        uint fromIndex = from.Index; // 'from' ìŠ¬ë¡¯ì˜ ì¸ë±ìŠ¤
+        uint toIndex = to.Index; // 'to' ìŠ¬ë¡¯ì˜ ì¸ë±ìŠ¤
+
+        // fromê³¼ toê°€ ë‹¤ë¥¸ì§€, ê·¸ë¦¬ê³  ìœ íš¨í•œ ì¸ë±ìŠ¤ë¥¼ ê°€ì§€ê³  ìˆëŠ”ì§€ í™•ì¸
+        if ((fromIndex != toIndex) && IsValidIndex(fromIndex) && IsValidIndex(toIndex))
         {
-            bool fromIsTemp = (from == dragSlot);
-            ItemSlot fromSlot = fromIsTemp ? DragSlot : from;   // from½½·Ô °¡Á®¿À±â
-
-            if (!fromSlot.IsEmpty)
-            {
-                // from¿¡ ¾ÆÀÌÅÛÀÌ ÀÖ´Ù.
-                ItemSlot toSlot = null;
-
-                if (to == dragSlot)
-                {
-                    // to°¡ drag½½·ÔÀÌ¸é
-                    toSlot = DragSlot;      // ½½·Ô ÀúÀåÇÏ°í
-                    DragSlot.SetFromIndex(fromSlot.Index);  // µå·¡°í ½ÃÀÛ ½½·Ô ÀúÀå(fromIndex)
-                }
-                else
-                {
-                    toSlot = to;        // drag½½·ÔÀÌ ¾Æ´Ï¸é ½½·Ô¸¸ ÀúÀå
-                }
-
-                if (fromSlot.ItemData == toSlot.ItemData)
-                {
-                    //// °°Àº Á¾·ùÀÇ ¾ÆÀÌÅÛ => to¿¡ Ã¤¿ï ¼ö ÀÖ´Âµ¥±îÁö Ã¤¿î´Ù. to¿¡ ³Ñ¾î°£ ¸¸Å­ fromÀ» °¨¼Ò½ÃÅ²´Ù.
-                    //toSlot.SetSlotCount(out uint overCount, fromSlot.ItemCount);    // fromÀÌ °¡Áø °³¼ö¸¸Å­ to Ãß°¡
-                    //fromSlot.DecreaseSlotItem(fromSlot.ItemCount - overCount);      // from¿¡¼­ to·Î ³Ñ¾î°£ °³¼ö¸¸Å­¸¸ °¨¼Ò
-
-                    // °°Àº ¾ÆÀÌÅÛÀº Ãß°¡ ¾ÈÇÑ´Ù.
-                }
-                else
-                {
-                    if (fromIsTemp)
-                    {
-                        ItemSlot returnSlot = slots[DragSlot.FromIndex];
-
-                        if (returnSlot.IsEmpty)
-                        {
-                            returnSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount);
-                            toSlot.AssignSlotItem(DragSlot.ItemData, DragSlot.ItemCount);
-                            DragSlot.ClearSlot();
-                        }
-                        else
-                        {
-                            if (returnSlot.ItemData == toSlot.ItemData)
-                            {
-                                MoveItem(toSlot, returnSlot);
-                                returnSlot.SetSlotCount(out uint overCount, toSlot.ItemCount);
-                                toSlot.DecreaseSlotItem(toSlot.ItemCount - overCount);
-                            }
-
-                            SwapSlot(dragSlot, toSlot);
-                        }
-                    }
-                    else
-                    {
-                        SwapSlot(fromSlot, toSlot);
-                    }
-                }
-            }
+            SwapSlot(from, to);
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="slotA"></param>
-    /// <param name="slotB"></param>
+
+    // ë‘ ìŠ¬ë¡¯ì˜ ì•„ì´í…œì„ êµì²´í•˜ëŠ” í•¨ìˆ˜
     public void SwapSlot(ItemSlot slotA, ItemSlot slotB)
     {
         ItemData dragData = slotA.ItemData;
@@ -280,21 +92,13 @@ public class Equip : MonoBehaviour
         slotB.AssignSlotItem(dragData, dragCount);
     }
 
+    // ì¸ë±ìŠ¤ ìœ íš¨ì„± ê²€ì‚¬
     private bool IsValidIndex(uint index)
     {
-        return (index < SlotCount) || (index == dragSlotIndex);
+        return index < SlotCount;
     }
 
-    private bool IsValidIndex(ItemSlot slot)
-    {
-        return (slot != null) || (slot == dragSlot);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="slotIndex"></param>
-    /// <param name="count"></param>
+    // ì•„ì´í…œ ì œê±° í•¨ìˆ˜
     public void RemoveItem(uint slotIndex, uint count = 1)
     {
         if (IsValidIndex(slotIndex))
@@ -304,9 +108,7 @@ public class Equip : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
+    // ì¥ë¹„ ì´ˆê¸°í™”
     public void ClearEquip()
     {
         foreach (var slot in slots)
@@ -315,9 +117,7 @@ public class Equip : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// ÇÃ·¹ÀÌ¾î°¡ »ç¸ÁÇÏ°Å³ª Áß°£¿¡ ³ª°¬À» ¶§ ÀÎº¥Åä¸®¸¦ ºñ¿ì´Â ÇÔ¼ö
-    /// </summary>
+    // ê²Œì„ ì˜¤ë²„ ì‹œ ì¥ë¹„ ë¹„ìš°ê¸°
     public void GameOver()
     {
         ClearEquip();
