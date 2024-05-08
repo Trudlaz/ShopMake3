@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Purchasing;
 using UnityEngine;
 
 public class QuickSlot : MonoBehaviour
@@ -12,7 +11,7 @@ public class QuickSlot : MonoBehaviour
     //private Action quickSlotSelect;
     //public Equip equip;
     //GameObject item;
-    //[Tooltip("»ı¼ºÇÒ ¾ÆÀÌÅÛ ¿ÀºêÁ§Æ®ÀÇ ºÎ¸ğ ¿ÀºêÁ§Æ®")]
+    //[Tooltip("ìƒì„±í•  ì•„ì´í…œ ì˜¤ë¸Œì íŠ¸ì˜ ë¶€ëª¨ ì˜¤ë¸Œì íŠ¸")]
     //[SerializeField] private GameObject itemPostion;
 
     //private void Awake()
@@ -27,7 +26,7 @@ public class QuickSlot : MonoBehaviour
     //}
 
     /// <summary>
-    /// ¼±ÅÃÇÑ ¾ÆÀÌÅÛ ¿ÀºêÁ§Æ® »ı¼º
+    /// ì„ íƒí•œ ì•„ì´í…œ ì˜¤ë¸Œì íŠ¸ ìƒì„±
     /// </summary>
     /// <param name="index"></param>
     //public void ItemObjectCreate(uint index)
@@ -46,7 +45,7 @@ public class QuickSlot : MonoBehaviour
 
     //public void ItemInputEventEnroll()
     //{
-    //     ¾ÆÀÌÅÛÀÇ use ÇÔ¼ö ÀÌº¥Æ® µî·Ï
+    //     ì•„ì´í…œì˜ use í•¨ìˆ˜ ì´ë²¤íŠ¸ ë“±ë¡
     //}
 
 

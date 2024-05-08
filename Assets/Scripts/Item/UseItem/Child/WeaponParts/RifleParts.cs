@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class RifleParts : PartsBase
@@ -23,21 +22,21 @@ public class RifleParts : PartsBase
         partsTransform.localPosition = Vector3.zero;
         partsTransform.localRotation = Quaternion.identity;
 
-        // º¯°æ ¿¹Á¤ ÄÚµå
-        //// ÀåÂøµÈ ºÎÇ°¿¡ µû¶ó ¶óÀÌÇÃÀÇ ¼Ó¼ºÀ» º¯°æÇÕ´Ï´Ù.
+        // ë³€ê²½ ì˜ˆì • ì½”ë“œ
+        //// ì¥ì°©ëœ ë¶€í’ˆì— ë”°ë¼ ë¼ì´í”Œì˜ ì†ì„±ì„ ë³€ê²½í•©ë‹ˆë‹¤.
         //if (GetComponent<>() != null)
         //{
-        //    // Á¶ÁØ°æ ÀåÂø ½Ã ÃÖ´ë Åº¾à ¼ö¸¦ Áõ°¡½ÃÅµ´Ï´Ù.
+        //    // ì¡°ì¤€ê²½ ì¥ì°© ì‹œ ìµœëŒ€ íƒ„ì•½ ìˆ˜ë¥¼ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
         //    rifle.maxAmmo += rifle.maxAmmoIncreaseAmount;
         //}
         //else if (GetComponent<>() != null)
         //{
-        //    // Åº¾à ÀåÂø ½Ã ¹İµ¿À» Áõ°¡½ÃÅµ´Ï´Ù.
+        //    // íƒ„ì•½ ì¥ì°© ì‹œ ë°˜ë™ì„ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
         //    rifle.recoil += rifle.recoilIncreaseAmount;
         //}
         //else if (GetComponent<Stock>() != null)
         //{
-        //    // °³¸Ó¸®ÆÇ ÀåÂø ½Ã ¸íÁß·üÀ» Áõ°¡½ÃÅµ´Ï´Ù.
+        //    // ê°œë¨¸ë¦¬íŒ ì¥ì°© ì‹œ ëª…ì¤‘ë¥ ì„ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
         //    rifle.accuracy += rifle.accuracyIncreaseAmount;
         //}
 

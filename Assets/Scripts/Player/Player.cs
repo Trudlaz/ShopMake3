@@ -195,20 +195,27 @@ public class Player : MonoBehaviour
     {
         movementInput = ctx.ReadValue<Vector2>();
         isMove = true;
-        if (isRunning)
-        {
-            noise.Radius = runSoundRange;
-            noise.gameObject.SetActive(true);
-        }
+        UpdateNoise();
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext ctx)
     {
         movementInput = Vector2.zero;
         isMove = false;
-        noise.gameObject.SetActive(false);
+        UpdateNoise();
     }
-
+    private void UpdateNoise()
+    {
+        if (isMove && isRunning)
+        {
+            noise.Radius = runSoundRange;
+            noise.gameObject.SetActive(true);
+        }
+        else
+        {
+            noise.gameObject.SetActive(false);
+        }
+    }
     private void OnJump(InputAction.CallbackContext ctx)
     {
         if (IsGrounded())
@@ -277,8 +284,13 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        // Vector3 moveDirection = new Vector3(movementInput.x, 0, movementInput.y);
+        CalculateMovement();
+        ApplyGravity();
+        cc.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void CalculateMovement()
+    {
         if (Camera.main != null)
         {
             Vector3 cameraForward = Camera.main.transform.forward;
@@ -287,42 +299,42 @@ public class Player : MonoBehaviour
             cameraRight.y = 0;
             moveDirection = movementInput.x * cameraRight + movementInput.y * cameraForward;
         }
-        float currentSpeed = moveSpeed;
+        AdjustSpeedBasedOnWeight();
+    }
+    private void AdjustSpeedBasedOnWeight()
+    {
+        float currentSpeed = moveSpeed;  // 기본 이동 속도를 시작 속도로 설정
 
-        // 짐의 무게에 따라 이동 속도 조절
+        // 현재 무게가 제한 무게를 초과하고 최대 무게 이하일 때
         if (currentWeight > limitWeight && currentWeight <= MaxWeight)
         {
+            // 무게가 증가함에 따라 이동 속도 감소
             currentSpeed -= (currentWeight - limitWeight) / (MaxWeight - limitWeight) * (moveSpeed - 0f);
         }
         else if (currentWeight > MaxWeight)
         {
+            // 최대 무게를 초과하면 이동 속도를 0으로 설정하여 이동 불가
             currentSpeed = 0f;
         }
 
+        // 달리는 상태일 때 추가 속도 적용
         currentSpeed = isRunning ? currentSpeed + runningSpeed : currentSpeed;
-        moveDirection *= currentSpeed;
-        if (IsGrounded())
-        {
-            yVelocity = Mathf.Max(0, yVelocity);
-        }
-        else
+        moveDirection *= currentSpeed;  // 최종 이동 방향과 속도 적용
+    }
+
+    private void ApplyGravity()
+    {
+        if (!IsGrounded())
         {
             yVelocity += gravity * Time.deltaTime;
         }
-
+        else
+        {
+            yVelocity = Mathf.Max(0, yVelocity);
+        }
         moveDirection.y = yVelocity;
-        cc.Move(moveDirection * Time.deltaTime);
-
-        bool isGroundedNow = IsGrounded();
-
-        //if (wasInAir && isGroundedNow)
-        //{
-        //    Debug.Log("노이즈 발생!");
-        //    // 공중에서 땅에 착지했을 때
-        //    StartCoroutine(LandingNoise());
-        //}
-        wasInAir = !isGroundedNow; // 현재 공중에 있는지 여부를 업데이트
     }
+
 
     public void Damege(float damege) 
     {
@@ -350,10 +362,14 @@ public class Player : MonoBehaviour
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Handles.color = Color.yellow;
-        Handles.DrawWireDisc(transform.position, transform.up, 5.0f);
-        Handles.color = Color.red;
-        Handles.DrawWireDisc(transform.position, transform.up, 5.0f * 0.6f); 
+        if (UnityEditor.Selection.Contains(gameObject))
+        {
+            Handles.color = Color.yellow;
+            Handles.DrawWireDisc(transform.position, transform.up, 5.0f);
+            Handles.color = Color.red;
+            Handles.DrawWireDisc(transform.position, transform.up, 5.0f * 0.6f);
+        }
     }
+
 #endif
 }

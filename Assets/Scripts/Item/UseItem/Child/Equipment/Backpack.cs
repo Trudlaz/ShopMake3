@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class Backpack : ItemBase
 {
 
-    //public float maxWeight = 100.0f; // ÃÖ´ë ¹«°Ô
-    //private float currentWeight = 0.0f; // ÇöÀç ¹«°Ô
+    //public float maxWeight = 100.0f; // ìµœëŒ€ ë¬´ê²Œ
+    //private float currentWeight = 0.0f; // í˜„ì¬ ë¬´ê²Œ
 
-    //// ¾ÆÀÌÅÛÀ» °¡¹æ¿¡ Ãß°¡ÇÏ´Â ÇÔ¼ö?
+    //// ì•„ì´í…œì„ ê°€ë°©ì— ì¶”ê°€í•˜ëŠ” í•¨ìˆ˜?
     //public bool AddItem(ItemBase item)
     //{
     //    if (currentWeight + item.weight <= maxWeight)
@@ -24,13 +23,13 @@ public class Backpack : ItemBase
     //    }
     //}
 
-    // ¾ÆÀÌÅÛÀ» °¡¹æ¿¡¼­ Á¦°ÅÇÏ´Â ÇÔ¼ö?
+    // ì•„ì´í…œì„ ê°€ë°©ì—ì„œ ì œê±°í•˜ëŠ” í•¨ìˆ˜?
     //public void RemoveItem(ItemBase item)
     //{
     //    if (items.Remove(item))
     //    {
     //        currentWeight -= item.weight;
-    //        Debug.Log(item.name + "ÀÌ(°¡) °¡¹æ¿¡¼­ Á¦°ÅµÇ¾ú½À´Ï´Ù.");
+    //        Debug.Log(item.name + "ì´(ê°€) ê°€ë°©ì—ì„œ ì œê±°ë˜ì—ˆìŠµë‹ˆë‹¤.");
     //    }
     //}
 

@@ -19,50 +19,46 @@ public class CamRotate : MonoBehaviour
         inputActions = new PlayerMove(); // 입력 액션 초기화
         lookAction = inputActions.Player.Look;
         interactAction = inputActions.Player.InteractAction;
-
-        lookAction.Enable();
-        interactAction.Enable(); // 액션 활성화
     }
 
     private void OnEnable()
     {
+        lookAction.Enable();
+        interactAction.Enable();
         lookAction.performed += OnLook;
-        interactAction.performed += OnInteract; // 이벤트 리스너 등록
+        interactAction.performed += OnInteract;
     }
 
     private void OnDisable()
     {
         lookAction.performed -= OnLook;
-        interactAction.performed -= OnInteract; // 이벤트 리스너 해제
-
+        interactAction.performed -= OnInteract;
         lookAction.Disable();
-        interactAction.Disable(); // 액션 비활성화
+        interactAction.Disable();
     }
+
+
+    private const float InteractDistance = 3f; // 상호작용 최대 거리
 
     private void OnInteract(InputAction.CallbackContext context)
     {
-        Ray ray = new Ray(transform.position, transform.forward); // 현재 위치에서 앞으로의 레이
+        Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
 
-        // 레이캐스트의 최대 길이를 3으로 설정
-        if (Physics.Raycast(ray, out hit, 3, interactableLayerMask))
-        { 
-            // 상호작용시 충돌한 콜라이더의 이름을 로그로 표시
+        if (Physics.Raycast(ray, out hit, InteractDistance, interactableLayerMask))
+        {
             Debug.Log("Interacted with " + hit.collider.name);
-
-            // 충돌한 오브젝트의 태그가 'Door'인 경우
-            if (hit.collider.tag == "Door")
+            if (hit.collider.CompareTag("Door"))
             {
-                // 부모 오브젝트에서 Interact 메서드 호출
                 hit.collider.transform.parent.SendMessage("Interect", SendMessageOptions.DontRequireReceiver);
             }
             else
             {
-                // 기본적으로 충돌한 오브젝트에서 Interact 메서드 호출
                 hit.collider.SendMessage("Interaction", SendMessageOptions.DontRequireReceiver);
             }
         }
     }
+
 
 
 
