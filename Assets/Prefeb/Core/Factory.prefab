@@ -138,3 +138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aed6a6c59d1f7284582c4b583c1ebd1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Spray_FatWhite: {fileID: 0}
+  defaultItemPrefab: {fileID: 0}
+  noisePower: 0.5

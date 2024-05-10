@@ -10,43 +10,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.003
+      value: 0.0015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.003
+      value: 0.0015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.003
+      value: 0.0015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 5.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -42.57
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.035601854
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.99936604
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -175.919
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -64,9 +64,33 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4308735012327245981, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: -1024841481949938491, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 186734169160117951, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       propertyPath: m_Name
       value: HighVest
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_TagString
+      value: Item
+      objectReference: {fileID: 0}
+    - target: {fileID: 3528301894086823476, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -74,17 +98,32 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5105167593811477277}
+      addedObject: {fileID: 4687211004214148089}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4687211004214148089}
+      addedObject: {fileID: -939804116950748720}
   m_SourcePrefab: {fileID: 100100000, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
 --- !u!1 &4976147063960540167 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 56bd17118703beb41b3bb69be34402e3, type: 3}
   m_PrefabInstance: {fileID: 5318674959511693654}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &5105167593811477277
+--- !u!114 &4687211004214148089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4976147063960540167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 562662d245a08df4e895a7ed0d8da65f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Price: 1000
+  Weight: 3
+  amountDefense: 30
+--- !u!65 &-939804116950748720
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,20 +142,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 600, y: 600, z: 600}
-  m_Center: {x: 0, y: 150, z: 0}
---- !u!114 &4687211004214148089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4976147063960540167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 562662d245a08df4e895a7ed0d8da65f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Price: 1000
-  Weight: 3
-  amountDefense: 30
+  m_Size: {x: 550, y: 600, z: 420}
+  m_Center: {x: 20, y: 150, z: 40}

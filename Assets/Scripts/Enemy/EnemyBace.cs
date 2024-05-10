@@ -323,7 +323,7 @@ public class EnemyBace : RecycleObject
             if (item.dropRatio > Random.value) 
             {
                 uint count = (uint)Random.Range(0, item.dropCount) + 1;
-                //ÆÑÅä¸® »ý»ê
+                Factory.Instance.MakeItems(item.code, count, transform.position);
             }
         }
     }

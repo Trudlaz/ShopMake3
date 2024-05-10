@@ -7,6 +7,7 @@ public class EquippedWeapon : MonoBehaviour
 {
     // 단축키 누르면 이미지에 해당 단축키에 맞는 부위의 슬롯 아이템 데이터 가져와서 보여주기
     Image weaponImage;
+    QuickSlot quickSlot;
 
     private void Awake()
     {
@@ -15,14 +16,25 @@ public class EquippedWeapon : MonoBehaviour
 
     private void Start()
     {
-        weaponImage = null;
+        quickSlot = GameManager.Instance.EquipUI.QuickSlot;
+
         weaponImage.color = Color.clear;
+
+        quickSlot.onMainWeapon01Change += Refresh;
+        quickSlot.onMainWeapon02Change += Refresh;
+        quickSlot.onSubWeaponChange += Refresh;
     }
 
-    void Refresh(Sprite weapon)
+    void Refresh(ItemData data)
     {
         // 장비창에서 
-        weaponImage.sprite = weapon;
+        weaponImage.sprite = data.itemImage;
         weaponImage.color = Color.white;
+    }
+
+    private void Reset()
+    {
+        weaponImage = null;
+        weaponImage.color = Color.clear;
     }
 }

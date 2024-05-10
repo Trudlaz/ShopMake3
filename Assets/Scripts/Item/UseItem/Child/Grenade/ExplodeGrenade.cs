@@ -14,11 +14,6 @@ public class ExplodeGrenade : GrenadeBase
     [Tooltip("폭발하는데 필요한 딜레이 타임")]
     [SerializeField] private float targetsTrackDelay = 0.5f;
 
-    protected override void OnCollisionEnter(Collision collision)
-    {
-        base.OnCollisionEnter(collision);
-    }
-
     protected override void Explode()
     {
         StartCoroutine(targetDamege());
@@ -26,19 +21,25 @@ public class ExplodeGrenade : GrenadeBase
 
     private void OnTriggerEnter(Collider other)
     {
-        EnemyBace enemy = other.GetComponent<EnemyBace>();
-        if (enemy != null)
+        if (isActive)
         {
-            targets.Add(enemy);
+            EnemyBace enemy = other.GetComponent<EnemyBace>();
+            if (enemy != null)
+            {
+                targets.Add(enemy);
+            }
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        EnemyBace enemy = other.GetComponent<EnemyBace>();
-        if (enemy != null)
+        if (isActive)
         {
-            targets.Remove(enemy);
+            EnemyBace enemy = other.GetComponent<EnemyBace>();
+            if (enemy != null)
+            {
+                targets.Remove(enemy);
+            }
         }
     }
 

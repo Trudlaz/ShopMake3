@@ -1,0 +1,274 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2007754581916560336
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 997699334677947364}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &997699334677947364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007754581916560336}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 540607489856577351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2410611239433813608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2257274004692756720}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2257274004692756720
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2410611239433813608}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 540607489856577351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4102397190008375908
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1099320846150713395}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1099320846150713395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4102397190008375908}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: 3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 540607489856577351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7650110113260647118
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3838308006273859195}
+  m_Layer: 0
+  m_Name: point
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3838308006273859195
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7650110113260647118}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 540607489856577351}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8786571319787226850
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 540607489856577351}
+  - component: {fileID: 3150762060880210021}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &540607489856577351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8786571319787226850}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2257274004692756720}
+  - {fileID: 3838308006273859195}
+  - {fileID: 997699334677947364}
+  - {fileID: 1099320846150713395}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3150762060880210021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8786571319787226850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110bce8d8b4ed3a44a2df5f7714ab302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems:
+  - code: 0
+    dropRatio: 0.7
+    maxDropCount: 1
+  - code: 1
+    dropRatio: 0.5
+    maxDropCount: 1
+  - code: 2
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 3
+    dropRatio: 0.7
+    maxDropCount: 1
+  - code: 4
+    dropRatio: 0.5
+    maxDropCount: 1
+  - code: 5
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 6
+    dropRatio: 0.7
+    maxDropCount: 1
+  - code: 7
+    dropRatio: 0.5
+    maxDropCount: 1
+  - code: 8
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 9
+    dropRatio: 0.5
+    maxDropCount: 2
+  - code: 10
+    dropRatio: 0.5
+    maxDropCount: 2
+  - code: 11
+    dropRatio: 0.9
+    maxDropCount: 4
+  - code: 15
+    dropRatio: 0.4
+    maxDropCount: 1
+  - code: 16
+    dropRatio: 0.2
+    maxDropCount: 1
+  - code: 17
+    dropRatio: 0.2
+    maxDropCount: 1
+  - code: 18
+    dropRatio: 0.1
+    maxDropCount: 1
+  - code: 19
+    dropRatio: 0.05
+    maxDropCount: 1
+  - code: 20
+    dropRatio: 0.6
+    maxDropCount: 8
+  - code: 21
+    dropRatio: 0.8
+    maxDropCount: 5
+  - code: 22
+    dropRatio: 0.8
+    maxDropCount: 3
+  - code: 23
+    dropRatio: 0.7
+    maxDropCount: 2
+  - code: 24
+    dropRatio: 0.2
+    maxDropCount: 5
+  - code: 25
+    dropRatio: 0.1
+    maxDropCount: 3
+  - code: 26
+    dropRatio: 0.01
+    maxDropCount: 1
+  - code: 27
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 28
+    dropRatio: 0.2
+    maxDropCount: 1
+  - code: 29
+    dropRatio: 0.1
+    maxDropCount: 1
+  - code: 30
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 31
+    dropRatio: 0.2
+    maxDropCount: 1
+  - code: 32
+    dropRatio: 0.1
+    maxDropCount: 1
+  - code: 33
+    dropRatio: 0.3
+    maxDropCount: 1
+  - code: 34
+    dropRatio: 0.2
+    maxDropCount: 1
+  - code: 35
+    dropRatio: 0.1
+    maxDropCount: 1

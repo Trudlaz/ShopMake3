@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ShopInventory
 {
     private static readonly int Default_Inventory_Size = 144;

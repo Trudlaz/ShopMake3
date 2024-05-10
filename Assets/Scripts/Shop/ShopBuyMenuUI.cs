@@ -151,7 +151,7 @@ public class ShopBuyMenuUI : MonoBehaviour
             bool allItemsAdded = true;
             for (uint i = 0; i < quantity; i++)
             {
-                bool itemAdded = GameManager.Instance.WorldInventory_UI.WorldInven.AddItem(purchasedItemCode);
+                bool itemAdded = GameManager.Instance.WorldInventoryUI.WorldInven.AddItem(purchasedItemCode);
                 if (!itemAdded)
                 {
                     allItemsAdded = false;

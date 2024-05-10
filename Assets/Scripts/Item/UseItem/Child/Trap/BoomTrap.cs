@@ -16,8 +16,6 @@ public class BoomTrap : TrapBase
 
     private void OnTriggerEnter(Collider other)
     {
-
-
         EnemyBace enemy = other.GetComponent<EnemyBace>();
         Player player = other.GetComponent<Player>();
         if (enemy != null)

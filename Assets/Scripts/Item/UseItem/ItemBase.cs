@@ -12,11 +12,16 @@ public class ItemBase : MonoBehaviour
 
     }
 
-    public virtual void Interaction(ItemCode itemCode)
+    public virtual void UnUse()
+    {
+
+    }
+
+    public virtual void Interact(ItemCode itemCode)
     {
         GameManager.Instance.InventoryUI.Inventory.AddItem(itemCode);
         GameObject obj = GameManager.Instance.ItemData[itemCode].itemPrefab;
-        Destroy(obj);
+        Destroy(obj.gameObject);
     }
 }
 

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class EquipSlot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
-    [Tooltip("ÇØ´ç ½½·ÔÀÇ Å¸ÀÔ ÇÒ´ç")]
+    [Tooltip("í•´ë‹¹ ìŠ¬ë¡¯ì˜ íƒ€ì… í• ë‹¹")]
     public List<ItemType> slotType = new List<ItemType>();
 
     public Action<ItemSlot> onDragBegin;
@@ -19,47 +19,66 @@ public class EquipSlot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandle
 
     public Action<uint> onRightClick;
 
+    private InventoryManager invenManager;
+
     protected override void Awake()
     {
         //Transform child = transform.GetChild(0);
         //itemImage = child.GetComponent<Image>();
         base.Awake();
+        Transform parent = transform.parent.parent.parent;
+        invenManager = parent.GetComponent<InventoryManager>();
+    }
+
+    public override void InitializeSlot(ItemSlot slot)
+    {
+        base.InitializeSlot(slot);
+
+        //itemSlot = slot;
+        //itemSlot.onSlotItemChange = Refresh;
+        Refresh();
+        Debug.Log("ìŠ¬ë¡¯ ì´ˆê¸°í™”");
+    }
+
+    protected override void OnRefresh()
+    {
+        base.OnRefresh();
     }
 
     /// <summary>
-    /// ½½·ÔUIÀÇ È­¸é °»½Å
+    /// ìŠ¬ë¡¯UIì˜ í™”ë©´ ê°±ì‹ 
     /// </summary>
     private void Refresh()
     {
         if (ItemSlot.IsEmpty)
         {
-            // ºñ¾î ÀÖÀ» ¶§
-            itemImage.color = Color.clear;   // ¾ÆÀÌÄÜ Åõ¸íÇÏ°Ô
-            itemImage.sprite = null;         // ½ºÇÁ¶óÀÌÆ® ºñ¿ì±â
-            //itemText.text = string.Empty;  // ±ÛÀÚµµ Á¦°Å
+            // ë¹„ì–´ ìˆì„ ë•Œ
+            itemImage.color = Color.clear;   // ì•„ì´ì½˜ íˆ¬ëª…í•˜ê²Œ
+            itemImage.sprite = null;         // ìŠ¤í”„ë¼ì´íŠ¸ ë¹„ìš°ê¸°
+            //itemText.text = string.Empty;  // ê¸€ìë„ ì œê±°
         }
         else
         {
-            // ¾ÆÀÌÅÛÀÌ µé¾îÀÖÀ¸¸é
+            // ì•„ì´í…œì´ ë“¤ì–´ìˆìœ¼ë©´
             //if (!IsEquipment)
             //{
-            //    // ¾ÆÀÌÅÛÀÌ Àåºñ¾ÆÀÌÅÛÀÌ ¾Æ´Ï¸é
-            //    itemImage.sprite = ItemSlot.ItemData.itemImage;      // ½ºÇÁ¶óÀÌÆ® ÀÌ¹ÌÁö ¼³Á¤
-            //    itemImage.color = Color.white;                       // ÀÌ¹ÌÁö º¸ÀÌ°Ô ¸¸µé±â
-            //    //itemText.text = ItemSlot.ItemCount.ToString();    // ¾ÆÀÌÅÛ °³¼ö ¾²±â
+            //    // ì•„ì´í…œì´ ì¥ë¹„ì•„ì´í…œì´ ì•„ë‹ˆë©´
+            //    itemImage.sprite = ItemSlot.ItemData.itemImage;      // ìŠ¤í”„ë¼ì´íŠ¸ ì´ë¯¸ì§€ ì„¤ì •
+            //    itemImage.color = Color.white;                       // ì´ë¯¸ì§€ ë³´ì´ê²Œ ë§Œë“¤ê¸°
+            //    //itemText.text = ItemSlot.ItemCount.ToString();    // ì•„ì´í…œ ê°œìˆ˜ ì“°ê¸°
             //    //itemText.alpha = 1;
 
             //}
             //else
             //{
-            //    itemImage.sprite = ItemSlot.ItemData.itemImage;      // ½ºÇÁ¶óÀÌÆ® ÀÌ¹ÌÁö ¼³Á¤
-            //    itemImage.color = Color.white;                       // ÀÌ¹ÌÁö º¸ÀÌ°Ô ¸¸µé±â
-            //    //itemText.text = ItemSlot.ItemCount.ToString();    // ¾ÆÀÌÅÛ °³¼ö ¾²±â
+            //    itemImage.sprite = ItemSlot.ItemData.itemImage;      // ìŠ¤í”„ë¼ì´íŠ¸ ì´ë¯¸ì§€ ì„¤ì •
+            //    itemImage.color = Color.white;                       // ì´ë¯¸ì§€ ë³´ì´ê²Œ ë§Œë“¤ê¸°
+            //    //itemText.text = ItemSlot.ItemCount.ToString();    // ì•„ì´í…œ ê°œìˆ˜ ì“°ê¸°
             //    //itemText.alpha = 0;
             //}
 
-            itemImage.sprite = ItemSlot.ItemData.itemImage;      // ½ºÇÁ¶óÀÌÆ® ÀÌ¹ÌÁö ¼³Á¤
-            itemImage.color = Color.white;                       // ÀÌ¹ÌÁö º¸ÀÌ°Ô ¸¸µé±â
+            itemImage.sprite = ItemSlot.ItemData.itemImage;      // ìŠ¤í”„ë¼ì´íŠ¸ ì´ë¯¸ì§€ ì„¤ì •
+            itemImage.color = Color.white;                       // ì´ë¯¸ì§€ ë³´ì´ê²Œ ë§Œë“¤ê¸°
         }
     }
 
@@ -81,26 +100,72 @@ public class EquipSlot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandle
         onDragBegin?.Invoke(ItemSlot);
     }
 
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+    //    GameObject obj = eventData.pointerCurrentRaycast.gameObject;   // UI ëŒ€ìƒ ë ˆì´ìºìŠ¤íŠ¸
+    //    if (obj != null)
+    //    {
+    //        Slot_UI endSlot = obj.GetComponent<Slot_UI>();
+    //        if (endSlot != null)
+    //        {
+    //            RectTransform rect = obj.GetComponent<RectTransform>();
+    //            onDragEnd?.Invoke(endSlot.ItemSlot, rect);
+    //        }
+    //        else
+    //        {
+    //            RectTransform rect = transform.parent.parent.parent.parent.GetComponent<RectTransform>();
+    //            onDragEnd?.Invoke(ItemSlot, rect);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        RectTransform rect = transform.parent.parent.parent.parent.GetComponent<RectTransform>();
+    //        onDragEnd?.Invoke(ItemSlot, rect);
+    //    }
+    //}
+
     public void OnEndDrag(PointerEventData eventData)
     {
-        GameObject obj = eventData.pointerCurrentRaycast.gameObject;   // UI ´ë»ó ·¹ÀÌÄ³½ºÆ®
+        GameObject obj = eventData.pointerCurrentRaycast.gameObject;   // UI ëŒ€ìƒ ë ˆì´ìºìŠ¤íŠ¸
         if (obj != null)
         {
             Slot_UI endSlot = obj.GetComponent<Slot_UI>();
+            EquipSlot_UI equipSlot = obj.GetComponent<EquipSlot_UI>();
             if (endSlot != null)
             {
                 RectTransform rect = obj.GetComponent<RectTransform>();
                 onDragEnd?.Invoke(endSlot.ItemSlot, rect);
             }
+            else if (equipSlot != null)
+            {
+                RectTransform rect = null;
+                ItemSlot slot = null;
+                foreach (var slotType in equipSlot.slotType)
+                {
+                    if (slotType == invenManager.DragSlot.ItemSlot.ItemData.itemType)
+                    {
+                        rect = obj.GetComponent<RectTransform>();
+                        slot = equipSlot.ItemSlot;
+                        break;
+                    }
+                    else
+                    {
+                        rect = GetComponent<RectTransform>();
+                        slot = ItemSlot;
+                    }
+                }
+                rect = GetComponent<RectTransform>();
+                onDragEnd?.Invoke(slot, rect);
+            }
             else
             {
-                RectTransform rect = transform.parent.parent.parent.parent.GetComponent<RectTransform>();
+                RectTransform rect = GetComponent<RectTransform>();
                 onDragEnd?.Invoke(ItemSlot, rect);
             }
         }
         else
         {
-            RectTransform rect = transform.parent.parent.parent.parent.GetComponent<RectTransform>();
+            RectTransform rect = GetComponent<RectTransform>();
             onDragEnd?.Invoke(ItemSlot, rect);
         }
     }

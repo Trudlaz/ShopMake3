@@ -18,8 +18,8 @@ public class ArmorBase : ItemBase
 
     }
 
-    //public override void UnUse()
-    //{
+    public override void UnUse()
+    {
 
-    //}
+    }
 }

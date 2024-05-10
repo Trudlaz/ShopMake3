@@ -39,7 +39,7 @@ public class WorldInventory
         }
         dragSlot = new DragSlot(dragSlotIndex);
         itemDataManager = GameManager.Instance.ItemData;
-        worldInven = GameManager.Instance.WorldInventory_UI;
+        worldInven = GameManager.Instance.WorldInventoryUI;
         this.owner = owner;
     }
 

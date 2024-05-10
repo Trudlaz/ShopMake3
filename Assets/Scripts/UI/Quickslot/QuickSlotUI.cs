@@ -15,6 +15,6 @@ public class QuickSlotUI : MonoBehaviour
 
     public void QuickSlotImageChange(uint index)
     {
-        quickSlotImage[index].sprite = quickSlot.equip.slots[index].ItemData.itemImage;
+        quickSlotImage[index].sprite = quickSlot.Equip.slots[index].ItemData.itemImage;
     }
 }

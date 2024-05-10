@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 8920318927567945868}
   - component: {fileID: 8516639644165181963}
   - component: {fileID: 3590397272095028585}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ExplotionGranade
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1156777646980637769}
   m_Father: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 669704971572847110}
   - component: {fileID: 122490115679609584}
   - component: {fileID: 3036749275549060528}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   - component: {fileID: 1156777646980637769}
   - component: {fileID: 5902199905340891588}
   - component: {fileID: 1322153477470065531}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 4369805325088885667}
   - component: {fileID: 8980308835656894297}
   - component: {fileID: 8307595662428523108}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}

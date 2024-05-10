@@ -9,10 +9,10 @@ public class Vest : ArmorBase
         player.defense += amountDefense; // 장착하면 방어력이 증가하는 코드?
     }
 
-    //public override void UnUse()
-    //{
-    //    player.defense -=amountDefense; // 해제하면 방어력이 줄어드는 코드?
-    //}
+    public override void UnUse()
+    {
+        player.defense -= amountDefense; // 해제하면 방어력이 줄어드는 코드?
+    }
 
     // 방어력이 있을 때 적에게 피격당할시 방어력 깎이는 코드?
     //public void TakeDamege(float damege)

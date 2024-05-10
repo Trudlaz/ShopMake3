@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DoorManualCycle : DoorManual
 {
-    [Range(600, 1200)]  //(10ºÐ-20ºÐ)
+    [Range(600, 1200)]  //(10ë¶„-20ë¶„)
     public float cycle = 1200.0f;
-    public float openPeriod = 300.0f; //5ºÐ
+    public float openPeriod = 300.0f; //5ë¶„
 
     float cycleTime = 0.0f;
     float periodTime = 0.0f;
@@ -54,14 +54,15 @@ public class DoorManualCycle : DoorManual
 
     protected override void Open()
     {
-        if (preOpen())
-        {
-            Debug.Log("Å»Ãâ");
-            //È­¸éÀüÈ¯(°ÔÀÓ¸Þ´º)
-        }
-        else 
-        {
-            Debug.Log("Not In Time");
-        }
+        //if (preOpen())
+        //{
+        //    Debug.Log("íƒˆì¶œ");
+        //    //í™”ë©´ì „í™˜(ê²Œìž„ë©”ë‰´)
+            GameManager.Instance.EndGame("MainMenuScene");
+        //}
+        //else 
+        //{
+        //    Debug.Log("Not In Time");
+        //}
     }
 }

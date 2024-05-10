@@ -13,7 +13,9 @@ public class Slot_UI_Base : MonoBehaviour
 
     TextMeshProUGUI itemText;
 
-    bool IsEquipment => ItemSlot.ItemData.itemType == ItemType.Gun || ItemSlot.ItemData.itemType == ItemType.Armor;
+    bool IsEquipment => ItemSlot.ItemData.itemType == ItemType.Gun || ItemSlot.ItemData.itemType == ItemType.Armor 
+        || ItemSlot.ItemData.itemType == ItemType.Pistol || ItemSlot.ItemData.itemType == ItemType.Helmet || 
+        ItemSlot.ItemData.itemType == ItemType.BackPack;
 
     public uint Index => itemSlot.Index;
 

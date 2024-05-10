@@ -8,10 +8,13 @@ public class FireGrenade : GrenadeBase
 
     protected override void OnCollisionEnter(Collision collision)
     {
-        if (collision.transform.CompareTag("Ground")) 
+        if (isActive)
         {
-            Explode();
-            Destroy(this.gameObject, 0.1f);
+            if (collision.transform.CompareTag("Ground"))
+            {
+                Explode();
+                Destroy(this.gameObject, 0.1f);
+            }
         }
     }
 

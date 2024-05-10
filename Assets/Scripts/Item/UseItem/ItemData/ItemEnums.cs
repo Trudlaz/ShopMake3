@@ -7,11 +7,15 @@ public enum ItemType    //아이템 그룹 분리용 type
     Buff = 0,
     Grenade,
     Gun,
+    Pistol,   // pistol 추가
     Bullet,
     Trap,
     Key,
     Price,
     Armor,
+    BackPack,
+    Helmet,
+    Vest,     // Armor 대신 backpack,helmet,vest 추가
     WeaponParts
 
 }
