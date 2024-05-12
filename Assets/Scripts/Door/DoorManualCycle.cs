@@ -54,15 +54,15 @@ public class DoorManualCycle : DoorManual
 
     protected override void Open()
     {
-        //if (preOpen())
-        //{
-        //    Debug.Log("탈출");
-        //    //화면전환(게임메뉴)
+        if (preOpen())
+        {
+            Debug.Log("탈출");
+            //화면전환(게임메뉴)
             GameManager.Instance.EndGame("MainMenuScene");
-        //}
-        //else 
-        //{
-        //    Debug.Log("Not In Time");
-        //}
+        }
+        else
+        {
+            Debug.Log("Not In Time");
+        }
     }
 }
