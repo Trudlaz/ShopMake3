@@ -379,13 +379,13 @@ public class WorldInventory
         }
 
         string json = JsonConvert.SerializeObject(slotDataList, Newtonsoft.Json.Formatting.Indented);
-        File.WriteAllText(Path.Combine(Application.persistentDataPath, "inventory.json"), json);
-        Debug.Log("Inventory saved to JSON.");
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "worldInventory.json"), json);
+        Debug.Log("월드 인벤토리를 저장했습니다.");
     }
 
     public void LoadInventoryFromJson()
     {
-        string path = Path.Combine(Application.persistentDataPath, "inventory.json");
+        string path = Path.Combine(Application.persistentDataPath, "worldInventory.json");
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
@@ -401,11 +401,11 @@ public class WorldInventory
                     slot.AssignSlotItem(itemData, slotData.ItemCount, slotData.IsEquipped);
                 }
             }
-            Debug.Log("Inventory loaded from JSON.");
+            Debug.Log("월드 인벤토리를 불러옵니다.");
         }
         else
         {
-            Debug.LogWarning("No inventory file found.");
+            Debug.LogWarning("월드 인벤토리 파일을 찾을 수 없습니다.");
         }
     }
     public ItemSlot GetEmptySlot()

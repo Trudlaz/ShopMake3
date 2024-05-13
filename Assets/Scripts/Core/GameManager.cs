@@ -65,8 +65,8 @@ public class GameManager : Singleton<GameManager>
     // 게임 종료 시 MainMenuScene 로드
     public void EndGame(string v)
     {
-        if (OnGameEnding != null) OnGameEnding.Invoke();
-        LoadScene(MainMenuSceneName, null);
+        SaveInventory(); // 인벤토리 저장
+        LoadScene(MainMenuSceneName, OnGameEnding);
     }
 
     // 지정된 씬을 비동기적으로 로드하고 완료 후 액션 처리
@@ -79,12 +79,55 @@ public class GameManager : Singleton<GameManager>
     // 비동기 씬 로딩 처리 코루틴
     private IEnumerator LoadAsyncScene(string sceneName, SceneAction onLoaded)
     {
+        if (sceneName == InGameSceneName)
+        {
+            SaveWorldInventory(); // 월드 인벤토리 저장
+            SaveInventory(); // 인벤토리 저장
+        }
+
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
         while (!asyncLoad.isDone)
         {
             Debug.Log($"Loading progress for {sceneName}: {asyncLoad.progress * 100}%");
             yield return null;
         }
-        if (onLoaded != null) onLoaded.Invoke();
+
+        if (sceneName == MainMenuSceneName)
+        {
+            LoadWorldInventory(); // 월드 인벤토리 불러오기
+            LoadInventory(); // 인벤토리 불러오기
+        }
+        else if (sceneName == InGameSceneName)
+        {
+            LoadInventory(); // 인벤토리 불러오기
+        }
+
+        if (onLoaded != null)
+            onLoaded.Invoke();
+    }
+
+    // 데이터 저장 및 불러오기 관련 메서드
+    public void SaveWorldInventory()
+    {
+        if (worldInventoryUI != null)
+            worldInventoryUI.WorldInven.SaveInventoryToJson();
+    }
+
+    public void LoadWorldInventory()
+    {
+        if (worldInventoryUI != null)
+            worldInventoryUI.WorldInven.LoadInventoryFromJson();
+    }
+
+    public void SaveInventory()
+    {
+        if (inventoryUI != null)
+            inventoryUI.Inventory.SaveInventoryToJson();
+    }
+
+    public void LoadInventory()
+    {
+        if (inventoryUI != null)
+            inventoryUI.Inventory.LoadInventoryFromJson();
     }
 }
