@@ -60,12 +60,18 @@ public class GameManager : Singleton<GameManager>
     public void StartGame(string v)
     {
         LoadScene(InGameSceneName, OnGameStartCompleted);
+
+        // 메인메뉴씬에서 인게임씬으로 변경 전 이벤트를 호출
+        OnGameStartCompleted?.Invoke();
     }
 
     // 게임 종료 시 MainMenuScene 로드
     public void EndGame(string v)
     {
         SaveInventory(); // 인벤토리 저장
+
+        // 인게임씬에서 메인메뉴씬으로 변경 전 이벤트를 호출
+        OnGameEnding?.Invoke();
         LoadScene(MainMenuSceneName, OnGameEnding);
     }
 
