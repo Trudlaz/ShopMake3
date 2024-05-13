@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
-public class Test_Shop : MonoBehaviour
+public class Test_Shop : TestBase
 {
     public ItemCode code = ItemCode.SmallHeal;
     ShopInventory shopInventory;    // 상점 인벤토리
@@ -52,5 +53,12 @@ public class Test_Shop : MonoBehaviour
             // 사용자에게 실패 사유를 보다 명확히 알려주는 처리
         }
     }
-
+    protected override void OnTest1(InputAction.CallbackContext context)
+    {
+        worldInventory.SaveInventoryToJson();
+    }
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        worldInventory.LoadInventoryFromJson();
+    }
 }

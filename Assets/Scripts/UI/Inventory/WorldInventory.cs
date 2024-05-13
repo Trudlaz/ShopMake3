@@ -1,6 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Newtonsoft.Json;
+using System.Xml;
 using UnityEngine;
 
 public class WorldInventory
@@ -42,7 +44,7 @@ public class WorldInventory
         worldInven = GameManager.Instance.WorldInventoryUI;
         this.owner = owner;
     }
-
+   
     /// <summary>
     /// 인벤토리에 특정아이템을 1개 추가하는 함수
     /// </summary>
@@ -340,7 +342,7 @@ public class WorldInventory
         return false; // 루프를 끝까지 돌았는데도 아이템을 찾지 못했으면 false 반환
     }
 
-        /// <summary>
+    /// <summary>
     /// 임시로 쓰는 함수, 나중에 돈 개수로 바꾸기 위해 이곳에 배치
     /// </summary>
     /// <param name="slot"></param>
@@ -360,6 +362,64 @@ public class WorldInventory
         }
     }
 
+    public void SaveInventoryToJson()
+    {
+        List<ItemSlotData> slotDataList = new List<ItemSlotData>();
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty)
+            {
+                slotDataList.Add(new ItemSlotData()
+                {
+                    ItemCode = slot.ItemData.itemId,
+                    ItemCount = slot.ItemCount,
+                    IsEquipped = slot.IsEquiped
+                });
+            }
+        }
+
+        string json = JsonConvert.SerializeObject(slotDataList, Newtonsoft.Json.Formatting.Indented);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "inventory.json"), json);
+        Debug.Log("Inventory saved to JSON.");
+    }
+
+    public void LoadInventoryFromJson()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "inventory.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            List<ItemSlotData> slotDataList = JsonConvert.DeserializeObject<List<ItemSlotData>>(json);
+            ClearInventory();  // 기존 인벤토리 클리어
+
+            foreach (var slotData in slotDataList)
+            {
+                ItemData itemData = GameManager.Instance.ItemData.GetItemDataByCode(slotData.ItemCode);
+                ItemSlot slot = GetEmptySlot();  // 빈 슬롯 찾기 메서드 구현 필요
+                if (slot != null)
+                {
+                    slot.AssignSlotItem(itemData, slotData.ItemCount, slotData.IsEquipped);
+                }
+            }
+            Debug.Log("Inventory loaded from JSON.");
+        }
+        else
+        {
+            Debug.LogWarning("No inventory file found.");
+        }
+    }
+    public ItemSlot GetEmptySlot()
+    {
+        // 모든 슬롯을 순회하며 비어 있는 슬롯을 찾음
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty)
+            {
+                return slot;
+            }
+        }
+        return null; // 비어 있는 슬롯이 없으면 null 반환
+    }
 
 
 #if UNITY_EDITOR
