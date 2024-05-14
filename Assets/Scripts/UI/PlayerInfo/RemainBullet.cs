@@ -15,7 +15,6 @@ public class RemainBullet : MonoBehaviour
     TextMeshProUGUI max;
 
     WeaponBase weapon;
-    Inventory_UI inventory;
 
     private void Awake()
     {
@@ -26,32 +25,14 @@ public class RemainBullet : MonoBehaviour
         max = child.GetComponent<TextMeshProUGUI>();
     }
 
-    private void Start()
-    {
-        weapon = GameManager.Instance.WeaponBase;
-        inventory = GameManager.Instance.InventoryUI;
-
-        if (inventory != null)
-        {
-            inventory.Inventory.onReload += Refresh;
-        }
-
-        current.text = "-";
-        max.text = "-";
-
-        if (weapon != null)
-        {
-            max.text = weapon.maxAmmo.ToString();   // 나중에 총알관련 클래스 완성되면 넣어주기
-        }
-    }
-
     /// <summary>
     /// 현재 사용 가능한 총알수
     /// </summary>
-    /// <param name="bullet"></param>
-    public void Refresh(int bullet) 
+    /// <param name="currentAmmo"></param>
+    public void Refresh(int currentAmmo, int maxAmmo) 
     {
-        current.text = bullet.ToString();
+        current.text = currentAmmo.ToString();
+        max.text = maxAmmo.ToString();
     }
 
     /// <summary>

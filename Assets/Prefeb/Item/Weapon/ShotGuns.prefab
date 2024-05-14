@@ -141,19 +141,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b83192601dcdc64ab085d2133e682d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Price: 1000
-  Weight: 3
-  maxAmmo: 10
-  fireRate: 0.1
-  weight: 0
-  price: 0
-  durability: 0
-  recoil: 0
-  sightingRange: 0
-  ammunitionType: 0
-  damage: 5
-  headDamage: 10
-  accuracy: 0
-  critRate: 0
-  muzzleVelocity: 0
+  Price: 500
+  Weight: 5
+  maxAmmo: 8
+  fireRate: 0.7
+  weight: 5
+  price: 200
+  durability: 30
+  recoil: 1.5
+  sightingRange: 5
+  ammunitionType: 2
+  damage: 15
+  headDamage: 30
+  accuracy: 0.5
+  critRate: 0.5
+  muzzleVelocity: 1
   noiseVelocity: 7

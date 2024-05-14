@@ -17,5 +17,14 @@ public class Test_ItemSpawner : TestBase
     {
         itemSpawner.Test_Clear();
     }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.TimeSystem.Test_TimeGo();
+    }
+    protected override void OnTest4(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.TimeSystem.Test_TimeEnd();
+    }
 #endif
 }

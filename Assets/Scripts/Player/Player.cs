@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
 
     public Action<float> onWeightChange { get; set; }
 
-    public float defense = 0.0f;
+    public float defense = 1.0f;
 
     public Animator animator;
 
@@ -184,11 +184,6 @@ public class Player : MonoBehaviour
     private void Start()
     {
         cc = GetComponent<CharacterController>();
-        inven = new Inventory(this);
-        if(GameManager.Instance.InventoryUI != null )
-        {
-            GameManager.Instance.InventoryUI.InitializeInventory(Inventory);
-        }
     }
 
     private void OnMovePerformed(InputAction.CallbackContext ctx)
@@ -338,7 +333,12 @@ public class Player : MonoBehaviour
 
     public void Damege(float damege) 
     {
-        hp -= (damege/defense);
+        Hp -= (damege/defense);
+        Debug.Log($"{damege}받음 / {Hp}");
+    }
+    public void Heal(float rate)
+    {
+        Hp += (rate);
     }
 
     public void Die()
@@ -358,6 +358,38 @@ public class Player : MonoBehaviour
     //    yield return LangingSoundInterval;
     //    noise.gameObject.SetActive(false);
     //}
+
+    // Weapon_Equip 관련 ------------------------------------------------------------------------
+    WeaponBase weapon;
+
+    public WeaponBase Weapon => weapon;
+
+    public void EquippedWeapon(GameObject obj)
+    {
+        Transform child = transform.GetChild(1);
+        Instantiate(obj, child);
+        weapon = obj.GetComponent<WeaponBase>();
+
+    }
+
+    BuffBase buff;
+
+    public void UseItem(GameObject obj)
+    {
+        Transform child = transform.GetChild(1);
+        Instantiate(obj, child);
+        buff = obj.GetComponent<BuffBase>();
+        buff.Use();
+    }
+
+    public void UnEquipped()
+    {
+        Transform child = transform.GetChild(1);
+        child = child.GetChild(0);
+        Destroy(child.gameObject);
+    }
+
+    // ----------------------------------------------------------------------------------------
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()

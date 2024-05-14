@@ -201,6 +201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6515cccb0a7191a449d9ed9d81a6f200, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Price: 1000
-  Weight: 3
-  amountDefense: 30
+  Price: 600
+  Weight: 6
+  amountDefense: 50

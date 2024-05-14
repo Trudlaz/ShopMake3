@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Equip_UI : MonoBehaviour
-{
+{//
     Equip equip;
 
     PlayerInput inputActions;
@@ -36,11 +36,7 @@ public class Equip_UI : MonoBehaviour
     public ItemData data04;
     public ItemData data05;
 
-
     Player Owner => equip.Owner;
-
-
-
 
     private void Awake()
     {
@@ -61,7 +57,7 @@ public class Equip_UI : MonoBehaviour
         dragSlot = GetComponentInChildren<DragSlotUI>();
 
         quickSlot = GetComponent<QuickSlot>();
-    }
+    }//
 
     private void OnEnable()
     {
@@ -88,6 +84,7 @@ public class Equip_UI : MonoBehaviour
 
         dropSlot.Close();
 
+        Close();
     }
 
     private void OnItemMoveBegin(ItemSlot slot)
@@ -149,7 +146,7 @@ public class Equip_UI : MonoBehaviour
         canvas.blocksRaycasts = false;
     }
 
-    private void InventoryOnOff(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void InventoryOnOff()
     {
         if (canvas.interactable)
         {

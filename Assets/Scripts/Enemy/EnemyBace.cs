@@ -12,7 +12,7 @@ public class EnemyBace : RecycleObject
     public float maxHP = 100.0f;
     public float moveSpeed = 3.0f;     // 뛰기 5 걷기 3
     public float runIncrease = 2.0f;
-    public float attackDamege = 25.0f;
+    public float attackDamege = 10.0f;
     public float maxCoolTime = 1.5f;
     public float findDistanceRange = 0.6f;
     public float alatWaitTime = 5.0f;
@@ -97,7 +97,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, false);
                         animator.SetBool(Run_Hash, false);
                         onStateUpdate = Update_Wait;
-                        Debug.Log("wait");
                         break;
                     case EnemyState.Alert:
                         agent.isStopped = false;
@@ -105,7 +104,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, true);
                         CurrentMoveSpeed = moveSpeed;
                         onStateUpdate = Update_Alert;
-                        Debug.Log("alert");
                         break;
                     case EnemyState.Chase:
                         agent.isStopped = false;
@@ -113,7 +111,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Run_Hash, true);
                         CurrentMoveSpeed += runIncrease;
                         onStateUpdate = Update_Chase;
-                        Debug.Log("chase");
                         break;
                     case EnemyState.Wander:
                         agent.isStopped = false;
@@ -121,7 +118,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, true);
                         wanderCount = 0;
                         onStateUpdate = Update_Wander;
-                        Debug.Log("wander");
                         break;
                     case EnemyState.Attack:
                         agent.isStopped = true;
@@ -130,7 +126,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Move_Hash, false);
                         CurrentMoveSpeed = 0.0f;
                         onStateUpdate = Update_Attack;
-                        Debug.Log("attack");
                         break;
                     case EnemyState.Dead:
                         agent.isStopped = true;
@@ -139,7 +134,6 @@ public class EnemyBace : RecycleObject
                         animator.SetBool(Run_Hash, false);
                         animator.SetBool(Die_Hash, true);
                         onStateUpdate = Update_Dead;
-                        Debug.Log("dead");
                         break;
                 }
             }
@@ -292,6 +286,7 @@ public class EnemyBace : RecycleObject
             player.Damege(attackDamege);
             animator.SetTrigger(Attack_Hash);
             cooltime = maxCoolTime;
+            Debug.Log(attackDamege);
         }
     }
 
@@ -408,9 +403,9 @@ public class EnemyBace : RecycleObject
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;
-        Handles.DrawWireDisc(transform.position, transform.up, 2.0f);   //공격범위
+        Handles.DrawWireDisc(transform.position, transform.up, 4.0f);   //공격범위
         Handles.color = Color.blue;
-        Handles.DrawWireDisc(transform.position, transform.up, 0.7f);   //스탑디스턴스
+        Handles.DrawWireDisc(transform.position, transform.up, 1.4f);   //스탑디스턴스
     }
 #endif
 }

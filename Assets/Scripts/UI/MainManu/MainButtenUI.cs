@@ -5,10 +5,8 @@ public class MainButtonUI : MonoBehaviour
 {
     public Button GameStart;
     public Button Shop;
+    public Button Inventory;
     public Button GameEnd;
-
-    public Button InShopBackButton;
-    public Button InShopGoInvenButton;
 
     public Inventory_UI inventory;
     public ShopInventoryUI shopInventory;
@@ -19,48 +17,46 @@ public class MainButtonUI : MonoBehaviour
     void Start()
     {
         // 각 버튼에 클릭 이벤트 리스너 추가
-        GameStart.onClick.AddListener(StartGame);
-        Shop.onClick.AddListener(ToggleShop);
-        GameEnd.onClick.AddListener(EndGame);
-        InShopBackButton.onClick.AddListener(HandleBackButton);
-        InShopGoInvenButton.onClick.AddListener(ToggleInventory);
+        GameStart.onClick.AddListener(() => ToggleUI(StartGame));
+        Inventory.onClick.AddListener(() => ToggleUI(ToggleInventory));
+        Shop.onClick.AddListener(() => ToggleUI(ToggleShop));
+        GameEnd.onClick.AddListener(() => ToggleUI(EndGame));
 
         // 초기 UI 설정: 모든 UI 비활성화 및 버튼 패널 활성화
-        DeactivateAllUIs();
+        inventory.gameObject.SetActive(false);
+        shopInventory.gameObject.SetActive(false);
+        worldInventory.gameObject.SetActive(false);
         buttonPanel.SetActive(true);
     }
 
     void StartGame()
     {
         GameManager.Instance.StartGame("InGameScene");
-        DeactivateAllUIs();
+    }
+
+    void ToggleInventory()
+    {
+        inventory.gameObject.SetActive(true);
+        worldInventory.gameObject.SetActive(true);
+        shopInventory.gameObject.SetActive(false);
     }
 
     void ToggleShop()
     {
-        DeactivateAllUIs();
         shopInventory.gameObject.SetActive(true);
         worldInventory.gameObject.SetActive(true);
+        inventory.gameObject.SetActive(false);
     }
 
     void EndGame()
     {
         GameManager.Instance.EndGame("MainMenuScene");
-        DeactivateAllUIs();
     }
 
-    void HandleBackButton()
+    void ToggleUI(System.Action action)
     {
-        // 모든 UI 비활성화하고 버튼 패널 활성화
-        DeactivateAllUIs();
-        buttonPanel.SetActive(true);
-    }
-
-    void ToggleInventory()
-    {
-        DeactivateAllUIs();
-        inventory.gameObject.SetActive(true);
-        worldInventory.gameObject.SetActive(true);
+        action.Invoke();
+        buttonPanel.SetActive(false); // 버튼 패널 비활성화
     }
 
     public void ShowButtons()
@@ -71,17 +67,9 @@ public class MainButtonUI : MonoBehaviour
     void OnDestroy()
     {
         // 리스너 제거
-        GameStart.onClick.RemoveListener(StartGame);
-        Shop.onClick.RemoveListener(ToggleShop);
-        GameEnd.onClick.RemoveListener(EndGame);
-        InShopBackButton.onClick.RemoveListener(HandleBackButton);
-        InShopGoInvenButton.onClick.RemoveListener(ToggleInventory);
-    }
-
-    private void DeactivateAllUIs()
-    {
-        inventory.gameObject.SetActive(false);
-        shopInventory.gameObject.SetActive(false);
-        worldInventory.gameObject.SetActive(false);
+        GameStart.onClick.RemoveListener(() => ToggleUI(StartGame));
+        Inventory.onClick.RemoveListener(() => ToggleUI(ToggleInventory));
+        Shop.onClick.RemoveListener(() => ToggleUI(ToggleShop));
+        GameEnd.onClick.RemoveListener(() => ToggleUI(EndGame));
     }
 }

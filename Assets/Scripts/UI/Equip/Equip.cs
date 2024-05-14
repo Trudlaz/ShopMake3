@@ -18,8 +18,9 @@ public class Equip : MonoBehaviour
     private ItemDataManager itemDataManager;
     public Player Owner => owner;
     private Equip_UI equipUI;
+    public QuickSlot quickSlot;
 
-    public Equip(Player owner, uint size = Default_Inventory_Size)
+    public Equip(GameManager owner, uint size = Default_Inventory_Size)
     {
         slots = new EquipSlot[size];
 
@@ -32,7 +33,14 @@ public class Equip : MonoBehaviour
         dragSlot = new DragSlot(dragSlotIndex);
         itemDataManager = GameManager.Instance.ItemData;
         equipUI = GameManager.Instance.EquipUI;
-        this.owner = owner;
+        this.owner = owner.Player;
+
+        Transform equipUIObject = equipUI.gameObject.transform.GetChild(0);
+
+        for (uint i = 0; i < slots.Length; i++)
+        {
+            slots[i].slotType = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>().slotType;  // awake 함수로 따로 찾기
+        }
     }
 
     private void Awake()
@@ -56,6 +64,7 @@ public class Equip : MonoBehaviour
         {
             if (AddItem(code, (uint)i))
             {
+                EquipEfectApply();
                 return true;
             }
         }

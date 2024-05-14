@@ -139,15 +139,27 @@ public class ItemSlot
         }
     }
 
+
     /// <summary>
     /// 이 슬롯에 있는 아이템을 장비하는 함수
     /// </summary>
     public void EquipItem()
     {
         Player player = GameManager.Instance.Player;
-        if(player != null)
+        if (player != null)
         {
-            //player.EquipItem(ItemData.itemPrefab ,this);   // 플레이어 안에있는 장비를 장착하는 함수 사용
+            // 플레이어의 아이템 장비하는 함수
+            player.EquippedWeapon(ItemData.itemPrefab);
+        }
+    }
+    public void UseItem()
+    {
+        Player player = GameManager.Instance.Player;
+        if (player != null)
+        {
+            // 플레이어의 아이템 사용하는 함수
+            player.UseItem(itemData.itemPrefab);
+            DecreaseSlotItem();
         }
     }
 }

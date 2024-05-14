@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -4.0777903, y: -1.6911585, z: -17.280119}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 817586093623225969}
@@ -122,7 +122,7 @@ NavMeshAgent:
   m_Acceleration: 4
   avoidancePriority: 50
   m_AngularSpeed: 90
-  m_StoppingDistance: 0.7
+  m_StoppingDistance: 1.4
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -145,9 +145,9 @@ MonoBehaviour:
   maxHP: 100
   moveSpeed: 5
   runIncrease: 2
-  attackDamege: 25
+  attackDamege: 10
   maxCoolTime: 1.5
-  findDistanceRange: 0.6
+  findDistanceRange: 1.2
   alatWaitTime: 5
   dropItems:
   - code: 19

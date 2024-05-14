@@ -1,8 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
-using System.Xml;
 using UnityEngine;
 
 public class WorldInventory
@@ -32,7 +32,7 @@ public class WorldInventory
 
     public Action<ItemSlot> onPlusValue;
 
-    public WorldInventory(Player owner, uint size = Default_Inventory_Size)
+    public WorldInventory(GameManager owner, uint size = Default_Inventory_Size)
     {
         slots = new ItemSlot[size];
         for (uint i = 0; i < slots.Length; i++)
@@ -41,10 +41,10 @@ public class WorldInventory
         }
         dragSlot = new DragSlot(dragSlotIndex);
         itemDataManager = GameManager.Instance.ItemData;
-        worldInven = GameManager.Instance.WorldInventoryUI;
-        this.owner = owner;
+        worldInven = GameManager.Instance.WorldInventory_UI;
+        this.owner = owner.Player;
     }
-   
+
     /// <summary>
     /// 인벤토리에 특정아이템을 1개 추가하는 함수
     /// </summary>
@@ -342,7 +342,7 @@ public class WorldInventory
         return false; // 루프를 끝까지 돌았는데도 아이템을 찾지 못했으면 false 반환
     }
 
-    /// <summary>
+        /// <summary>
     /// 임시로 쓰는 함수, 나중에 돈 개수로 바꾸기 위해 이곳에 배치
     /// </summary>
     /// <param name="slot"></param>

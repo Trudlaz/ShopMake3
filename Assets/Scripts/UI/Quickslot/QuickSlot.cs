@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Purchasing;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using static UnityEngine.UI.GridLayoutGroup;
 
-public class QuickSlot : MonoBehaviour
+public class QuickSlot : TestBase
 {
     private PlayerInput playerInput;
     Equip equip;
+    private Player owner;
+    public Player Owner => owner;
     public Equip Equip => equip;
     [Tooltip("생성할 아이템 프리펩 부모 오브젝트")]
     public GameObject itemParent;
@@ -30,6 +34,13 @@ public class QuickSlot : MonoBehaviour
     private void Awake()
     {
         equip = GetComponent<Equip>();
+    }
+
+    public QuickSlot(Equip playerEquip, Player owner)
+    {
+        equip = playerEquip;
+        this.owner = owner;
+        itemParent = Owner.transform.Find("FirePosition").gameObject;
     }
 
     private void OnEnable()
@@ -92,5 +103,40 @@ public class QuickSlot : MonoBehaviour
             }
             onETCChange?.Invoke(equip.slots[7].ItemData);
         }
+    }
+
+    protected override void OnTest1(InputAction.CallbackContext context)
+    {
+        // 주무기01
+        mainWeapon_01.Invoke();
+        Debug.Log("주무기01");
+    }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        // 주무기02
+        mainWeapon_02.Invoke();
+        Debug.Log("주무기02");
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        // 권총
+        subWeapon.Invoke();
+        Debug.Log("권총");
+    }
+
+    protected override void OnTest4(InputAction.CallbackContext context)
+    {
+        // 수류탄
+        grenade.Invoke();
+        Debug.Log("수류탄");
+    }
+
+    protected override void OnTest5(InputAction.CallbackContext context)
+    {
+        // 기타
+        ect.Invoke();
+        Debug.Log("기타");
     }
 }

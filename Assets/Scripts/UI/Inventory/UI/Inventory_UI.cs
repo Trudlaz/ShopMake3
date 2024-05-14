@@ -24,7 +24,7 @@ public class Inventory_UI : MonoBehaviour
 
     Button sortButton;
 
-    LocalSelectMenuUI selectMenu;
+    //LocalSelectMenuUI selectMenu;
 
     Player Owner => inventory.Owner;
 
@@ -80,28 +80,14 @@ public class Inventory_UI : MonoBehaviour
             OnItemSort(ItemType.Buff);
         });
 
-        child = transform.GetChild(4);
-        selectMenu = child.GetComponent<LocalSelectMenuUI>();
+        //child = transform.GetChild(4);
+        //selectMenu = child.GetComponent<LocalSelectMenuUI>();
 
         invenManager = GetComponentInParent<InventoryManager>();
 
         invenTransform = GetComponent<RectTransform>();
 
         canvas = GetComponent<CanvasGroup>();
-    }
-
-    private void OnEnable()
-    {
-        inputActions.UI.Enable();
-        inputActions.UI.Inventory.performed += InventoryOnOff;
-    }
-
-
-
-    void OnDisable()
-    {
-        inputActions.UI.Inventory.performed -= InventoryOnOff;
-        inputActions.UI.Disable();
     }
 
     public void InitializeInventory(Inventory playerInventory)
@@ -118,19 +104,19 @@ public class Inventory_UI : MonoBehaviour
         }
         invenManager.DragSlot.InitializeSlot(inventory.DragSlot);  // 임시 슬롯 초기화
 
-        selectMenu.onItemDrop += OnItemDrop;
-        selectMenu.onItemUse += OnUse;
-        selectMenu.Close();
-        
         dropSlot.onDropOk += OnDropOk;
         dropSlot.Close();
 
-        Owner.onWeightChange += weightPanel.Refresh;
-        weightPanel.Refresh(Owner.Weight);
+        if(Owner != null)
+        {
+            Owner.onWeightChange += weightPanel.Refresh;
+            weightPanel.Refresh(Owner.Weight);
+        }
+
+        Close();
 
         //inventory.onReload += GameManager.Instance.WeaponBase.ReLoad;
 
-        Close();
     }
 
     private void Start()
@@ -159,8 +145,7 @@ public class Inventory_UI : MonoBehaviour
         //Debug.Log($"10000원 {tenThousand}장 1000원 {Thousand}장 100원 {hundred}개");
 
         GameManager game = GameManager.Instance;
-
-        game.WorldInventoryUI.Money += Money;
+        game.WorldInventory_UI.Money += Money;
         inventory.ClearInventory();
         Money = 0;
         Owner.Weight = 0;
@@ -237,7 +222,7 @@ public class Inventory_UI : MonoBehaviour
     {
         // 버리기, 상세보기 등 UI따로 띄우기
         Slot_UI target = slotsUI[index];
-        selectMenu.Open(target.ItemSlot);
+        dropSlot.Open(target.ItemSlot);
     }
 
     /// <summary>
@@ -253,12 +238,12 @@ public class Inventory_UI : MonoBehaviour
     /// 아이템 버리기 창을 여는 함수
     /// </summary>
     /// <param name="index">아이템을 버릴 슬롯의 인덱스</param>
-    private void OnItemDrop(uint index)
-    {
-        Slot_UI target = slotsUI[index];
-        selectMenu.Close();
-        dropSlot.Open(target.ItemSlot);
-    }
+    //private void OnItemDrop(uint index)
+    //{
+    //    Slot_UI target = slotsUI[index];
+    //    selectMenu.Close();
+    //    dropSlot.Open(target.ItemSlot);
+    //}
 
     /// <summary>
     /// 버리기 창에서 확인 버튼을 누르면 실행되는 함수
@@ -269,71 +254,6 @@ public class Inventory_UI : MonoBehaviour
     {
         inventory.RemoveItem(index, count);
         dropSlot.Close();
-    }
-
-    /// <summary>
-    /// 아이템을 사용하는 함수
-    /// </summary>
-    /// <param name="slot">사용할 아이템의 데이터</param>
-    private void OnUse(ItemSlot slot)
-    {
-        if(slot.ItemData.itemType == ItemType.Buff)
-        {
-            switch (slot.ItemData.itemId)
-            {
-                case ItemCode.BigHeal:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.MiddleHeal:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.SmallHeal:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.BigSpeed:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.MiddleSpeed:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.SmallSpeed:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.BigStrength:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.MiddleStrength:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.SmallStrength:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-            }
-            inventory.RemoveItem(slot.Index);
-            selectMenu.Close();
-        }
-        else if(slot.ItemData.itemType == ItemType.Trap)
-        {
-            switch(slot.ItemData.itemId)
-            {
-                case ItemCode.BoomTrap:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.StunTrap:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-                case ItemCode.SlowTrap:
-                    Debug.Log(slot.ItemData.itemId);
-                    break;
-            }
-            inventory.RemoveItem(slot.Index);
-            selectMenu.Close();
-        }
-        else
-        {
-            selectMenu.Close();
-        }
-        
     }
 
     public void open()
@@ -350,7 +270,7 @@ public class Inventory_UI : MonoBehaviour
         canvas.blocksRaycasts = false;
     }
 
-    private void InventoryOnOff(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void InventoryOnOff()
     {
         if (canvas.interactable)
         {

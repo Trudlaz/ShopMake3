@@ -7,7 +7,8 @@ public class Strength : BuffBase
 
     public override void Use()
     {
-        player.currentWeight += amountBuff;
+        player.limitWeight += amountBuff;
+        player.MaxWeight += amountBuff;
 
         StartCoroutine(Duration());
     }
@@ -16,6 +17,7 @@ public class Strength : BuffBase
     {
         yield return new WaitForSeconds(Maxduration);
 
-        player.currentWeight -= amountBuff;
+        player.limitWeight -= amountBuff;
+        player.MaxWeight -= amountBuff;
     }
 }

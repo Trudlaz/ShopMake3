@@ -8,7 +8,7 @@ public class Heal : BuffBase
 
     public override void Use()
     {
-        player.Damege(-amountBuff);
+        player.Heal(amountBuff);
     }
 
 }

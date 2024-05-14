@@ -35,19 +35,55 @@ public class WeaponBase : ItemBase
     [Tooltip("소음")]
     public float noiseVelocity = 7.0f;
 
+    public int CurrentAmmo 
+    {
+        get => currentAmmo;
+        set 
+        {
+            if (currentAmmo != value) 
+            {
+                currentAmmo = value;
+                onAmmoChange?.Invoke(currentAmmo, maxAmmo);
+            }
+        }
+    }
     int currentAmmo = 0;
+
     float coolTime = 0f;
+
     public bool canFire => coolTime < fireRate && currentAmmo > 0;
     public Action<ItemCode, int> onReload;    //장비창에 장착될때 인벤토리의 리로딩 함수와 연결 
+    public Action<int, int> onAmmoChange;
 
     private void Update()
     {
         coolTime -= Time.deltaTime;
     }
 
+    // Player_UI관련 -----------------------------------------------------
+
+    private void OnEnable()
+    {
+        PlayerUI playerUI = GameManager.Instance.PlayerUI;
+        onAmmoChange += playerUI.Remain.Refresh;
+
+        playerUI.Remain.Refresh(currentAmmo, maxAmmo);
+    }
+
+    private void OnDisable()
+    {
+        PlayerUI playerUI = GameManager.Instance.PlayerUI;
+
+        playerUI.Remain.Refresh(0, 0);
+
+        onAmmoChange = null;
+    }
+
+    // ------------------------------------------------------------------------
+
     public override void Use() //리로딩
     {
-        int needAmmor = maxAmmo - currentAmmo;
+        int needAmmor = maxAmmo - CurrentAmmo;
         ItemCode needType = ItemCode.PistolBullet;
         switch (ammunitionType) 
         {
@@ -69,16 +105,15 @@ public class WeaponBase : ItemBase
 
     public void ReLoad(int ammo)
     {
-        currentAmmo += ammo;
+        CurrentAmmo += ammo;
     }
 
     public virtual void Fire() 
     {
         if (canFire) 
         {
-            currentAmmo--;
+            CurrentAmmo--;
             coolTime = fireRate;
         }
     }
-
 }
