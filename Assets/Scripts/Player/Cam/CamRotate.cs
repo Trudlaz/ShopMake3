@@ -52,9 +52,19 @@ public class CamRotate : MonoBehaviour
             {
                 hit.collider.transform.parent.SendMessage("Interect", SendMessageOptions.DontRequireReceiver);
             }
-            else
+            else if (hit.collider.CompareTag("Item"))
             {
-                hit.collider.SendMessage("Interaction", SendMessageOptions.DontRequireReceiver);
+                // 상속받은 스크립트에서 Interact 메서드를 호출
+                var itemBase = hit.collider.GetComponent<ItemBase>();
+                if (itemBase != null)
+                {
+                    ItemCode itemCode = itemBase.GetItemCode();
+                    itemBase.Interact(itemCode);
+                }
+                else
+                {
+                    Debug.LogWarning("아이템베이스에서 해당 개체를 찾을 수 없습니다.");
+                }
             }
         }
     }
