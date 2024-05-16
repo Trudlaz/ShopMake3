@@ -14,7 +14,7 @@ public class BulletBase : ItemBase
         Sniperbullet = 3,
     }
 
-    public override void Interact(ItemCode itemCode)
+    public override void Interact()
     {
         GameManager.Instance.InventoryUI.Inventory.AddItem(itemCode, 5);
         GameObject obj = GameManager.Instance.ItemData[itemCode].itemPrefab;

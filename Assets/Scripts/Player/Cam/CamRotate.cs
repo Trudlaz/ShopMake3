@@ -58,8 +58,7 @@ public class CamRotate : MonoBehaviour
                 var itemBase = hit.collider.GetComponent<ItemBase>();
                 if (itemBase != null)
                 {
-                    ItemCode itemCode = itemBase.GetItemCode();
-                    itemBase.Interact(itemCode);
+                    itemBase.Interact();
                 }
                 else
                 {
