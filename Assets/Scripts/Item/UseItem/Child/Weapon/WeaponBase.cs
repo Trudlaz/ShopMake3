@@ -6,33 +6,33 @@ using static BulletBase;
 
 public class WeaponBase : ItemBase
 {
-    [Tooltip("ÃÖ´ë ÃÑ¾Ë ¼ö, ÀåÅº¼ö")]
+    [Tooltip("ìµœëŒ€ ì´ì•Œ ìˆ˜, ì¥íƒ„ìˆ˜")]
     public int maxAmmo = 10;
-    [Tooltip("¿¬»ç·Â")]
+    [Tooltip("ì—°ì‚¬ë ¥")]
     public float fireRate = 0.1f;
-    [Tooltip("¹«°Ô")]
+    [Tooltip("ë¬´ê²Œ")]
     public float weight = 0f;
-    [Tooltip("°¡°İ")]
+    [Tooltip("ê°€ê²©")]
     public uint price = 0;
-    [Tooltip("³»±¸µµ")]
+    [Tooltip("ë‚´êµ¬ë„")]
     public float durability = 0f;
-    [Tooltip("¹İµ¿. ±âº»Àû ¼öÄ¡.")]
+    [Tooltip("ë°˜ë™. ê¸°ë³¸ì  ìˆ˜ì¹˜.")]
     public float recoil = 0f;
-    [Tooltip("Á¶ÁØ °Å¸®")]
+    [Tooltip("ì¡°ì¤€ ê±°ë¦¬")]
     public uint sightingRange = 0;
-    [Tooltip("ÅºÁ¾")]
+    [Tooltip("íƒ„ì¢…")]
     public BulletType ammunitionType;
-    [Tooltip("µ¥¹ÌÁö")]
+    [Tooltip("ë°ë¯¸ì§€")]
     public float damage = 5.0f;
-    [Tooltip("ÃÖ´ë °ø°İ·Â, Ä¡µ©")]
+    [Tooltip("ìµœëŒ€ ê³µê²©ë ¥, ì¹˜ë€")]
     public float headDamage = 10.0f;
-    [Tooltip("¸íÁß·ü")]
+    [Tooltip("ëª…ì¤‘ë¥ ")]
     public float accuracy = 0f;
-    [Tooltip("Ä¡È®")]
+    [Tooltip("ì¹˜í™•")]
     public float critRate = 0f;
-    [Tooltip("Åº¼Ó")]
+    [Tooltip("íƒ„ì†")]
     public uint muzzleVelocity = 0;
-    [Tooltip("¼ÒÀ½")]
+    [Tooltip("ì†ŒìŒ")]
     public float noiseVelocity = 7.0f;
 
     public int CurrentAmmo 
@@ -52,7 +52,7 @@ public class WeaponBase : ItemBase
     float coolTime = 0f;
 
     public bool canFire => coolTime < fireRate && currentAmmo > 0;
-    public Action<ItemCode, int> onReload;    //ÀåºñÃ¢¿¡ ÀåÂøµÉ¶§ ÀÎº¥Åä¸®ÀÇ ¸®·Îµù ÇÔ¼ö¿Í ¿¬°á 
+    public Action<ItemCode, int> onReload;    //ì¥ë¹„ì°½ì— ì¥ì°©ë ë•Œ ì¸ë²¤í† ë¦¬ì˜ ë¦¬ë¡œë”© í•¨ìˆ˜ì™€ ì—°ê²° 
     public Action<int, int> onAmmoChange;
 
     private void Update()
@@ -60,7 +60,7 @@ public class WeaponBase : ItemBase
         coolTime -= Time.deltaTime;
     }
 
-    // Player_UI°ü·Ã -----------------------------------------------------
+    // Player_UIê´€ë ¨ -----------------------------------------------------
 
     private void OnEnable()
     {
@@ -81,7 +81,7 @@ public class WeaponBase : ItemBase
 
     // ------------------------------------------------------------------------
 
-    public override void Use() //¸®·Îµù
+    public override void Use() //ë¦¬ë¡œë”©
     {
         int needAmmor = maxAmmo - CurrentAmmo;
         ItemCode needType = ItemCode.PistolBullet;

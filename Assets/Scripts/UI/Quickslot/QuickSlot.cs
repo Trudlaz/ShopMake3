@@ -1,19 +1,15 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Purchasing;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.UI.GridLayoutGroup;
 
-public class QuickSlot : TestBase
+public class QuickSlot : MonoBehaviour
 {
     private PlayerInput playerInput;
     Equip equip;
     private Player owner;
     public Player Owner => owner;
     public Equip Equip => equip;
+
     [Tooltip("생성할 아이템 프리펩 부모 오브젝트")]
     public GameObject itemParent;
 
@@ -31,9 +27,12 @@ public class QuickSlot : TestBase
     public Action<ItemData> onGranadeChange;
     public Action<ItemData> onETCChange;
 
+    private PlayerInput InputActions; 
+
     private void Awake()
     {
         equip = GetComponent<Equip>();
+        InitializeInputActions(); // 입력 시스템 초기화
     }
 
     public QuickSlot(Equip playerEquip, Player owner)
@@ -50,6 +49,59 @@ public class QuickSlot : TestBase
         subWeapon += SubWeapon;
         grenade += Grenade;
         ect += EctCompare;
+
+        InputActions.Enable(); // 입력 시스템 활성화
+    }
+
+    private void OnDisable()
+    {
+        InputActions.Disable(); // 입력 시스템 비활성화
+
+        mainWeapon_01 -= MainWeapon_01;
+        mainWeapon_02 -= MainWeapon_02;
+        subWeapon -= SubWeapon;
+        grenade -= Grenade;
+        ect -= EctCompare;
+    }
+
+    private void InitializeInputActions()
+    {
+        InputActions = new PlayerInput();
+        InputActions.UI.QuickSlot1.performed += OnQuickSlot1;
+        InputActions.UI.QuickSlot2.performed += OnQuickSlot2;
+        InputActions.UI.QuickSlot3.performed += OnQuickSlot3;
+        InputActions.UI.QuickSlot4.performed += OnQuickSlot4;
+        InputActions.UI.QuickSlot5.performed += OnQuickSlot5;
+    }
+
+    private void OnQuickSlot1(InputAction.CallbackContext context)
+    {
+        mainWeapon_01?.Invoke();
+        Debug.Log("주무기01");
+    }
+
+    private void OnQuickSlot2(InputAction.CallbackContext context)
+    {
+        mainWeapon_02?.Invoke();
+        Debug.Log("주무기02");
+    }
+
+    private void OnQuickSlot3(InputAction.CallbackContext context)
+    {
+        subWeapon?.Invoke();
+        Debug.Log("권총");
+    }
+
+    private void OnQuickSlot4(InputAction.CallbackContext context)
+    {
+        grenade?.Invoke();
+        Debug.Log("수류탄");
+    }
+
+    private void OnQuickSlot5(InputAction.CallbackContext context)
+    {
+        ect?.Invoke();
+        Debug.Log("기타");
     }
 
     public void MainWeapon_01()
@@ -99,44 +151,8 @@ public class QuickSlot : TestBase
             else if (equip.slots[7].ItemData.itemType == ItemType.Trap)
             {
                 equip.slots[7].ItemData.itemPrefab.GetComponent<TrapBase>().Use();
-
             }
             onETCChange?.Invoke(equip.slots[7].ItemData);
         }
-    }
-
-    protected override void OnTest1(InputAction.CallbackContext context)
-    {
-        // 주무기01
-        mainWeapon_01.Invoke();
-        Debug.Log("주무기01");
-    }
-
-    protected override void OnTest2(InputAction.CallbackContext context)
-    {
-        // 주무기02
-        mainWeapon_02.Invoke();
-        Debug.Log("주무기02");
-    }
-
-    protected override void OnTest3(InputAction.CallbackContext context)
-    {
-        // 권총
-        subWeapon.Invoke();
-        Debug.Log("권총");
-    }
-
-    protected override void OnTest4(InputAction.CallbackContext context)
-    {
-        // 수류탄
-        grenade.Invoke();
-        Debug.Log("수류탄");
-    }
-
-    protected override void OnTest5(InputAction.CallbackContext context)
-    {
-        // 기타
-        ect.Invoke();
-        Debug.Log("기타");
     }
 }

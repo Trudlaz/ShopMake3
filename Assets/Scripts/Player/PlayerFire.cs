@@ -15,6 +15,7 @@ public class PlayerFire : MonoBehaviour
 
     PlayerNoiseSystem noise;
     private WeaponBase weapon; // WeaponBase 타입의 멤버 변수 추가
+    private QuickSlot quickSlot; // QuickSlot 클래스의 인스턴스 추가
 
     private void Awake()
     {
@@ -51,6 +52,13 @@ public class PlayerFire : MonoBehaviour
         {
             Debug.LogError("WeaponBase 컴포넌트가 플레이어에 할당되지 않았습니다.");
         }
+
+        // QuickSlot 인스턴스 초기화
+        quickSlot = GetComponent<QuickSlot>();
+        if (quickSlot == null)
+        {
+            Debug.LogError("QuickSlot 컴포넌트가 플레이어에 할당되지 않았습니다.");
+        }
     }
 
     private void OnEnable()
@@ -70,7 +78,12 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
-        // 여기서 액션을 보내면, 퀵슬롯에서 슬롯을 현재 장비하고 있는 아이템과 연결 해주는 것 
+        // QuickSlot을 통해 아이템 사용 신호 보내기
+        if (quickSlot != null)
+        {
+            quickSlot.SubWeapon(); // 예시로 SubWeapon을 사용하도록 설정
+            Debug.Log("퀵슬롯에서 아이템을 사용했습니다.");
+        }
     }
 
     private void Fire()
