@@ -6,30 +6,45 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum Equipment : byte
+{
+    None = 0,
+    Main1,
+    Main2,
+    Sub,
+    Armor,
+    Helmet,
+    Throw,
+    BackPack,
+    ETC
+}
+
+
 public class Equip_UI : MonoBehaviour
-{//
+{
     Equip equip;
 
-    PlayerInput inputActions;
+
 
     public Equip Equip => equip;
 
-    DragSlotUI dragSlot;
 
     EquipSlot_UI[] equipSlot_UI;
 
-    [SerializeField] DropSlotUI dropSlot;
+    DropSlotUI dropSlot;
 
-    [SerializeField] InventoryManager invenManager;
+    InventoryManager invenManager;
 
-    [SerializeField] RectTransform invenTransform;
+    RectTransform invenTransform;
 
-    [SerializeField] CanvasGroup canvas;
+    CanvasGroup canvas;
 
     QuickSlot quickSlot;
 
+    Inventory_UI inven;
+
     public QuickSlot QuickSlot => quickSlot;
-     
+
     public ItemData data01;
     public ItemData data02;
     public ItemData data03;
@@ -38,15 +53,34 @@ public class Equip_UI : MonoBehaviour
 
     Player Owner => equip.Owner;
 
+    Transform weaponTransform;
+
+    PlayerInput UIinputActions;
+
+    Equipment equipment = Equipment.None;
+
+    public Equipment Equipment
+    {
+        get => equipment;
+        set
+        {
+            if (equipment != value)
+            {
+                equipment = value;
+            }
+        }
+    }
+
+
     private void Awake()
     {
-        inputActions = new PlayerInput();
+        UIinputActions = new PlayerInput();
 
         Transform child = transform.GetChild(0);
         equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
 
         child = transform.GetChild(1);
-        dropSlot = child.GetComponent< DropSlotUI>();
+        dropSlot = child.GetComponent<DropSlotUI>();
 
         invenManager = GetComponentInParent<InventoryManager>();
 
@@ -54,20 +88,30 @@ public class Equip_UI : MonoBehaviour
 
         canvas = GetComponent<CanvasGroup>();
 
-        dragSlot = GetComponentInChildren<DragSlotUI>();
-
         quickSlot = GetComponent<QuickSlot>();
-    }//
+    }
 
     private void OnEnable()
     {
+        // UI 관련
+        UIinputActions.UI.Enable();
+        UIinputActions.UI.QuickSlot1.performed += MainWeapon1;
+        UIinputActions.UI.QuickSlot2.performed += MainWeapon2;
+        UIinputActions.UI.QuickSlot3.performed += SubWeapon;
+        UIinputActions.UI.QuickSlot4.performed += ThrowWeapon;
+        UIinputActions.UI.QuickSlot5.performed += ETCSlot;
     }
-
-
 
     void OnDisable()
     {
+        UIinputActions.UI.QuickSlot5.performed -= ETCSlot;
+        UIinputActions.UI.QuickSlot4.performed -= ThrowWeapon;
+        UIinputActions.UI.QuickSlot3.performed -= SubWeapon;
+        UIinputActions.UI.QuickSlot2.performed -= MainWeapon2;
+        UIinputActions.UI.QuickSlot1.performed -= MainWeapon1;
     }
+
+
 
     public void InitializeInventory(Equip playerEquip)
     {
@@ -76,59 +120,77 @@ public class Equip_UI : MonoBehaviour
         for (uint i = 0; i < equipSlot_UI.Length; i++)
         {
             equipSlot_UI[i].InitializeSlot(equip[i]);
-            equipSlot_UI[i].onDragBegin += OnItemMoveBegin;
-            equipSlot_UI[i].onDragEnd += OnItemMoveEnd;
-            equipSlot_UI[i].OnClick += OnClick;
+            //equipSlot_UI[i].onDragBegin += OnItemMoveBegin;
+            //equipSlot_UI[i].onDragEnd += OnItemMoveEnd;
+            //equipSlot_UI[i].OnClick += OnClick;
         }
         invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // �ӽ� ���� �ʱ�ȭ
-
+        inven = GameManager.Instance.InventoryUI;
         dropSlot.Close();
 
         Close();
     }
 
-    private void OnItemMoveBegin(ItemSlot slot)
+    //private void OnItemMoveBegin(ItemSlot slot)
+    //{
+    //    invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // �ӽ� ���� �ʱ�ȭ
+    //    equip.MoveItem(slot, invenManager.DragSlot.ItemSlot);
+    //    invenManager.DragSlot.Open();
+    //}
+
+
+
+    ///// <summary>
+    ///// ������ �巡�װ� ���̳��� ����Ǵ� �Լ�
+    ///// </summary>
+    ///// <param name="index">���� ������ index</param>
+    //private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
+    //{
+    //    equip.MoveItem(invenManager.DragSlot.ItemSlot, slot);
+
+    //    //Inventory_UI inven;
+    //    //inven = rect.GetComponentInParent<Inventory_UI>();
+
+    //    //if (inven != null)
+    //    //{
+    //    //    inven.MinusValue(slot, (int)slot.ItemCount);
+    //    //    inven.PlusValue(slot);
+    //    //}
+
+    //    if (invenManager.DragSlot.ItemSlot.IsEmpty)
+    //    {
+    //        invenManager.DragSlot.Close();
+    //    }
+
+    //}
+
+    ///// <summary>
+    ///// ������ Ŭ���ϸ� ����Ǵ� �Լ�
+    ///// </summary>
+    ///// <param name="index"></param>
+    //private void OnClick(ItemSlot slot, RectTransform rect)
+    //{
+    //    if (!invenManager.DragSlot.ItemSlot.IsEmpty)
+    //    {
+    //        OnItemMoveEnd(slot, rect);
+    //    }
+    //}
+
+    public bool EquipItem(ItemSlot slot)
     {
-        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // �ӽ� ���� �ʱ�ȭ
-        equip.MoveItem(slot, invenManager.DragSlot.ItemSlot);
-        invenManager.DragSlot.Open();
+        return equip.AddItem(slot.ItemData.itemId);
     }
 
-
-
-    /// <summary>
-    /// ������ �巡�װ� ���̳��� ����Ǵ� �Լ�
-    /// </summary>
-    /// <param name="index">���� ������ index</param>
-    private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
+    public void UnEquipItem(ItemSlot slot)
     {
-        equip.MoveItem(invenManager.DragSlot.ItemSlot, slot);
-
-        Inventory_UI inven;
-        inven = FindObjectOfType<Inventory_UI>();
-
-        if (inven != null)
-        {
-            //inven.MinusValue(slot, (int)slot.ItemCount);
-            //inven.PlusValue(slot);
-        }
-
-        if (invenManager.DragSlot.ItemSlot.IsEmpty)
-        {
-            invenManager.DragSlot.Close();
-        }
-
+        equip.RemoveItem(slot.ItemData.itemId);
     }
 
-    /// <summary>
-    /// ������ Ŭ���ϸ� ����Ǵ� �Լ�
-    /// </summary>
-    /// <param name="index"></param>
-    private void OnClick(ItemSlot slot, RectTransform rect)
+    public void UseItem(uint index)
     {
-        if (!invenManager.DragSlot.ItemSlot.IsEmpty)
+        if (inven.Inventory.RemoveItem(equipSlot_UI[index].ItemSlot.ItemData.itemId) < 1)
         {
-            OnItemMoveEnd(slot, rect);
+            equip.RemoveItem(equipSlot_UI[index].ItemSlot.ItemData.itemId);
         }
     }
 
@@ -156,5 +218,29 @@ public class Equip_UI : MonoBehaviour
         {
             open();
         }
+    }
+
+    private void MainWeapon1(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Equipment = Equipment.Main1;
+    }
+    private void MainWeapon2(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Equipment = Equipment.Main2;
+    }
+
+    private void SubWeapon(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Equipment = Equipment.Sub;
+    }
+
+    private void ThrowWeapon(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Equipment = Equipment.Throw;
+    }
+
+    private void ETCSlot(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        Equipment = Equipment.ETC;
     }
 }

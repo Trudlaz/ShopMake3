@@ -34,51 +34,102 @@ public class MainButtonUI : MonoBehaviour
         gamestartButton.onClick.AddListener(() => Gamestart());
 
         // 초기 UI 설정: 모든 UI 비활성화 및 버튼 패널 활성화
-        SetAllUIElementsActive(false);
-        mainButtonPanel.SetActive(true);
-        invenButtonPanel.SetActive(false);
+        if (AreAllUIElementsAssigned())
+        {
+            SetAllUIElementsActive(false);
+            mainButtonPanel.SetActive(true);
+            invenButtonPanel.SetActive(false);
+        }
+        else
+        {
+            Debug.LogError("인스펙터에서 하나 이상의 UI 요소가 할당되지 않았습니다.");
+        }
     }
 
-    // 게임을 시작하는 메서드
+    bool AreAllUIElementsAssigned()
+    {
+        bool allAssigned = true;
+
+        if (equop == null)
+        {
+            Debug.LogError("equop이 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        if (inventory == null)
+        {
+            Debug.LogError("inventory가 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        if (shopInventory == null)
+        {
+            Debug.LogError("shopInventory가 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        if (worldInventory == null)
+        {
+            Debug.LogError("worldInventory가 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        if (mainButtonPanel == null)
+        {
+            Debug.LogError("mainButtonPanel이 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        if (invenButtonPanel == null)
+        {
+            Debug.LogError("invenButtonPanel이 할당되지 않았습니다!");
+            allAssigned = false;
+        }
+
+        return allAssigned;
+    }
+
     void Gamestart()
     {
         GameManager.Instance.StartGame("InGameScene");
     }
 
-    // 장비 UI를 활성화하는 메서드
     void Equipment()
     {
-        SetUIElementsState(true, true, false, false);
+        equop.open();
+        inventory.Open();
+        shopInventory.Close();
+        worldInventory.Close();
     }
 
-    // 인벤토리 UI를 활성화하는 메서드
     void ToggleInventory()
     {
-        SetUIElementsState(false, true, false, true);
+        equop.Close();
+        inventory.Open();
+        shopInventory.Close();
+        worldInventory.Open();
     }
 
-    // 상점 UI를 활성화하는 메서드
     void ToggleShop()
     {
-        SetUIElementsState(false, false, true, true);
+        equop.Close();
+        inventory.Close();
+        shopInventory.Open();
+        worldInventory.Open();
     }
 
-    // 게임 종료를 처리하는 메서드
     void EndGame()
     {
-        // 게임 종료 로직 추가
         Application.Quit();
     }
 
-    // 전달된 액션을 실행하고 UI 상태를 변경하는 메서드
     void ToggleUI(System.Action action)
     {
         action.Invoke();
-        mainButtonPanel.SetActive(false); // 메인 버튼 패널 비활성화
-        invenButtonPanel.SetActive(true); // 인벤 버튼 패널 활성화
+        mainButtonPanel.SetActive(false);
+        invenButtonPanel.SetActive(true);
     }
 
-    // 메인 버튼들을 다시 표시하는 메서드
     public void ShowMainButtons()
     {
         SetAllUIElementsActive(false);
@@ -86,21 +137,21 @@ public class MainButtonUI : MonoBehaviour
         invenButtonPanel.SetActive(false);
     }
 
-    // 모든 UI 요소의 활성 상태를 설정하는 헬퍼 메서드
     void SetAllUIElementsActive(bool state)
     {
-        equop.gameObject.SetActive(state);
-        inventory.gameObject.SetActive(state);
-        shopInventory.gameObject.SetActive(state);
-        worldInventory.gameObject.SetActive(state);
-    }
-
-    // 특정 UI 요소들의 활성 상태를 설정하는 헬퍼 메서드
-    void SetUIElementsState(bool equopState, bool inventoryState, bool shopInventoryState, bool worldInventoryState)
-    {
-        equop.gameObject.SetActive(equopState);
-        inventory.gameObject.SetActive(inventoryState);
-        shopInventory.gameObject.SetActive(shopInventoryState);
-        worldInventory.gameObject.SetActive(worldInventoryState);
+        if (state)
+        {
+            equop.open();
+            inventory.Open();
+            shopInventory.Open();
+            worldInventory.Open();
+        }
+        else
+        {
+            equop.Close();
+            inventory.Close();
+            shopInventory.Close();
+            worldInventory.Close();
+        }
     }
 }

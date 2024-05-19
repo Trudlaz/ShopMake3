@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class ShopInventoryUI : MonoBehaviour
 {
     public Slot_UI[] shopSlots; // 상점 슬롯 배열
-    public RectTransform shopTransform; // 상점의RectTransform
+    public RectTransform shopTransform; // 상점의 RectTransform
     public CanvasGroup canvas; // 상점 UI의 CanvasGroup
     public ShopBuyMenuUI shopBuyMenu; // ShopBuyMenuUI 컴포넌트 참조
 
@@ -19,16 +19,30 @@ public class ShopInventoryUI : MonoBehaviour
         canvas = GetComponent<CanvasGroup>();
         shopBuyMenu = GetComponentInChildren<ShopBuyMenuUI>(); // ShopBuyMenuUI 컴포넌트 찾기
 
-        InitializeShop();
+        // shopInventory가 null이면 새로 생성
+        if (shopInventory == null)
+        {
+            shopInventory = new ShopInventory();
+        }
+
+        InitializeShopInventory();
     }
 
-    public void InitializeShop()
+    public void InitializeShopInventory()
     {
-        foreach (Slot_UI slot in shopSlots)
+        if (shopInventory == null)
         {
-            slot.onRightClick += OnItemRightClick; // 우클릭 이벤트 연결
-            shopBuyMenu.Close();
+            Debug.LogError("shopInventory가 할당되지 않았습니다!");
+            return;
         }
+
+        for (uint i = 0; i < shopSlots.Length; i++)
+        {
+            shopSlots[i].InitializeSlot(shopInventory[i]);
+            shopSlots[i].onRightClick += OnItemRightClick;
+        }
+
+        shopBuyMenu.Close();
     }
 
     private void OnItemRightClick(uint index)
@@ -36,18 +50,15 @@ public class ShopInventoryUI : MonoBehaviour
         Slot_UI target = shopSlots[index];
         shopBuyMenu.Open(target.ItemSlot);
         shopBuyMenu.MovePosition(Mouse.current.position.ReadValue());
-            
     }
 
-
-    public void UpdateSlots(ItemSlot[] updatedSlots)
+    public void UpdateSlots()
     {
-        // 인벤토리 슬롯 배열을 업데이트하는 로직
-        for (int i = 0; i < shopSlots.Length && i < updatedSlots.Length; i++)
+        for (int i = 0; i < shopSlots.Length && i < shopInventory.items.Length; i++)
         {
-            if (updatedSlots[i] != null)
+            if (shopInventory.items[i] != null)
             {
-                shopSlots[i].InitializeSlot(updatedSlots[i]);
+                shopSlots[i].InitializeSlot(shopInventory.items[i]);
             }
         }
     }
@@ -66,5 +77,13 @@ public class ShopInventoryUI : MonoBehaviour
         canvas.alpha = 0;
         canvas.interactable = false;
         canvas.blocksRaycasts = false;
+    }
+    public void AddBasicItem()
+    {
+        shopInventory.AddItem(ItemCode.Pistol);
+        shopInventory.AddItem(ItemCode.Rifle);
+        shopInventory.AddItem(ItemCode.Shotgun);
+        shopInventory.AddItem(ItemCode.Sniper);
+        shopInventory.AddItem(ItemCode.Key);
     }
 }

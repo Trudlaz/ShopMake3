@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 02_BiglHeal
   m_EditorClassIdentifier: 
-  itemId: 2
+  itemId: 0
   itemType: 0
   itemName: "\uAD6C\uAE09\uC0C1\uC790"
   itemImage: {fileID: 21300000, guid: d4ca6bcf270904f4aa85f5bfaff391bb, type: 3}

@@ -244,7 +244,7 @@ public class WorldInventory_UI : MonoBehaviour
         worldDropSlot.Close();
     }
 
-    public void open()
+    public void Open()
     {
         canvas.alpha = 1;
         canvas.interactable = true;

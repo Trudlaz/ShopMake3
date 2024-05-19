@@ -256,7 +256,7 @@ public class Inventory_UI : MonoBehaviour
         dropSlot.Close();
     }
 
-    public void open()
+    public void Open()
     {
         canvas.alpha = 1;
         canvas.interactable = true;
@@ -278,7 +278,7 @@ public class Inventory_UI : MonoBehaviour
         }
         else
         {
-            open();
+            Open();
         }
     }
 }

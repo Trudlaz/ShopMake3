@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 43_SniperScope
   m_EditorClassIdentifier: 
-  itemId: 43
-  itemType: 8
+  itemId: 0
+  itemType: 0
   itemName: "\uC2A4\uB098\uC774\uD37C \uC870\uC900\uACBD"
   itemImage: {fileID: 21300000, guid: 157f302fc54fcc84289b09d3381568e2, type: 3}
   weight: 0

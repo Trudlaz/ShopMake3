@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 41_ShotgunStock
   m_EditorClassIdentifier: 
-  itemId: 41
-  itemType: 8
+  itemId: 0
+  itemType: 0
   itemName: "\uC0F7\uAC74 \uAC1C\uBA38\uB9AC\uD310"
   itemImage: {fileID: 21300000, guid: a6b084e0456b01c4cb4a327e8ec4064a, type: 3}
   weight: 0

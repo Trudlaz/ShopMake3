@@ -16,6 +16,9 @@ public class GameManager : Singleton<GameManager>
     private Equip_UI equipUI;
     private PlayerUI playerUI;
 
+    // ShopInventory 인스턴스 추가
+    private ShopInventory shopInventory;
+
     // 외부 접근을 위한 프로퍼티 선언
     public Player Player => player;
     public ItemDataManager ItemData => itemDataManager;
@@ -48,17 +51,25 @@ public class GameManager : Singleton<GameManager>
 
         WorldInventory worldInven = new WorldInventory(this);
 
-        if(worldInventoryUI != null)
+        if (worldInventoryUI != null)
         {
             worldInventoryUI.InitializeWorldInventory(worldInven);
         }
 
-        Equip equip = new Equip(Instance);
+        Equip equip = new Equip(this);
 
-        if(equipUI != null)
+        if (equipUI != null)
         {
             equipUI.InitializeInventory(equip);
         }
+        else
+        {
+            Debug.LogError("equipUI가 할당되지 않았습니다!");
+        }
+
+        // ShopInventory 초기화
+        shopInventory = new ShopInventory();
+        shopInventoryUI.AddBasicItem();
     }
 
     // 초기화 이전에 필요한 컴포넌트를 미리 설정

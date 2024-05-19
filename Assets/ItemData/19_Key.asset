@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 19_Key
   m_EditorClassIdentifier: 
-  itemId: 19
-  itemType: 5
+  itemId: 0
+  itemType: 0
   itemName: "\uC5F4\uC1E0"
   itemImage: {fileID: 21300000, guid: 5e5a4a961c34b544680e54341e2069f6, type: 3}
   weight: 3
   maxItemCount: 1
   itemPrefab: {fileID: 6202248377633566000, guid: 609cad5eb478dd849beaf2705286bdf7, type: 3}
+  Price: 0

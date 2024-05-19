@@ -5,6 +5,8 @@ using System.Net.NetworkInformation;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
+
+
 public class Equip : MonoBehaviour
 {
     private const int Default_Inventory_Size = 8;
@@ -27,7 +29,6 @@ public class Equip : MonoBehaviour
         for (uint i = 0; i < slots.Length; i++)
         {
             slots[i] = new EquipSlot(i);
-            //slots[i].slotType = slotsParent.GetComponentsInChildren<EquipSlot_UI>()[i].slotType;  // awake 함수로 따로 찾기
         }
 
         dragSlot = new DragSlot(dragSlotIndex);
@@ -35,17 +36,33 @@ public class Equip : MonoBehaviour
         equipUI = GameManager.Instance.EquipUI;
         this.owner = owner.Player;
 
-        Transform equipUIObject = equipUI.gameObject.transform.GetChild(0);
-
-        for (uint i = 0; i < slots.Length; i++)
+        if (equipUI != null)
         {
-            slots[i].slotType = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>().slotType;  // awake 함수로 따로 찾기
+            Transform equipUIObject = equipUI.gameObject.transform.GetChild(0);
+
+            for (uint i = 0; i < slots.Length; i++)
+            {
+                EquipSlot_UI equipSlotUI = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>();
+                if (equipSlotUI != null)
+                {
+                    slots[i].slotType = equipSlotUI.slotType;
+                }
+                else
+                {
+                    Debug.LogError($"슬롯 {i}에 EquipSlot_UI가 할당되지 않았습니다!");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("equipUI가 null입니다. GameManager에서 초기화되지 않았습니다.");
         }
     }
 
+
     private void Awake()
     {
-        GameObject equipUIObject = equipUI.gameObject.GetComponent<GameObject>();
+        GameObject equipUIObject = equipUI.gameObject;
 
         for (uint i = 0; i < slots.Length; i++)
         {
@@ -57,14 +74,13 @@ public class Equip : MonoBehaviour
     /// 정비창에 특정 아이템을 장착하는 함수.
     /// </summary>
     /// <param name="code">장착 할 아이템 코드</param>
-    /// <returns>성공하면 true 리턴 실패하면 false 리턴</returns>
+    ///// <returns>성공하면 true 리턴 실패하면 false 리턴</returns>
     public bool AddItem(ItemCode code)
     {
         for (int i = 0; i < SlotCount; i++)
         {
             if (AddItem(code, (uint)i))
             {
-                EquipEfectApply();
                 return true;
             }
         }
@@ -111,7 +127,7 @@ public class Equip : MonoBehaviour
         {
             // 잘못된 슬롯
         }
-
+        //EquipEfectApply();
         return result;
     }
 
@@ -209,12 +225,30 @@ public class Equip : MonoBehaviour
     /// </summary>
     /// <param name="slotIndex"></param>
     /// <param name="count"></param>
-    public void RemoveItem(uint slotIndex, uint count = 1)
+    private void RemoveItem(uint slotIndex, uint count = 1)
     {
         if (IsValidIndex(slotIndex))
         {
             EquipSlot slot = slots[slotIndex];
             slot.DecreaseSlotItem(count);
+        }
+    }
+
+    public void RemoveItem(ItemCode code,  uint count = 1)
+    {
+        for(int i = 0; i < SlotCount; i++)
+        {
+            ItemData data = itemDataManager[code];
+            EquipSlot slot = slots[i];
+
+            if (slot.slotType.Contains(data.itemType))
+            {
+                if (!slot.IsEmpty)
+                {
+                    RemoveItem((uint)i, count);
+                    break;
+                }
+            }
         }
     }
 
@@ -230,25 +264,17 @@ public class Equip : MonoBehaviour
     }
 
     /// <summary>
-    /// 플레이어가 사망하거나 중간에 나갔을 때 인벤토리를 비우는 함수
-    /// </summary>
-    public void GameOver()
-    {
-        ClearEquip();
-    }
-
-    /// <summary>
     /// 
     /// </summary>
-    public void EquipEfectApply()
-    {
-        if (slots[3] != null || slots[4] != null)
-        {
-            ArmorBase armoHelmet = slots[3].ItemData.itemPrefab.GetComponent<ArmorBase>();
-            ArmorBase armoVest = slots[4].ItemData.itemPrefab.GetComponent<ArmorBase>();
+    //public void EquipEfectApply()
+    //{
+    //    if (slots[3] != null || slots[4] != null)
+    //    {
+    //        ArmorBase armoHelmet = slots[3].ItemData.itemPrefab.GetComponent<ArmorBase>();
+    //        ArmorBase armoVest = slots[4].ItemData.itemPrefab.GetComponent<ArmorBase>();
 
-            owner.Hp += armoHelmet.amountDefense;
-            owner.Hp += armoVest.amountDefense;
-        }
-    }
+    //        owner.Hp += armoHelmet.amountDefense;
+    //        owner.Hp += armoVest.amountDefense;
+    //    }
+    //}
 }

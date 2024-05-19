@@ -403,5 +403,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    internal void Equipped(GameObject itemPrefab)
+    {
+        throw new NotImplementedException();
+    }
+
 #endif
 }
