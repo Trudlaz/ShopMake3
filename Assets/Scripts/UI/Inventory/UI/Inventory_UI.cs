@@ -129,9 +129,24 @@ public class Inventory_UI : MonoBehaviour
 
     public void PlusValue(ItemSlot slot)
     {
+        if (slot?.ItemData == null)
+        {
+            Debug.LogError("ItemSlot or ItemData is null!");
+            return;
+        }
+
         Money += (int)slot.ItemData.Price;
-        Owner.Weight += slot.ItemData.weight;
+
+        if (Owner != null)
+        {
+            Owner.Weight += slot.ItemData.weight;
+        }
+        else
+        {
+            Debug.LogWarning("Owner is null, cannot add weight.");
+        }
     }
+
 
     /// <summary>
     /// 게임이 끝난 이후 로컬인벤토리 정리하고 메인화면으로 나가는 함수

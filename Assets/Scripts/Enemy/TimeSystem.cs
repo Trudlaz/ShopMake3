@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class TimeSystem : MonoBehaviour
 {
-    public float nightTime = 1800.0f; //30ºÐ
-    public float playTime = 2400.0f; //40ºÐ
+    public float nightTime = 1800.0f; //30ë¶„
+    public float playTime = 2400.0f; //40ë¶„
     public float amplif = 60;
     public Action<float> onNightchange;
 
@@ -44,7 +44,7 @@ public class TimeSystem : MonoBehaviour
         currentTime += Time.deltaTime;
 
         lightAngle.x = 90.0f + (currentTime * playTimeCal * 180.0f);
-        Debug.Log(currentTime * playTimeCal);
+        //Debug.Log(currentTime * playTimeCal);
         dirLight.transform.rotation = Quaternion.Euler(lightAngle);
         if (isNight)
         {

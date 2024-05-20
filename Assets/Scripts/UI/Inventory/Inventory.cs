@@ -342,9 +342,21 @@ public class Inventory
     {
         if (slot.ItemData != null)
         {
-            Owner.Weight -= (int)(slot.ItemData.weight * count);
+            if (Owner != null)
+            {
+                Owner.Weight -= (int)(slot.ItemData.weight * count);
+            }
+            else
+            {
+                Debug.LogWarning("Owner is null, cannot subtract weight.");
+            }
+        }
+        else
+        {
+            Debug.LogError("ItemData is null, cannot subtract weight.");
         }
     }
+
 
     /// <summary>
     /// 인벤토리 내부에서 특정 한 아이템을 찾는 함수
