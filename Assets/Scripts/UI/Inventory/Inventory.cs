@@ -63,7 +63,6 @@ public class Inventory
                 {
                     if (slots[i].ItemData != null)
                     {
-                        invenUI.Money += (int)slots[i].ItemData.Price;
                         Owner.Weight += slots[i].ItemData.weight;
                     }
                 }

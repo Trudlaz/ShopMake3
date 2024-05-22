@@ -6,41 +6,44 @@ using static BulletBase;
 
 public class WeaponBase : ItemBase
 {
-    [Tooltip("ÃÖ´ë ÃÑ¾Ë ¼ö, ÀåÅº¼ö")]
+    [Tooltip("ìµœëŒ€ ì´ì•Œ ìˆ˜, ì¥íƒ„ìˆ˜")]
     public int maxAmmo = 10;
-    [Tooltip("¿¬»ç·Â")]
+    [Tooltip("ì—°ì‚¬ë ¥")]
     public float fireRate = 0.1f;
-    [Tooltip("¹«°Ô")]
+    [Tooltip("ë¬´ê²Œ")]
     public float weight = 0f;
-    [Tooltip("°¡°İ")]
+    [Tooltip("ê°€ê²©")]
     public uint price = 0;
-    [Tooltip("³»±¸µµ")]
+    [Tooltip("ë‚´êµ¬ë„")]
     public float durability = 0f;
-    [Tooltip("¹İµ¿. ±âº»Àû ¼öÄ¡.")]
+    [Tooltip("ë°˜ë™. ê¸°ë³¸ì  ìˆ˜ì¹˜.")]
     public float recoil = 0f;
-    [Tooltip("Á¶ÁØ °Å¸®")]
+    [Tooltip("ì¡°ì¤€ ê±°ë¦¬")]
     public uint sightingRange = 0;
-    [Tooltip("ÅºÁ¾")]
+    [Tooltip("íƒ„ì¢…")]
     public BulletType ammunitionType;
-    [Tooltip("µ¥¹ÌÁö")]
+    [Tooltip("ë°ë¯¸ì§€")]
     public float damage = 5.0f;
-    [Tooltip("ÃÖ´ë °ø°İ·Â, Ä¡µ©")]
+    [Tooltip("ìµœëŒ€ ê³µê²©ë ¥, ì¹˜ë€")]
     public float headDamage = 10.0f;
-    [Tooltip("¸íÁß·ü")]
+    [Tooltip("ëª…ì¤‘ë¥ ")]
     public float accuracy = 0f;
-    [Tooltip("Ä¡È®")]
+    [Tooltip("ì¹˜í™•")]
     public float critRate = 0f;
-    [Tooltip("Åº¼Ó")]
+    [Tooltip("íƒ„ì†")]
     public uint muzzleVelocity = 0;
-    [Tooltip("¼ÒÀ½")]
+    [Tooltip("ì†ŒìŒ")]
     public float noiseVelocity = 7.0f;
 
-    public int CurrentAmmo 
+    public GameObject bulletEffect;
+    private ParticleSystem ps;
+
+    public int CurrentAmmo
     {
         get => currentAmmo;
-        set 
+        set
         {
-            if (currentAmmo != value) 
+            if (currentAmmo != value)
             {
                 currentAmmo = value;
                 onAmmoChange?.Invoke(currentAmmo, maxAmmo);
@@ -52,7 +55,7 @@ public class WeaponBase : ItemBase
     float coolTime = 0f;
 
     public bool canFire => coolTime < fireRate && currentAmmo > 0;
-    public Action<ItemCode, int> onReload;    //ÀåºñÃ¢¿¡ ÀåÂøµÉ¶§ ÀÎº¥Åä¸®ÀÇ ¸®·Îµù ÇÔ¼ö¿Í ¿¬°á 
+    public Action<ItemCode, int> onReload;    //ì¥ë¹„ì°½ì— ì¥ì°©ë ë•Œ ì¸ë²¤í† ë¦¬ì˜ ë¦¬ë¡œë”© í•¨ìˆ˜ì™€ ì—°ê²° 
     public Action<int, int> onAmmoChange;
 
     private void Update()
@@ -60,12 +63,12 @@ public class WeaponBase : ItemBase
         coolTime -= Time.deltaTime;
     }
 
-    // Player_UI°ü·Ã -----------------------------------------------------
+    // Player_UIê´€ë ¨ -----------------------------------------------------
 
     private void OnEnable()
     {
         Player player = GetComponentInParent<Player>();
-        if (player != null) 
+        if (player != null)
         {
             PlayerUI playerUI = GameManager.Instance.PlayerUI;
             onAmmoChange += playerUI.Remain.Refresh;
@@ -89,11 +92,11 @@ public class WeaponBase : ItemBase
 
     // ------------------------------------------------------------------------
 
-    public override void Use() //¸®·Îµù
+    public override void Use() //ë¦¬ë¡œë”©
     {
-        int needAmmor = maxAmmo - CurrentAmmo;
+        int needAmmo = maxAmmo - CurrentAmmo;
         ItemCode needType = ItemCode.PistolBullet;
-        switch (ammunitionType) 
+        switch (ammunitionType)
         {
             case BulletType.Pistolbullet:
                 needType = ItemCode.PistolBullet;
@@ -108,20 +111,77 @@ public class WeaponBase : ItemBase
                 needType = ItemCode.ShotgunBullet;
                 break;
         }
-        onReload?.Invoke(needType, needAmmor);
+        onReload?.Invoke(needType, needAmmo);
     }
 
-    public void ReLoad(int ammo)
+    public void Reload(int ammo)
     {
         CurrentAmmo += ammo;
     }
 
-    public virtual void Fire() 
+    public virtual void Fire()
     {
-        if (canFire) 
+        if (canFire)
         {
             CurrentAmmo--;
             coolTime = fireRate;
+
+            // Raycast ë° ì´í™íŠ¸ ì²˜ë¦¬
+            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            RaycastHit[] hits = Physics.RaycastAll(ray);
+
+            foreach (RaycastHit hitInfo in hits)
+            {
+                if (hitInfo.transform.gameObject.CompareTag("Item"))
+                {
+                    continue; // 'Item' íƒœê·¸ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ëŠ” ë¬´ì‹œ
+                }
+
+                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                {
+                    // Enemy ë ˆì´ì–´ë¥¼ ê°€ì§„ ì˜¤ë¸Œì íŠ¸ì— ë°ë¯¸ì§€ë¥¼ ì£¼ê³  ì´í™íŠ¸ë¥¼ ìƒì„±
+                    EnemyBace eFSM = hitInfo.transform.gameObject.GetComponent<EnemyBace>();
+                    if (eFSM != null)
+                    {
+                        eFSM.Demage(damage);
+                    }
+                    if (bulletEffect != null && ps != null)
+                    {
+                        bulletEffect.transform.position = hitInfo.point;
+                        ps.Play();
+                    }
+                    break; // ì ê³¼ ì¶©ëŒí•œ ê²½ìš° ë£¨í”„ ì¢…ë£Œ
+                }
+                else
+                {
+                    // ì²« ë²ˆì§¸ ì ì´ ì•„ë‹Œ ì¶©ëŒ ì§€ì ì— ì´í™íŠ¸ë¥¼ ìƒì„±
+                    if (bulletEffect != null && ps != null)
+                    {
+                        bulletEffect.transform.position = hitInfo.point;
+                        ps.Play();
+                    }
+                    break; // ì¶©ëŒ ì²˜ë¦¬ í›„ ë£¨í”„ ì¢…ë£Œ
+                }
+            }
         }
+        else
+        {
+            if (currentAmmo <= 0)
+            {
+                Debug.Log("íƒ„ì•½ì´ ë¶€ì¡±í•©ë‹ˆë‹¤.");
+            }
+            else if (coolTime >= fireRate)
+            {
+                Debug.Log("ì¿¨ë‹¤ìš´ ì¤‘ì…ë‹ˆë‹¤.");
+            }
+        }
+    }
+
+
+    // bulletEffectì™€ psë¥¼ ì´ˆê¸°í™”í•˜ëŠ” ë©”ì„œë“œ ì¶”ê°€
+    public void InitializeEffects(GameObject bulletEffect, ParticleSystem ps)
+    {
+        this.bulletEffect = bulletEffect;
+        this.ps = ps;
     }
 }

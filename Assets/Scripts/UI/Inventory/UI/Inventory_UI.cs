@@ -37,18 +37,6 @@ public class Inventory_UI : MonoBehaviour
     /// <summary>
     /// 인벤토리 돈 관리하는 프로퍼티인데 나중에 아이템 개수로 바꿀 예정
     /// </summary>
-    public int Money
-    {
-        get => money;
-        set
-        {
-            if (money != value)
-            {
-                money = Math.Max(0, value);
-                onMoneyChange?.Invoke(money);
-            }
-        }
-    }
 
 
     /// <summary>
@@ -114,7 +102,7 @@ public class Inventory_UI : MonoBehaviour
         dropSlot.onDropOk += OnDropOk;
         dropSlot.Close();
 
-        if(Owner != null)
+        if (Owner != null)
         {
             Owner.onWeightChange += weightPanel.Refresh;
             weightPanel.Refresh(Owner.Weight);
@@ -135,7 +123,6 @@ public class Inventory_UI : MonoBehaviour
 
     public void PlusValue(ItemSlot slot)
     {
-        Money += (int)slot.ItemData.Price;
         Owner.Weight += slot.ItemData.weight;
     }
 
@@ -144,16 +131,7 @@ public class Inventory_UI : MonoBehaviour
     /// </summary>
     public void InventoryResult()
     {
-        //int tenThousand = Money / 10000;
-        //int Thousand = (Money % 10000) / 1000;
-        //int hundred = (Money % 1000) / 100;
-
-        //Debug.Log($"10000원 {tenThousand}장 1000원 {Thousand}장 100원 {hundred}개");
-
-        GameManager game = GameManager.Instance;
-        game.WorldInventory_UI.Money += Money;
         inventory.ClearInventory();
-        Money = 0;
         Owner.Weight = 0;
 
         // 이후에 메인화면으로 나가기
@@ -206,7 +184,6 @@ public class Inventory_UI : MonoBehaviour
         if (worldInven != null)
         {
             inventory.MinusValue(slot, (int)slot.ItemCount);
-            worldInven.PlusValue(slot);
         }
 
         if (invenManager.DragSlot.ItemSlot.IsEmpty)
@@ -226,7 +203,7 @@ public class Inventory_UI : MonoBehaviour
     /// <param name="index"></param>
     private void OnClick(ItemSlot slot, RectTransform rect)
     {
-        if(!invenManager.DragSlot.ItemSlot.IsEmpty)
+        if (!invenManager.DragSlot.ItemSlot.IsEmpty)
         {
             OnItemMoveEnd(slot, rect);
         }
@@ -267,9 +244,8 @@ public class Inventory_UI : MonoBehaviour
     {
         if (!slot.IsEquiped)
         {
-            if (Owner.SlotNumber.AddItem(slot.ItemData.itemPrefab, slotsUI[slot.Index].Equipment))
+            if (equip.EquipItem(slot) && Owner.SlotNumber.AddItem(slot.ItemData.itemPrefab, slotsUI[slot.Index].Equipment))
             {
-                equip.EquipItem(slot);
                 slot.IsEquiped = true;
             }
             else
@@ -280,14 +256,14 @@ public class Inventory_UI : MonoBehaviour
         selectMenu.Close();
     }
 
-    private void OnItemUnEquip(ItemSlot slot)
+    public void OnItemUnEquip(ItemSlot slot)
     {
         if (slot.IsEquiped)
         {
-            if (Owner.UnEquipped())
+            if (Owner.UnEquipped(slot.ItemData.itemType))
             {
-                slot.IsEquiped = false;
                 equip.UnEquipItem(slot);
+                slot.IsEquiped = false;
             }
             else
             {

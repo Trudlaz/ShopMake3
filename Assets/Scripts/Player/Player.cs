@@ -409,22 +409,71 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void UseItem(ItemSlot slot)
+    public void UseItem()
     {
-
+        Transform child = transform.GetChild(1);
+        ItemBase item = child.GetComponentInChildren<ItemBase>();
+        if (item != null)
+            item.Use();
     }
 
-    public bool UnEquipped()
+    Equip_UI equip_UI;
+
+    public bool UnEquipped(ItemType type)
     {
         bool result = false;
+        ItemBase item = GetComponentInChildren<ItemBase>();
 
-        WeaponBase weapon;
-        weapon = GetComponentInChildren<WeaponBase>();
-
-        if (weapon != null)
+        switch (type)
         {
-            Destroy(weapon.gameObject);
-            result = true;
+            case ItemType.Gun:
+                WeaponBase weapon = item as WeaponBase;
+                if (weapon != null)
+                {
+                    Destroy(weapon.gameObject);
+                    result = true;
+                }
+                break;
+            case ItemType.Grenade:
+                GrenadeBase grenade = item as GrenadeBase;
+                if (grenade != null)
+                {
+                    Destroy(grenade.gameObject);
+                    result = true;
+                }
+                break;
+            case ItemType.Helmet:
+                Helmet helmet = item as Helmet;
+                if (helmet != null)
+                {
+                    Destroy(helmet.gameObject);
+                    result = true;
+                }
+                break;
+            case ItemType.Armor:
+                Vest vest = item as Vest;
+                if (vest != null)
+                {
+                    Destroy(vest.gameObject);
+                    result = true;
+                }
+                break;
+            case ItemType.BackPack:
+                Backpack backpack = item as Backpack;
+                if (backpack != null)
+                {
+                    Destroy(backpack.gameObject);
+                    result = true;
+                }
+                break;
+            case ItemType.Buff:
+                BuffBase buff = item as BuffBase;
+                if (buff != null)
+                {
+                    Destroy(buff.gameObject);
+                    result = true;
+                }
+                break;
         }
         return result;
     }

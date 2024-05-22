@@ -12,10 +12,10 @@ public class PlayerFire : MonoBehaviour
     public int weaponPower = 5;
 
     private PlayerMove InputActions;
+    private WeaponBase currentWeapon;
 
     PlayerNoiseSystem noise;
-    private WeaponBase weapon; // WeaponBase 타입의 멤버 변수 추가
-    private QuickSlot quickSlot; // QuickSlot 클래스의 인스턴스 추가
+    private QuickSlot quickSlot;
 
     private void Awake()
     {
@@ -45,7 +45,6 @@ public class PlayerFire : MonoBehaviour
         InputActions.Player.LeftMouse.performed += OnLeftMouse;
         InputActions.Player.RightMouse.performed += OnRightMouse;
         InputActions.Enable();
-
     }
 
     private void OnEnable()
@@ -60,7 +59,30 @@ public class PlayerFire : MonoBehaviour
 
     private void OnLeftMouse(InputAction.CallbackContext context)
     {
-        Fire();
+        // 매번 좌클릭 시 currentWeapon을 갱신
+        if (firePosition != null)
+        {
+            WeaponBase[] weapons = firePosition.GetComponentsInChildren<WeaponBase>();
+            if (weapons.Length > 0)
+            {
+                currentWeapon = weapons[0];
+                currentWeapon.InitializeEffects(bulletEffect, ps); // WeaponBase 이펙트 초기화
+            }
+            else
+            {
+                currentWeapon = null;
+            }
+        }
+
+        if (currentWeapon != null)
+        {
+            Debug.Log($"공격중{currentWeapon}");
+            currentWeapon.Fire();
+        }
+        else
+        {
+            Debug.Log("맨손 상태로 공격할 수 없습니다.");
+        }
     }
 
     private void OnRightMouse(InputAction.CallbackContext context)
@@ -70,14 +92,6 @@ public class PlayerFire : MonoBehaviour
         {
             //quickSlot.SubWeapon(); // 예시로 SubWeapon을 사용하도록 설정
             Debug.Log("퀵슬롯에서 아이템을 사용했습니다.");
-        }
-    }
-
-    private void Fire()
-    {
-        if (weapon != null)
-        {
-            weapon.Fire(); // WeaponBase 클래스의 Fire 메서드 호출
         }
     }
 }

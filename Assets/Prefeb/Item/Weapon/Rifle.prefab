@@ -158,3 +158,4 @@ MonoBehaviour:
   critRate: 0.5
   muzzleVelocity: 1
   noiseVelocity: 7
+  bulletEffect: {fileID: 7308621815531286358, guid: 1d774911977a3644985557c1efd52a86, type: 3}
