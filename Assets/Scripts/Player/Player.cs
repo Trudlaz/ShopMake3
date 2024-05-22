@@ -71,6 +71,14 @@ public class Player : MonoBehaviour
         }
     }
 
+    PlayerUI playerUI;
+    
+    public PlayerUI PlayerUI => playerUI;
+
+    SlotNumber slotNum;
+
+    public SlotNumber SlotNumber => slotNum;
+
     // ---------------------------------------------------------------------------------------------------------/
 
     /// <summary>
@@ -87,6 +95,8 @@ public class Player : MonoBehaviour
     /// 인풋 시스템 참조용 변수
     /// </summary>
     private PlayerMove inputActions;
+
+
 
     /// <summary>
     /// 움직임 좌표계산을 위한? 변수
@@ -140,10 +150,15 @@ public class Player : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerMove();
+
+
         noise = transform.GetComponentInChildren<PlayerNoiseSystem>(true);
         noise.gameObject.SetActive(false);
-    }
 
+        firePosition = transform.GetChild(1);
+
+        slotNum = GetComponentInChildren<SlotNumber>();
+    }
 
     // 점프시 레이를 이용해 점프할 수 있는 환경인지 확인
     private void OnEnable()
@@ -162,10 +177,14 @@ public class Player : MonoBehaviour
         inputActions.Player.LeftMouse.performed += OnLeftMouse;                // 왼쪽 마우스 입력
         inputActions.Player.RightMouse.performed += OnRightMouse;              // 오른쪽 마우스 입력
         inputActions.Player.HotbarKey.performed += OnHotbarKey;                // 핫바키 사용
+
+
     }
 
     private void OnDisable()
     {
+
+
         inputActions.Player.Move.performed -= OnMovePerformed;
         inputActions.Player.Move.canceled -= OnMoveCanceled;
         inputActions.Player.Jump.performed -= OnJump;
@@ -184,6 +203,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         cc = GetComponent<CharacterController>();
+        playerUI = GameManager.Instance.PlayerUI;
     }
 
     private void OnMovePerformed(InputAction.CallbackContext ctx)
@@ -359,35 +379,56 @@ public class Player : MonoBehaviour
     //    noise.gameObject.SetActive(false);
     //}
 
+
     // Weapon_Equip 관련 ------------------------------------------------------------------------
-    WeaponBase weapon;
 
-    public WeaponBase Weapon => weapon;
+    Transform firePosition;
 
-    public void EquippedWeapon(GameObject obj)
+    Equipment equipment = Equipment.None;
+
+    public Equipment Equipment
     {
-        Transform child = transform.GetChild(1);
-        Instantiate(obj, child);
-        weapon = obj.GetComponent<WeaponBase>();
+        get => equipment;
+        set
+        {
+            equipment = value;
+        }
+    }
+
+    public bool IsEquip => firePosition.childCount == 0;
+
+    public void Equipped(Equipment type)
+    {
+        if (IsEquip)
+        {
+            slotNum.SwapItem(type, firePosition, false);
+        }
+        else
+        {
+            slotNum.SwapItem(type, firePosition, true);
+        }
+    }
+
+    public void UseItem(ItemSlot slot)
+    {
 
     }
 
-    BuffBase buff;
-
-    public void UseItem(GameObject obj)
+    public bool UnEquipped()
     {
-        Transform child = transform.GetChild(1);
-        Instantiate(obj, child);
-        buff = obj.GetComponent<BuffBase>();
-        buff.Use();
+        bool result = false;
+
+        WeaponBase weapon;
+        weapon = GetComponentInChildren<WeaponBase>();
+
+        if (weapon != null)
+        {
+            Destroy(weapon.gameObject);
+            result = true;
+        }
+        return result;
     }
 
-    public void UnEquipped()
-    {
-        Transform child = transform.GetChild(1);
-        child = child.GetChild(0);
-        Destroy(child.gameObject);
-    }
 
     // ----------------------------------------------------------------------------------------
 
@@ -401,11 +442,6 @@ public class Player : MonoBehaviour
             Handles.color = Color.red;
             Handles.DrawWireDisc(transform.position, transform.up, 5.0f * 0.6f);
         }
-    }
-
-    internal void Equipped(GameObject itemPrefab)
-    {
-        throw new NotImplementedException();
     }
 
 #endif

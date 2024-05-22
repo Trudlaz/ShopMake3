@@ -6,33 +6,33 @@ using static BulletBase;
 
 public class WeaponBase : ItemBase
 {
-    [Tooltip("ìµœëŒ€ ì´ì•Œ ìˆ˜, ì¥íƒ„ìˆ˜")]
+    [Tooltip("ÃÖ´ë ÃÑ¾Ë ¼ö, ÀåÅº¼ö")]
     public int maxAmmo = 10;
-    [Tooltip("ì—°ì‚¬ë ¥")]
+    [Tooltip("¿¬»ç·Â")]
     public float fireRate = 0.1f;
-    [Tooltip("ë¬´ê²Œ")]
+    [Tooltip("¹«°Ô")]
     public float weight = 0f;
-    [Tooltip("ê°€ê²©")]
+    [Tooltip("°¡°İ")]
     public uint price = 0;
-    [Tooltip("ë‚´êµ¬ë„")]
+    [Tooltip("³»±¸µµ")]
     public float durability = 0f;
-    [Tooltip("ë°˜ë™. ê¸°ë³¸ì  ìˆ˜ì¹˜.")]
+    [Tooltip("¹İµ¿. ±âº»Àû ¼öÄ¡.")]
     public float recoil = 0f;
-    [Tooltip("ì¡°ì¤€ ê±°ë¦¬")]
+    [Tooltip("Á¶ÁØ °Å¸®")]
     public uint sightingRange = 0;
-    [Tooltip("íƒ„ì¢…")]
+    [Tooltip("ÅºÁ¾")]
     public BulletType ammunitionType;
-    [Tooltip("ë°ë¯¸ì§€")]
+    [Tooltip("µ¥¹ÌÁö")]
     public float damage = 5.0f;
-    [Tooltip("ìµœëŒ€ ê³µê²©ë ¥, ì¹˜ë€")]
+    [Tooltip("ÃÖ´ë °ø°İ·Â, Ä¡µ©")]
     public float headDamage = 10.0f;
-    [Tooltip("ëª…ì¤‘ë¥ ")]
+    [Tooltip("¸íÁß·ü")]
     public float accuracy = 0f;
-    [Tooltip("ì¹˜í™•")]
+    [Tooltip("Ä¡È®")]
     public float critRate = 0f;
-    [Tooltip("íƒ„ì†")]
+    [Tooltip("Åº¼Ó")]
     public uint muzzleVelocity = 0;
-    [Tooltip("ì†ŒìŒ")]
+    [Tooltip("¼ÒÀ½")]
     public float noiseVelocity = 7.0f;
 
     public int CurrentAmmo 
@@ -52,7 +52,7 @@ public class WeaponBase : ItemBase
     float coolTime = 0f;
 
     public bool canFire => coolTime < fireRate && currentAmmo > 0;
-    public Action<ItemCode, int> onReload;    //ì¥ë¹„ì°½ì— ì¥ì°©ë ë•Œ ì¸ë²¤í† ë¦¬ì˜ ë¦¬ë¡œë”© í•¨ìˆ˜ì™€ ì—°ê²° 
+    public Action<ItemCode, int> onReload;    //ÀåºñÃ¢¿¡ ÀåÂøµÉ¶§ ÀÎº¥Åä¸®ÀÇ ¸®·Îµù ÇÔ¼ö¿Í ¿¬°á 
     public Action<int, int> onAmmoChange;
 
     private void Update()
@@ -60,28 +60,36 @@ public class WeaponBase : ItemBase
         coolTime -= Time.deltaTime;
     }
 
-    // Player_UIê´€ë ¨ -----------------------------------------------------
+    // Player_UI°ü·Ã -----------------------------------------------------
 
     private void OnEnable()
     {
-        PlayerUI playerUI = GameManager.Instance.PlayerUI;
-        onAmmoChange += playerUI.Remain.Refresh;
+        Player player = GetComponentInParent<Player>();
+        if (player != null) 
+        {
+            PlayerUI playerUI = GameManager.Instance.PlayerUI;
+            onAmmoChange += playerUI.Remain.Refresh;
 
-        playerUI.Remain.Refresh(currentAmmo, maxAmmo);
+            playerUI.Remain.Refresh(currentAmmo, maxAmmo);
+        }
     }
 
     private void OnDisable()
     {
-        PlayerUI playerUI = GameManager.Instance.PlayerUI;
+        Player player = GetComponentInParent<Player>();
+        if (player != null)
+        {
+            PlayerUI playerUI = GameManager.Instance.PlayerUI;
 
-        playerUI.Remain.Refresh(0, 0);
+            playerUI.Remain.Refresh(0, 0);
 
-        onAmmoChange = null;
+            onAmmoChange = null;
+        }
     }
 
     // ------------------------------------------------------------------------
 
-    public override void Use() //ë¦¬ë¡œë”©
+    public override void Use() //¸®·Îµù
     {
         int needAmmor = maxAmmo - CurrentAmmo;
         ItemCode needType = ItemCode.PistolBullet;

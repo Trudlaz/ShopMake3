@@ -21,14 +21,13 @@ public class EquipSlot : ItemSlot
     /// <summary>
     /// 이 슬롯에 있는 아이템을 장비하는 함수
     /// </summary>
-    public void Equip()
-    {
-        Player player = GameManager.Instance.Player;
+    //public void Equip()
+    //{
+    //    Player player = GameManager.Instance.Player;
 
-        if (player != null)
-        {
-            // 플레이어의 아이템 장비하는 함수
-            player.Equipped(ItemData.itemPrefab);
-        }
-    }
+    //    if (player != null)
+    //    {
+    //        player.Equipped(ItemData.itemPrefab);
+    //    }
+    //}
 }

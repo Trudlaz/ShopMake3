@@ -46,19 +46,6 @@ public class PlayerFire : MonoBehaviour
         InputActions.Player.RightMouse.performed += OnRightMouse;
         InputActions.Enable();
 
-        // WeaponBase 인스턴스 초기화
-        weapon = GetComponent<WeaponBase>();
-        if (weapon == null)
-        {
-            Debug.LogError("WeaponBase 컴포넌트가 플레이어에 할당되지 않았습니다.");
-        }
-
-        // QuickSlot 인스턴스 초기화
-        quickSlot = GetComponent<QuickSlot>();
-        if (quickSlot == null)
-        {
-            Debug.LogError("QuickSlot 컴포넌트가 플레이어에 할당되지 않았습니다.");
-        }
     }
 
     private void OnEnable()
@@ -81,7 +68,7 @@ public class PlayerFire : MonoBehaviour
         // QuickSlot을 통해 아이템 사용 신호 보내기
         if (quickSlot != null)
         {
-            quickSlot.SubWeapon(); // 예시로 SubWeapon을 사용하도록 설정
+            //quickSlot.SubWeapon(); // 예시로 SubWeapon을 사용하도록 설정
             Debug.Log("퀵슬롯에서 아이템을 사용했습니다.");
         }
     }

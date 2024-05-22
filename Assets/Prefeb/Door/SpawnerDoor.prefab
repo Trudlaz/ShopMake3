@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 729165370572604318}
   - component: {fileID: 780214078228634576}
   - component: {fileID: 8886571544353439419}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: jj_door_4_dark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,9 +94,10 @@ GameObject:
   - component: {fileID: 6948845375057742493}
   - component: {fileID: 6926047912336996885}
   - component: {fileID: 8271953870068180177}
-  m_Layer: 0
+  - component: {fileID: 3845775349749153140}
+  m_Layer: 9
   m_Name: Door
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -167,6 +168,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &3845775349749153140
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802927290478304570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.9189026, y: 1.9499998, z: 0.04092646}
+  m_Center: {x: -0.44891593, y: 0.9749999, z: -0.011339353}
 --- !u!1 &3149352477433409667
 GameObject:
   m_ObjectHideFlags: 0
@@ -178,9 +200,9 @@ GameObject:
   - component: {fileID: 4431895809984940725}
   - component: {fileID: 76316418316435500}
   - component: {fileID: 4095782754355125381}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SpawnerDoor
-  m_TagString: Untagged
+  m_TagString: Door
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -249,7 +271,7 @@ GameObject:
   - component: {fileID: 8490370891468856144}
   - component: {fileID: 9064080047242284656}
   - component: {fileID: 7851872804192598435}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: doorKnob
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -372,6 +394,10 @@ PrefabInstance:
     - target: {fileID: 6851004225010879526, guid: fc8e5c9d9d993a441b8ab14ef9dc97a4, type: 3}
       propertyPath: m_Name
       value: Spawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851004225010879526, guid: fc8e5c9d9d993a441b8ab14ef9dc97a4, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

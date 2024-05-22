@@ -6,9 +6,17 @@ public class Speed : BuffBase
 {
     public override void Use()
     {
-        player.moveSpeed += amountBuff;
-
-        StartCoroutine(Duration());
+        if (player != null)
+        {
+            player.moveSpeed += amountBuff;
+            Debug.Log("Speed가 증가하였습니다.");
+            StartCoroutine(Duration());
+            base.Use();
+        }
+        else
+        {
+            Debug.LogError("Player is not assigned when trying to use Heal.");
+        }
     }
 
     IEnumerator Duration()
@@ -16,8 +24,13 @@ public class Speed : BuffBase
         yield return new WaitForSeconds(Maxduration);
 
         player.moveSpeed -= amountBuff;
+        Destroy(gameObject);
     }
 
-
-   
+#if UNITY_EDITOR
+    public void Test_Use()
+    {
+        Use();
+    }
+#endif
 }

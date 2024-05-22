@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 24_OneHundreadDol
   m_EditorClassIdentifier: 
-  itemId: 0
-  itemType: 0
+  itemId: 24
+  itemType: 7
   itemName: "100\uC6D0"
   itemImage: {fileID: 21300000, guid: 545042118d0cde446bd13ddb1715e3cd, type: 3}
   weight: 0

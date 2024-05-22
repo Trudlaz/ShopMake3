@@ -17,8 +17,7 @@ public class BulletBase : ItemBase
     public override void Interact()
     {
         GameManager.Instance.InventoryUI.Inventory.AddItem(itemCode, 5);
-        GameObject obj = GameManager.Instance.ItemData[itemCode].itemPrefab;
-        Destroy(obj);
+        Destroy(gameObject);
     }
 
 }

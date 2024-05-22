@@ -7,9 +7,9 @@ using UnityEngine;
 
 
 
-public class Equip : MonoBehaviour
+public class Equip
 {
-    private const int Default_Inventory_Size = 8;
+    private const int Default_Inventory_Size = 6;
     public EquipSlot[] slots;
     public EquipSlot this[uint index] => slots[index];
     private int SlotCount => slots.Length;
@@ -29,6 +29,7 @@ public class Equip : MonoBehaviour
         for (uint i = 0; i < slots.Length; i++)
         {
             slots[i] = new EquipSlot(i);
+            //slots[i].PlayerEquipment = slotsParent.GetComponentsInChildren<EquipSlot_UI>()[i].PlayerEquipment;  // awake 함수로 따로 찾기
         }
 
         dragSlot = new DragSlot(dragSlotIndex);
@@ -36,37 +37,13 @@ public class Equip : MonoBehaviour
         equipUI = GameManager.Instance.EquipUI;
         this.owner = owner.Player;
 
-        if (equipUI != null)
-        {
-            Transform equipUIObject = equipUI.gameObject.transform.GetChild(0);
-
-            for (uint i = 0; i < slots.Length; i++)
-            {
-                EquipSlot_UI equipSlotUI = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>();
-                if (equipSlotUI != null)
-                {
-                    slots[i].slotType = equipSlotUI.slotType;
-                }
-                else
-                {
-                    Debug.LogError($"슬롯 {i}에 EquipSlot_UI가 할당되지 않았습니다!");
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("equipUI가 null입니다. GameManager에서 초기화되지 않았습니다.");
-        }
-    }
-
-
-    private void Awake()
-    {
-        GameObject equipUIObject = equipUI.gameObject;
+        Transform equipUIObject = equipUI.gameObject.transform.GetChild(0);
 
         for (uint i = 0; i < slots.Length; i++)
         {
-            slots[i].slotType = equipUIObject.transform.GetChild(0).GetComponentsInChildren<EquipSlot_UI>()[i].slotType;  // awake 함수로 따로 찾기
+            slots[i].slotType = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>().slotType;  // awake 함수로 따로 찾기
+
+            //slots[i].PlayerEquip = EquipSlot.PlayerEquipment[(int)i]
         }
     }
 
@@ -96,7 +73,6 @@ public class Equip : MonoBehaviour
     /// <returns>성공하면 true 리턴 실패하면 false 리턴</returns>
     public bool AddItem(ItemCode code, uint slotIndex)
     {
-        bool result = false;
 
         if (IsValidIndex(slotIndex))
         {
@@ -108,111 +84,17 @@ public class Equip : MonoBehaviour
                 if (slot.IsEmpty)
                 {
                     slot.AssignSlotItem(data);
-                    result = true;
-                }   
-            }
-        else
-        {
-            if (slot.ItemData == data)
-            {
-                // result = slot.SetSlotCount(out _);  아이템 증가 필요 없음.
-            }
-            else
-            {
-                // 다른 종류의 아이템
+                    return true;
+                }
             }
         }
-        }
-        else
-        {
-            // 잘못된 슬롯
-        }
-        //EquipEfectApply();
-        return result;
+        return false;
     }
 
-    public void MoveItem(ItemSlot from, ItemSlot to)
+
+    public bool IsValidIndex(uint index)
     {
-        // from 지점과 to지점은 서로 다른 위치이고 모두 valid한 슬롯이어야 한다.
-        if ((from != to) && IsValidIndex(from) && IsValidIndex(to))
-        {
-            bool fromIsTemp = (from == dragSlot);
-            ItemSlot fromSlot = fromIsTemp ? DragSlot : from;   // from슬롯 가져오기
-
-            if (!fromSlot.IsEmpty)
-            {
-                // from에 아이템이 있다.
-                ItemSlot toSlot = null;
-
-                if (to == dragSlot)
-                {
-                    // to가 drag슬롯이면
-                    toSlot = DragSlot;      // 슬롯 저장하고
-                    DragSlot.SetFromIndex(fromSlot.Index);  // 드래고 시작 슬롯 저장(fromIndex)
-                }
-                else
-                {
-                    toSlot = to;        // drag슬롯이 아니면 슬롯만 저장
-                }
-
-                if (fromSlot.ItemData == toSlot.ItemData)
-                {
-                    //// 같은 종류의 아이템 => to에 채울 수 있는데까지 채운다. to에 넘어간 만큼 from을 감소시킨다.
-                    //toSlot.SetSlotCount(out uint overCount, fromSlot.ItemCount);    // from이 가진 개수만큼 to 추가
-                    //fromSlot.DecreaseSlotItem(fromSlot.ItemCount - overCount);      // from에서 to로 넘어간 개수만큼만 감소
-
-                    // 같은 아이템은 추가 안한다.
-                }
-                else
-                {
-                    if (fromIsTemp)
-                    {
-                        ItemSlot returnSlot = slots[DragSlot.FromIndex];
-
-                        if (returnSlot.IsEmpty)
-                        {
-                            returnSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount);
-                            toSlot.AssignSlotItem(DragSlot.ItemData, DragSlot.ItemCount);
-                            DragSlot.ClearSlot();
-                        }
-                        else
-                        {
-                            if (returnSlot.ItemData == toSlot.ItemData)
-                            {
-                                MoveItem(toSlot, returnSlot);
-                                returnSlot.SetSlotCount(out uint overCount, toSlot.ItemCount);
-                                toSlot.DecreaseSlotItem(toSlot.ItemCount - overCount);
-                            }
-
-                            SwapSlot(dragSlot, toSlot);
-                        }
-                    }
-                    else
-                    {
-                        SwapSlot(fromSlot, toSlot);
-                    }
-                }
-            }
-        }
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="slotA"></param>
-    /// <param name="slotB"></param>
-    public void SwapSlot(ItemSlot slotA, ItemSlot slotB)
-    {
-        ItemData dragData = slotA.ItemData;
-        uint dragCount = slotA.ItemCount;
-
-        slotA.AssignSlotItem(slotB.ItemData, slotB.ItemCount);
-        slotB.AssignSlotItem(dragData, dragCount);
-    }
-
-    private bool IsValidIndex(uint index)
-    {
-        return (index < SlotCount) || (index == dragSlotIndex);
+        return index < SlotCount;
     }
 
     private bool IsValidIndex(ItemSlot slot)
@@ -263,18 +145,4 @@ public class Equip : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    //public void EquipEfectApply()
-    //{
-    //    if (slots[3] != null || slots[4] != null)
-    //    {
-    //        ArmorBase armoHelmet = slots[3].ItemData.itemPrefab.GetComponent<ArmorBase>();
-    //        ArmorBase armoVest = slots[4].ItemData.itemPrefab.GetComponent<ArmorBase>();
-
-    //        owner.Hp += armoHelmet.amountDefense;
-    //        owner.Hp += armoVest.amountDefense;
-    //    }
-    //}
 }

@@ -21,6 +21,7 @@ public class MainButtonUI : MonoBehaviour
     public GameObject mainButtonPanel;
     public GameObject invenButtonPanel;
 
+
     void Start()
     {
         // 각 버튼에 클릭 이벤트 리스너 추가
@@ -44,6 +45,8 @@ public class MainButtonUI : MonoBehaviour
         {
             Debug.LogError("인스펙터에서 하나 이상의 UI 요소가 할당되지 않았습니다.");
         }
+
+        shopInventory.AddBasicItem();
     }
 
     bool AreAllUIElementsAssigned()

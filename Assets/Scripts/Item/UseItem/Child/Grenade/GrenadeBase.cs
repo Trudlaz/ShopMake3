@@ -32,6 +32,7 @@ public class GrenadeBase : ItemBase
 
     public override void Use()
     {
+        GameManager.Instance.EquipUI.UseItem(5);
         PlayerFire playerfire = GetComponentInParent<PlayerFire>();         //물건을 사용할때는 무조건 자식으로 들어가 있을것
         Player player = GameManager.Instance.Player;
         Transform cam = player.transform.GetChild(0);

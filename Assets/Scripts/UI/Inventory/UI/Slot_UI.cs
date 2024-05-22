@@ -17,11 +17,15 @@ public class Slot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IE
 
     TextMeshProUGUI equippedText;
 
+    private InventoryManager invenManager;
+
     protected override void Awake()
     {
         base.Awake();
         Transform child = transform.GetChild(2);
         equippedText = child.GetComponent<TextMeshProUGUI>();
+
+        invenManager = GetComponentInParent<InventoryManager>();
     }
 
     protected override void OnRefresh()
@@ -60,33 +64,29 @@ public class Slot_UI : Slot_UI_Base, IPointerClickHandler, IBeginDragHandler, IE
         if (obj != null)
         {
             Slot_UI endSlot = obj.GetComponent<Slot_UI>();
-            EquipSlot_UI equipSlot = obj.GetComponent<EquipSlot_UI>();
+            //EquipSlot_UI equipSlot = obj.GetComponent<EquipSlot_UI>();
             if (endSlot != null)
             {
                 RectTransform rect = obj.GetComponent<RectTransform>();
                 onDragEnd?.Invoke(endSlot.ItemSlot, rect);
             }
-            else if (equipSlot != null)
-            {
-                RectTransform rect = null;
-                ItemSlot slot = null;
-                foreach (var slotType in equipSlot.slotType)
-                {
-                    if (slotType == GameManager.Instance.InventoryManager.DragSlot.ItemSlot.ItemData.itemType)
-                    {
-                        rect = obj.GetComponent<RectTransform>();
-                        slot = equipSlot.ItemSlot;
-                        break;
-                    }
-                    else
-                    {
-                        rect = GetComponent<RectTransform>();
-                        slot = ItemSlot;
-                    }
-                }
-                rect = GetComponent<RectTransform>();
-                onDragEnd?.Invoke(slot, rect);
-            }
+            //else if (equipSlot != null)
+            //{
+            //    RectTransform rect = null;
+            //    ItemSlot slot = null;
+            //    foreach (var slotType in equipSlot.slotType)
+            //    {
+            //        if (slotType == invenManager.DragSlot.ItemSlot.ItemData.itemType)
+            //        {
+            //            rect = obj.GetComponent<RectTransform>();
+            //            slot = equipSlot.ItemSlot;
+            //            ItemSlot.IsEquiped = true;
+            //            break;
+            //        }
+            //    }
+            //    rect = GetComponent<RectTransform>();
+            //    onDragEnd?.Invoke(slot, rect);
+            //}
             else
             {
                 RectTransform rect = GetComponent<RectTransform>();

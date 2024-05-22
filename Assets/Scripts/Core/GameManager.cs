@@ -51,12 +51,12 @@ public class GameManager : Singleton<GameManager>
 
         WorldInventory worldInven = new WorldInventory(this);
 
-        if (worldInventoryUI != null)
+        if(worldInventoryUI != null)
         {
             worldInventoryUI.InitializeWorldInventory(worldInven);
         }
 
-        Equip equip = new Equip(this);
+        Equip equip = new Equip(this);//
 
         if (equipUI != null)
         {
@@ -66,12 +66,10 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.LogError("equipUI가 할당되지 않았습니다!");
         }
-
-        // ShopInventory 초기화
         shopInventory = new ShopInventory();
-        shopInventoryUI.AddBasicItem();
     }
-
+    
+ 
     // 초기화 이전에 필요한 컴포넌트를 미리 설정
     protected override void OnPreInitialize()
     {
@@ -157,4 +155,16 @@ public class GameManager : Singleton<GameManager>
         if (inventoryUI != null)
             inventoryUI.Inventory.LoadInventoryFromJson();
     }
+#if UNITY_EDITOR
+
+    public void Test_GameLoad() 
+    {
+        OnGameStartCompleted?.Invoke();
+    }
+    public void Test_GameEnd()
+    {
+        OnGameEnding?.Invoke();
+    }
+
+#endif
 }

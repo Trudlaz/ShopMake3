@@ -148,23 +148,29 @@ public class Inventory
             if (!slots[i].IsEmpty /*&& slots[i].ItemData.bulletType == code*/)
             {
                 ItemSlot slot = slots[i];      // 슬롯 가져오기
-                if (slot.ItemCount < count)
+                if(slot.ItemData.itemId  == code)
                 {
-                    // 필요한 총알 수 보다 슬롯에 있는 총알이 적다.
-                    result += (int)slot.ItemCount;
-                    MinusValue(slot, result);
-                    count -= slot.ItemCount;
-                    slot.DecreaseSlotItem(slot.ItemCount);
+                    if (slot.ItemCount < count)
+                    {
+                        // 필요한 총알 수 보다 슬롯에 있는 총알이 적다.
+                        result += (int)slot.ItemCount;
+                        MinusValue(slot, result);
+                        count -= slot.ItemCount;
+                        slot.DecreaseSlotItem(slot.ItemCount);
+                    }
+                    else
+                    {
+                        // 필요한 총알 수 보다 슬롯에 있는 총알이 많거나 같다.
+                        result += (int)count;
+                        MinusValue(slot, (int)count);
+                        slot.DecreaseSlotItem(count);
+                        break;
+                    }
                 }
                 else
                 {
-                    // 필요한 총알 수 보다 슬롯에 있는 총알이 많거나 같다.
-                    result += (int)count;
-                    MinusValue(slot, (int)count);
-                    slot.DecreaseSlotItem(count);
-                    break;
+                    result = 0;
                 }
-                
             }
         }
         Debug.Log(result);
@@ -183,6 +189,7 @@ public class Inventory
             {
                 // from에 아이템이 있다.
                 ItemSlot toSlot = null;
+
 
                 if (to == dragSlot)
                 {
@@ -209,8 +216,8 @@ public class Inventory
 
                         if (returnSlot.IsEmpty)
                         {
-                            returnSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount);
-                            toSlot.AssignSlotItem(DragSlot.ItemData, DragSlot.ItemCount);
+                            returnSlot.AssignSlotItem(toSlot.ItemData, toSlot.ItemCount, toSlot.IsEquiped);
+                            toSlot.AssignSlotItem(DragSlot.ItemData, DragSlot.ItemCount, DragSlot.IsEquiped);
                             DragSlot.ClearSlot();
                         }
                         else
@@ -239,9 +246,10 @@ public class Inventory
     {
         ItemData dragData = slotA.ItemData;
         uint dragCount = slotA.ItemCount;
+        bool isEquipped = slotA.IsEquiped;
 
-        slotA.AssignSlotItem(slotB.ItemData, slotB.ItemCount);
-        slotB.AssignSlotItem(dragData, dragCount);
+        slotA.AssignSlotItem(slotB.ItemData, slotB.ItemCount, slotB.IsEquiped);
+        slotB.AssignSlotItem(dragData, dragCount, isEquipped);
     }
 
     public void SlotSorting(ItemType type, bool isAcending)
@@ -342,21 +350,9 @@ public class Inventory
     {
         if (slot.ItemData != null)
         {
-            if (Owner != null)
-            {
-                Owner.Weight -= (int)(slot.ItemData.weight * count);
-            }
-            else
-            {
-                Debug.LogWarning("Owner is null, cannot subtract weight.");
-            }
-        }
-        else
-        {
-            Debug.LogError("ItemData is null, cannot subtract weight.");
+            Owner.Weight -= (int)(slot.ItemData.weight * count);
         }
     }
-
 
     /// <summary>
     /// 인벤토리 내부에서 특정 한 아이템을 찾는 함수

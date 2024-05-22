@@ -4,6 +4,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Equipment : byte
+{
+    Gun,
+    Throw,
+    ETC,
+    Vest,
+    Helmet,
+    BackPack,
+    None
+}
+
 public class Slot_UI_Base : MonoBehaviour
 {
     ItemSlot itemSlot;
@@ -18,6 +29,20 @@ public class Slot_UI_Base : MonoBehaviour
         ItemSlot.ItemData.itemType == ItemType.BackPack;
 
     public uint Index => itemSlot.Index;
+
+    Equipment equipment = Equipment.None;
+
+    public Equipment Equipment
+    {
+        get => equipment;
+        set
+        {
+            if (equipment != value)
+            {
+                equipment = value;
+            }
+        }
+    }
 
     protected virtual void Awake()
     {
@@ -42,7 +67,7 @@ public class Slot_UI_Base : MonoBehaviour
     /// 슬롯UI의 화면 갱신
     /// </summary>
     private void Refresh()
-    {
+    {   
         if (ItemSlot.IsEmpty)
         {
             // 비어 있을 때
@@ -68,6 +93,33 @@ public class Slot_UI_Base : MonoBehaviour
                 itemImage.color = Color.white;                       // 이미지 보이게 만들기
                 itemText.text = ItemSlot.ItemCount.ToString();    // 아이템 개수 쓰기
                 itemText.alpha = 0;
+
+                
+            }
+
+            switch (ItemSlot.ItemData.itemType)
+            {
+                case ItemType.Gun:
+                    Equipment = Equipment.Gun;
+                    break;
+                case ItemType.Grenade:
+                    Equipment = Equipment.Throw;
+                    break;
+                case ItemType.Vest:
+                    Equipment = Equipment.Vest;
+                    break;
+                case ItemType.Helmet:
+                    Equipment = Equipment.Helmet;
+                    break;
+                case ItemType.BackPack:
+                    Equipment = Equipment.BackPack;
+                    break;
+                case ItemType.Buff:
+                    Equipment = Equipment.ETC;
+                    break;
+                case ItemType.Trap:
+                    Equipment = Equipment.ETC;
+                    break;
             }
         }
         OnRefresh();
@@ -76,6 +128,7 @@ public class Slot_UI_Base : MonoBehaviour
     protected virtual void OnRefresh()
     {
 
+        
     }
 
 

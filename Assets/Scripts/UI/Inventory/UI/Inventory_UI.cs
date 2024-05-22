@@ -24,12 +24,13 @@ public class Inventory_UI : MonoBehaviour
 
     Button sortButton;
 
-    //LocalSelectMenuUI selectMenu;
+    LocalSelectMeunUI selectMenu;
 
     Player Owner => inventory.Owner;
 
     CanvasGroup canvas;
 
+    Equip_UI equip;
 
     int money = 0;
 
@@ -80,8 +81,8 @@ public class Inventory_UI : MonoBehaviour
             OnItemSort(ItemType.Buff);
         });
 
-        //child = transform.GetChild(4);
-        //selectMenu = child.GetComponent<LocalSelectMenuUI>();
+        child = transform.GetChild(4);
+        selectMenu = child.GetComponent<LocalSelectMeunUI>();
 
         invenManager = GetComponentInParent<InventoryManager>();
 
@@ -104,6 +105,12 @@ public class Inventory_UI : MonoBehaviour
         }
         invenManager.DragSlot.InitializeSlot(inventory.DragSlot);  // 임시 슬롯 초기화
 
+        selectMenu.onItemDrop += OnItemDrop;
+
+        selectMenu.onItemEquip += OnItemEquip;
+        selectMenu.onItemUnEquip += OnItemUnEquip;
+        selectMenu.Close();
+
         dropSlot.onDropOk += OnDropOk;
         dropSlot.Close();
 
@@ -119,34 +126,18 @@ public class Inventory_UI : MonoBehaviour
 
     }
 
+
+
     private void Start()
     {
-        if (GameManager.Instance.WeaponBase != null)
-        {
-            //GameManager.Instance.WeaponBase.onReload += inventory.Reload;
-        }
+        equip = GameManager.Instance.EquipUI;
     }
 
     public void PlusValue(ItemSlot slot)
     {
-        if (slot?.ItemData == null)
-        {
-            Debug.LogError("ItemSlot or ItemData is null!");
-            return;
-        }
-
         Money += (int)slot.ItemData.Price;
-
-        if (Owner != null)
-        {
-            Owner.Weight += slot.ItemData.weight;
-        }
-        else
-        {
-            Debug.LogWarning("Owner is null, cannot add weight.");
-        }
+        Owner.Weight += slot.ItemData.weight;
     }
-
 
     /// <summary>
     /// 게임이 끝난 이후 로컬인벤토리 정리하고 메인화면으로 나가는 함수
@@ -190,8 +181,20 @@ public class Inventory_UI : MonoBehaviour
     private void OnItemMoveEnd(ItemSlot slot, RectTransform rect)
     {
         // if(rect != 장비창의 RectTransform)
+
+        Equip_UI equip_UI;
+        equip_UI = rect.GetComponentInParent<Equip_UI>();
+
+        //if (equip_UI != null)
+        //{
         inventory.MoveItem(invenManager.DragSlot.ItemSlot, slot);
-        // 
+        //}
+        //else
+        //{
+        //    slot.AssignSlotItem(invenManager.DragSlot.ItemSlot.ItemData, invenManager.DragSlot.ItemSlot.ItemCount, true);
+        //    inventory.DragSlot.ClearSlot();
+        //}
+
 
         // else
         // 장비창이 가지고 있는 함수 실행;
@@ -212,7 +215,7 @@ public class Inventory_UI : MonoBehaviour
         }
 
         // 마우스를 땟을 때 위치가 장비창이라면 
-        // slot.EquipItem();                    장비하고
+        // slot.EquipWeapon();                    장비하고
         // 장비를 장비창에 복사하고(인벤토리에 있는 장비는 그대로 두고)
         // onEquipped?.Invoke(slot);            아이템 슬롯 정보 알려주기
     }
@@ -237,7 +240,7 @@ public class Inventory_UI : MonoBehaviour
     {
         // 버리기, 상세보기 등 UI따로 띄우기
         Slot_UI target = slotsUI[index];
-        dropSlot.Open(target.ItemSlot);
+        selectMenu.Open(target.ItemSlot);
     }
 
     /// <summary>
@@ -253,12 +256,46 @@ public class Inventory_UI : MonoBehaviour
     /// 아이템 버리기 창을 여는 함수
     /// </summary>
     /// <param name="index">아이템을 버릴 슬롯의 인덱스</param>
-    //private void OnItemDrop(uint index)
-    //{
-    //    Slot_UI target = slotsUI[index];
-    //    selectMenu.Close();
-    //    dropSlot.Open(target.ItemSlot);
-    //}
+    private void OnItemDrop(uint index)
+    {
+        Slot_UI target = slotsUI[index];
+        selectMenu.Close();
+        dropSlot.Open(target.ItemSlot);
+    }
+
+    private void OnItemEquip(ItemSlot slot)
+    {
+        if (!slot.IsEquiped)
+        {
+            if (Owner.SlotNumber.AddItem(slot.ItemData.itemPrefab, slotsUI[slot.Index].Equipment))
+            {
+                equip.EquipItem(slot);
+                slot.IsEquiped = true;
+            }
+            else
+            {
+                Debug.Log("아이템 장착 실패");
+            }
+        }
+        selectMenu.Close();
+    }
+
+    private void OnItemUnEquip(ItemSlot slot)
+    {
+        if (slot.IsEquiped)
+        {
+            if (Owner.UnEquipped())
+            {
+                slot.IsEquiped = false;
+                equip.UnEquipItem(slot);
+            }
+            else
+            {
+                Debug.Log("아이템 해제 실패");
+            }
+        }
+        selectMenu.Close();
+    }
 
     /// <summary>
     /// 버리기 창에서 확인 버튼을 누르면 실행되는 함수
@@ -267,7 +304,20 @@ public class Inventory_UI : MonoBehaviour
     /// <param name="count">아이템 버릴 개수</param>
     private void OnDropOk(uint index, uint count)
     {
-        inventory.RemoveItem(index, count);
+        ItemSlot slot = slotsUI[index].ItemSlot;
+
+        if (slot.IsEquiped)
+        {
+            if (inventory.RemoveItem(slot.ItemData.itemId, count) < 1)
+            {
+                equip.UnEquipItem(slotsUI[index].ItemSlot);
+            }
+        }
+        else
+        {
+            inventory.RemoveItem(index, count);
+
+        }
         dropSlot.Close();
     }
 

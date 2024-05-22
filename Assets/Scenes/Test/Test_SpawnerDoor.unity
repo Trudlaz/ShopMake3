@@ -1359,6 +1359,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1802927290478304570, guid: fc4ec3c5b09cd3e4dbfa17fe5515333e, type: 3}
+      propertyPath: m_TagString
+      value: Door
+      objectReference: {fileID: 0}
     - target: {fileID: 3149352477433409667, guid: fc4ec3c5b09cd3e4dbfa17fe5515333e, type: 3}
       propertyPath: m_Name
       value: SpawnerDoor

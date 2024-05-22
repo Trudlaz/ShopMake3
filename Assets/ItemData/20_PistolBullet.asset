@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 20_PistolBullet
   m_EditorClassIdentifier: 
-  itemId: 0
-  itemType: 0
+  itemId: 20
+  itemType: 4
   itemName: 9mm
   itemImage: {fileID: 21300000, guid: b6118a78da8c3ee418185c48db9370a1, type: 3}
   weight: 2

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 35_HighBackpack
   m_EditorClassIdentifier: 
-  itemId: 0
-  itemType: 0
+  itemId: 35
+  itemType: 9
   itemName: "3\uB808\uBCA8 \uAC00\uBC29"
   itemImage: {fileID: 21300000, guid: 73b3a3add0bb4984e88aea2a89533794, type: 3}
   weight: 0

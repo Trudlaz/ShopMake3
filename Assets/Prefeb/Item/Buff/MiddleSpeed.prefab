@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966385733cf095c4c9389af60f121de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemCode: 4
   Price: 50
   Weight: 6
   amountBuff: 6

@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 16_Rifle
   m_EditorClassIdentifier: 
-  itemId: 0
-  itemType: 0
+  itemId: 16
+  itemType: 2
   itemName: "\uB77C\uC774\uD50C"
   itemImage: {fileID: 21300000, guid: 87637ea26990aaf4d901df42e29ff8ee, type: 3}
-  weight: 12
+  weight: 2
   maxItemCount: 1
   itemPrefab: {fileID: 5313856188506331232, guid: 499889c1e977c5a4e9e8f7b158911173, type: 3}
   Price: 0

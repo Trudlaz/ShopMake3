@@ -141,11 +141,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2eb056c22ec4a5f4abc47c550be10119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemCode: 15
   Price: 400
-  Weight: 3
+  Weight: 1.5
   maxAmmo: 12
   fireRate: 1
-  weight: 7
+  weight: 1.5
   price: 150
   durability: 30
   recoil: 1

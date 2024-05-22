@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1becd54b8d0cf434f9352399be276960, type: 3}
   m_Name: 18_Sniper
   m_EditorClassIdentifier: 
-  itemId: 0
-  itemType: 0
+  itemId: 18
+  itemType: 2
   itemName: "\uC2A4\uB098\uC774\uD37C"
   itemImage: {fileID: 21300000, guid: fdb54aa87fd73e64bab62d94b9c1a2a8, type: 3}
-  weight: 16
+  weight: 2.5
   maxItemCount: 1
   itemPrefab: {fileID: 8105093614528831879, guid: 301bbae52e816634fa6526f656396153, type: 3}
   Price: 0

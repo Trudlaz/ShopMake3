@@ -8,7 +8,6 @@ public class ShopInventoryUI : MonoBehaviour
     public RectTransform shopTransform; // 상점의 RectTransform
     public CanvasGroup canvas; // 상점 UI의 CanvasGroup
     public ShopBuyMenuUI shopBuyMenu; // ShopBuyMenuUI 컴포넌트 참조
-
     public ShopInventory shopInventory; // ShopInventory 참조
 
     private void Awake()
