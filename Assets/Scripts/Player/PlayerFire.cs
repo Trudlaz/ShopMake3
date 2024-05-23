@@ -13,6 +13,8 @@ public class PlayerFire : MonoBehaviour
 
     private PlayerMove InputActions;
     private WeaponBase currentWeapon;
+    private BuffBase currentBuff;
+    private ArmorBase currentArmor;
 
     PlayerNoiseSystem noise;
     private QuickSlot quickSlot;
@@ -76,7 +78,6 @@ public class PlayerFire : MonoBehaviour
 
         if (currentWeapon != null)
         {
-            Debug.Log($"공격중{currentWeapon}");
             currentWeapon.Fire();
         }
         else
@@ -87,11 +88,34 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
-        // QuickSlot을 통해 아이템 사용 신호 보내기
-        if (quickSlot != null)
+        // BuffBase와 ArmorBase를 처리
+        if (firePosition != null)
         {
-            //quickSlot.SubWeapon(); // 예시로 SubWeapon을 사용하도록 설정
-            Debug.Log("퀵슬롯에서 아이템을 사용했습니다.");
+            BuffBase[] buffs = firePosition.GetComponentsInChildren<BuffBase>();
+            ArmorBase[] armors = firePosition.GetComponentsInChildren<ArmorBase>();
+
+            if (buffs.Length > 0)
+            {
+                currentBuff = buffs[0];
+                currentBuff.Use(); // BuffBase 사용
+                Debug.Log($"버프 사용중: {currentBuff}");
+            }
+            else if (armors.Length > 0)
+            {
+                currentArmor = armors[0];
+                currentArmor.Use(); // ArmorBase 사용
+                Debug.Log($"방어구 사용중: {currentArmor}");
+            }
+            else
+            {
+                currentBuff = null;
+                currentArmor = null;
+                Debug.Log("버프 또는 방어구가 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("FirePosition 오브젝트가 설정되지 않았습니다.");
         }
     }
 }
