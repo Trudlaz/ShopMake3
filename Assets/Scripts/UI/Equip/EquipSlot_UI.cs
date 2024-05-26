@@ -15,6 +15,8 @@ public class EquipSlot_UI : Slot_UI_Base
 
     EquipSlot equipSlot;
 
+    public EquipSlot EquipSlot => equipSlot;
+
 
 
     public Action<ItemSlot> onDragBegin;

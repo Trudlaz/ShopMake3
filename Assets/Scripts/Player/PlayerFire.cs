@@ -10,11 +10,10 @@ public class PlayerFire : MonoBehaviour
     private ParticleSystem ps;
     private Camera mainCamera;
     public int weaponPower = 5;
+    private Player player; // Player 인스턴스 참조 추가
 
     private PlayerMove InputActions;
     private WeaponBase currentWeapon;
-    private BuffBase currentBuff;
-    private ArmorBase currentArmor;
 
     PlayerNoiseSystem noise;
     private QuickSlot quickSlot;
@@ -40,6 +39,13 @@ public class PlayerFire : MonoBehaviour
         if (mainCamera == null)
         {
             Debug.LogError("메인 카메라를 찾을 수 없습니다. 카메라가 '메인 카메라'로 태그되어 있는지 확인하십시오.");
+        }
+
+        // Player 인스턴스 참조
+        player = GetComponent<Player>();
+        if (player == null)
+        {
+            Debug.LogError("Player 컴포넌트를 찾을 수 없습니다.");
         }
 
         // 입력 시스템 설정
@@ -88,29 +94,25 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
-        // BuffBase와 ArmorBase를 처리
+        // BuffBase를 상속받은 모든 버프 아이템을 검색하고 Use 메서드를 호출
         if (firePosition != null)
         {
             BuffBase[] buffs = firePosition.GetComponentsInChildren<BuffBase>();
-            ArmorBase[] armors = firePosition.GetComponentsInChildren<ArmorBase>();
 
-            if (buffs.Length > 0)
+            foreach (BuffBase buff in buffs)
             {
-                currentBuff = buffs[0];
-                currentBuff.Use(); // BuffBase 사용
-                Debug.Log($"버프 사용중: {currentBuff}");
+                if (buff != null)
+                {
+                    buff.Initialize(player); // Player 인스턴스 설정
+                    buff.Use();
+                    Debug.Log($"버프 사용중: {buff}");
+                    break;
+                }
             }
-            else if (armors.Length > 0)
+
+            if (buffs.Length == 0)
             {
-                currentArmor = armors[0];
-                currentArmor.Use(); // ArmorBase 사용
-                Debug.Log($"방어구 사용중: {currentArmor}");
-            }
-            else
-            {
-                currentBuff = null;
-                currentArmor = null;
-                Debug.Log("버프 또는 방어구가 없습니다.");
+                Debug.Log("사용할 버프가 없습니다.");
             }
         }
         else

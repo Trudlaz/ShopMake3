@@ -1,11 +1,16 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using UnityEditor.SceneManagement;
+using System.IO;
 using UnityEngine;
 
-
+[Serializable]
+public class EquipSlotData
+{
+    public ItemCode ItemCode;
+    public bool IsEquipped;
+}
 
 public class Equip
 {
@@ -29,7 +34,6 @@ public class Equip
         for (uint i = 0; i < slots.Length; i++)
         {
             slots[i] = new EquipSlot(i);
-            //slots[i].PlayerEquipment = slotsParent.GetComponentsInChildren<EquipSlot_UI>()[i].PlayerEquipment;  // awake 함수로 따로 찾기
         }
 
         dragSlot = new DragSlot(dragSlotIndex);
@@ -41,17 +45,10 @@ public class Equip
 
         for (uint i = 0; i < slots.Length; i++)
         {
-            slots[i].slotType = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>().slotType;  // awake 함수로 따로 찾기
-
-            //slots[i].PlayerEquip = EquipSlot.PlayerEquipment[(int)i]
+            slots[i].slotType = equipUIObject.GetChild((int)i).GetComponent<EquipSlot_UI>().slotType;
         }
     }
 
-    /// <summary>
-    /// 정비창에 특정 아이템을 장착하는 함수.
-    /// </summary>
-    /// <param name="code">장착 할 아이템 코드</param>
-    ///// <returns>성공하면 true 리턴 실패하면 false 리턴</returns>
     public bool AddItem(ItemCode code)
     {
         for (int i = 0; i < SlotCount; i++)
@@ -65,15 +62,8 @@ public class Equip
         return false;
     }
 
-    /// <summary>
-    /// 특정 정비창 슬롯에 특정 아이템을 1개 장착하는 함수
-    /// </summary>
-    /// <param name="code">장착 할 아이템의 코드</param>
-    /// <param name="slotIndex">아이템을 장착 할 슬롯의 인덱스</param>
-    /// <returns>성공하면 true 리턴 실패하면 false 리턴</returns>
     public bool AddItem(ItemCode code, uint slotIndex)
     {
-
         if (IsValidIndex(slotIndex))
         {
             ItemData data = itemDataManager[code];
@@ -91,7 +81,6 @@ public class Equip
         return false;
     }
 
-
     public bool IsValidIndex(uint index)
     {
         return index < SlotCount;
@@ -102,11 +91,6 @@ public class Equip
         return (slot != null) || (slot == dragSlot);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="slotIndex"></param>
-    /// <param name="count"></param>
     private void RemoveItem(uint slotIndex, uint count = 1)
     {
         if (IsValidIndex(slotIndex))
@@ -116,9 +100,9 @@ public class Equip
         }
     }
 
-    public void RemoveItem(ItemCode code,  uint count = 1)
+    public void RemoveItem(ItemCode code, uint count = 1)
     {
-        for(int i = 0; i < SlotCount; i++)
+        for (int i = 0; i < SlotCount; i++)
         {
             ItemData data = itemDataManager[code];
             EquipSlot slot = slots[i];
@@ -134,9 +118,6 @@ public class Equip
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void ClearEquip()
     {
         foreach (var slot in slots)
@@ -145,4 +126,62 @@ public class Equip
         }
     }
 
+    public void SaveEquipToJson()
+    {
+        List<EquipSlotData> slotDataList = new List<EquipSlotData>();
+        foreach (var slot in slots)
+        {
+            if (!slot.IsEmpty)
+            {
+                slotDataList.Add(new EquipSlotData()
+                {
+                    ItemCode = slot.ItemData.itemId,
+                    IsEquipped = slot.IsEquiped
+                });
+            }
+        }
+
+        string json = JsonConvert.SerializeObject(slotDataList, Newtonsoft.Json.Formatting.Indented);
+        File.WriteAllText(Path.Combine(Application.persistentDataPath, "equip.json"), json);
+        Debug.Log("장비 데이터를 저장했습니다.");
+    }
+
+    public void LoadEquipFromJson()
+    {
+        string path = Path.Combine(Application.persistentDataPath, "equip.json");
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            List<EquipSlotData> slotDataList = JsonConvert.DeserializeObject<List<EquipSlotData>>(json);
+            ClearEquip();  // 기존 장비 클리어
+
+            foreach (var slotData in slotDataList)
+            {
+                ItemData itemData = itemDataManager.GetItemDataByCode(slotData.ItemCode);
+                EquipSlot slot = GetEmptySlot(slotData.ItemCode);  // 빈 슬롯 찾기 메서드 구현 필요
+                if (slot != null)
+                {
+                    slot.AssignSlotItem(itemData, 1, slotData.IsEquipped);  // 장비 슬롯에 아이템 할당
+                }
+            }
+            Debug.Log("장비 데이터를 불러왔습니다.");
+        }
+        else
+        {
+            Debug.LogWarning("장비 데이터 파일을 찾을 수 없습니다.");
+        }
+    }
+
+    private EquipSlot GetEmptySlot(ItemCode itemCode)
+    {
+        // 모든 슬롯을 순회하며 비어 있는 슬롯을 찾음
+        foreach (var slot in slots)
+        {
+            if (slot.IsEmpty && slot.slotType.Contains(itemDataManager[itemCode].itemType))
+            {
+                return slot;
+            }
+        }
+        return null; // 비어 있는 슬롯이 없으면 null 반환
+    }
 }

@@ -146,7 +146,8 @@ public class Player : MonoBehaviour
     /// </summary>
     private bool wasInAir = false;
 
-
+    
+        BuffBase buff;
     private void Awake()
     {
         inputActions = new PlayerMove();
@@ -174,8 +175,6 @@ public class Player : MonoBehaviour
         inputActions.Player.InventoryAction.performed += OnInventoryAction;    // 인벤토리 사용
         inputActions.Player.InventoryAction.canceled += OnInventoryAction;     // 인벤토리 사용
         inputActions.Player.Exit.performed += OnExit;                          // 종료(일시정지)
-        inputActions.Player.LeftMouse.performed += OnLeftMouse;                // 왼쪽 마우스 입력
-        inputActions.Player.RightMouse.performed += OnRightMouse;              // 오른쪽 마우스 입력
         inputActions.Player.HotbarKey.performed += OnHotbarKey;                // 핫바키 사용
 
 
@@ -194,8 +193,6 @@ public class Player : MonoBehaviour
         inputActions.Player.InventoryAction.performed -= OnInventoryAction;
         inputActions.Player.InventoryAction.canceled -= OnInventoryAction;
         inputActions.Player.Exit.performed -= OnExit;
-        inputActions.Player.LeftMouse.performed -= OnLeftMouse;
-        inputActions.Player.RightMouse.performed -= OnRightMouse;
         inputActions.Player.HotbarKey.performed -= OnHotbarKey;
         inputActions.Player.Disable();
     }
@@ -277,14 +274,6 @@ public class Player : MonoBehaviour
     }
 
     private void OnExit(InputAction.CallbackContext ctx)
-    {
-    }
-
-    private void OnLeftMouse(InputAction.CallbackContext ctx)
-    {
-    }
-
-    private void OnRightMouse(InputAction.CallbackContext ctx)
     {
     }
 
@@ -477,7 +466,6 @@ public class Player : MonoBehaviour
         }
         return result;
     }
-
 
     // ----------------------------------------------------------------------------------------
 

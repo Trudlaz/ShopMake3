@@ -88,11 +88,15 @@ public class Equip_UI : MonoBehaviour
 
     public void UseItem(uint index)
     {
-        if(inven.Inventory.RemoveItem(equipSlot_UI[index].ItemSlot.ItemData.itemId) < 1)
+        inven.Inventory.RemoveItem(equipSlot_UI[index].EquipSlot.ItemData.itemId);
+        if (!inven.Inventory.FindItem(equipSlot_UI[index].EquipSlot.ItemData.itemId))
         {
-            equip.RemoveItem(equipSlot_UI[index].ItemSlot.ItemData.itemId);
+            Owner.UnEquipped(equipSlot_UI[index].EquipSlot.ItemData.itemType);
+            equip.RemoveItem(equipSlot_UI[index].EquipSlot.ItemData.itemId);
         }
     }
+
+
 
     public void open()
     {

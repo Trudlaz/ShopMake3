@@ -96,6 +96,7 @@ public class GameManager : Singleton<GameManager>
         {
             SaveWorldInventory();
             SaveInventory();
+            SaveEquip();
         }
         StartCoroutine(LoadScene(sceneName, OnGameStartCompleted));
     }
@@ -105,6 +106,7 @@ public class GameManager : Singleton<GameManager>
         if (sceneName == "MainMenuScene")
         {
             SaveInventory();
+            SaveEquip();
         }
         StartCoroutine(LoadScene(sceneName, OnGameEnding));
     }
@@ -123,10 +125,12 @@ public class GameManager : Singleton<GameManager>
         {
             LoadWorldInventory();
             LoadInventory();
+            LoadEquip();
         }
         else if (sceneName == "InGameScene")
         {
             LoadInventory();
+            LoadEquip();
         }
 
         onLoaded?.Invoke();
@@ -154,6 +158,17 @@ public class GameManager : Singleton<GameManager>
     {
         if (inventoryUI != null)
             inventoryUI.Inventory.LoadInventoryFromJson();
+    }
+
+    public void SaveEquip()
+    {
+        if(equipUI != null)
+            equipUI.Equip.SaveEquipToJson();
+    }
+    public void LoadEquip()
+    {
+        if(equipUI != null)
+            equipUI.Equip.LoadEquipFromJson();
     }
 #if UNITY_EDITOR
 
