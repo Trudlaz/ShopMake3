@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NoiseGrenade : GrenadeBase
 {
-    [Tooltip("¼ÒÀ½ Å©±â")]
+    [Tooltip("ì†ŒìŒ í¬ê¸°")]
     public float noiseVolume = 10.0f;
 
     protected override void Explode()
@@ -12,4 +12,5 @@ public class NoiseGrenade : GrenadeBase
         Factory.Instance.GetNoise(noiseVolume, transform);
         Destroy(this.gameObject, 0.1f);
     }
+
 }

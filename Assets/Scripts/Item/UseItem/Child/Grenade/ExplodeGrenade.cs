@@ -7,11 +7,11 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ExplodeGrenade : GrenadeBase
 {
-    [Tooltip("µ¥¹ÌÁö")]
+    [Tooltip("ë°ë¯¸ì§€")]
     public float grenadeDamage = 100;
-    [Tooltip("Å¸±êÀ¸·Î Á¤ÇØÁø Àû ¸®½ºÆ®")]
+    [Tooltip("íƒ€ê¹ƒìœ¼ë¡œ ì •í•´ì§„ ì  ë¦¬ìŠ¤íŠ¸")]
     private List<EnemyBace> targets = new List<EnemyBace>();
-    [Tooltip("Æø¹ßÇÏ´Âµ¥ ÇÊ¿äÇÑ µô·¹ÀÌ Å¸ÀÓ")]
+    [Tooltip("í­ë°œí•˜ëŠ”ë° í•„ìš”í•œ ë”œë ˆì´ íƒ€ì„")]
     [SerializeField] private float targetsTrackDelay = 0.5f;
 
     protected override void Explode()
@@ -44,7 +44,7 @@ public class ExplodeGrenade : GrenadeBase
     }
 
     /// <summary>
-    /// Æø¹ß.
+    /// í­ë°œ.
     /// </summary>
     IEnumerator targetDamege()
     {
@@ -60,4 +60,5 @@ public class ExplodeGrenade : GrenadeBase
 
         Destroy(this.gameObject, 0.1f);
     }
+
 }

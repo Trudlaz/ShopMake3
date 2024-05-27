@@ -94,11 +94,13 @@ public class PlayerFire : MonoBehaviour
 
     private void OnRightMouse(InputAction.CallbackContext context)
     {
-        // BuffBase를 상속받은 모든 버프 아이템을 검색하고 Use 메서드를 호출
         if (firePosition != null)
         {
-            BuffBase[] buffs = firePosition.GetComponentsInChildren<BuffBase>();
+            // 수류탄을 들고 있는지 확인하고 Use 메서드를 호출
+            bool itemUsed = false;
 
+            // BuffBase를 상속받은 모든 버프 아이템을 검색하고 Use 메서드를 호출
+            BuffBase[] buffs = firePosition.GetComponentsInChildren<BuffBase>();
             foreach (BuffBase buff in buffs)
             {
                 if (buff != null)
@@ -106,13 +108,31 @@ public class PlayerFire : MonoBehaviour
                     buff.Initialize(player); // Player 인스턴스 설정
                     buff.Use();
                     Debug.Log($"버프 사용중: {buff}");
+                    itemUsed = true;
                     break;
                 }
             }
 
-            if (buffs.Length == 0)
+            if (!itemUsed)
             {
-                Debug.Log("사용할 버프가 없습니다.");
+                // GrenadeBase를 상속받은 모든 수류탄 아이템을 검색하고 Use 메서드를 호출
+                GrenadeBase[] grenades = firePosition.GetComponentsInChildren<GrenadeBase>();
+                foreach (GrenadeBase grenade in grenades)
+                {
+                    if (grenade != null)
+                    {
+                        grenade.Initialize(player); // Player 인스턴스 설정
+                        grenade.Use();
+                        Debug.Log($"수류탄 사용중: {grenade}");
+                        itemUsed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!itemUsed)
+            {
+                Debug.Log("사용할 버프 또는 수류탄이 없습니다.");
             }
         }
         else

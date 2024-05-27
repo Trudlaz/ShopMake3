@@ -24,5 +24,4 @@ public class FireGrenade : GrenadeBase
         Instantiate(fire, transform.position, Quaternion.identity);
         Instantiate(expoltionEffect, transform.position, Quaternion.identity);
     }
-
 }
