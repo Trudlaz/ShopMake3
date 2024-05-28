@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
     // 게임 초기화 시 필요한 컴포넌트를 찾아서 할당
     protected override void OnInitialize()
     {
-        base.OnInitialize(); // 상속받은 Singleton의 초기화를 먼저 호출
+        base.OnInitialize();
         LoadComponentReferences();
 
         Inventory inven = new Inventory(this);
@@ -51,12 +51,12 @@ public class GameManager : Singleton<GameManager>
 
         WorldInventory worldInven = new WorldInventory(this);
 
-        if(worldInventoryUI != null)
+        if (worldInventoryUI != null)
         {
             worldInventoryUI.InitializeWorldInventory(worldInven);
         }
 
-        Equip equip = new Equip(this);//
+        Equip equip = new Equip(this);
 
         if (equipUI != null)
         {
@@ -68,8 +68,8 @@ public class GameManager : Singleton<GameManager>
         }
         shopInventory = new ShopInventory();
     }
-    
- 
+
+
     // 초기화 이전에 필요한 컴포넌트를 미리 설정
     protected override void OnPreInitialize()
     {
@@ -88,6 +88,10 @@ public class GameManager : Singleton<GameManager>
         shopInventoryUI = FindAnyObjectByType<ShopInventoryUI>();
         equipUI = FindObjectOfType<Equip_UI>();
         playerUI = FindAnyObjectByType<PlayerUI>();
+        if (equipUI == null)
+        {
+            Debug.LogError("Equip_UI를 찾을 수 없습니다.");
+        }
     }
 
     public void StartGame(string sceneName)

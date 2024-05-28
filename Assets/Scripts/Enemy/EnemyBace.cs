@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class EnemyBace : RecycleObject
 {
     public float maxHP = 100.0f;
-    public float moveSpeed = 3.0f;     // ¶Ù±â 5 °È±â 3
+    public float moveSpeed = 3.0f;     // ë›°ê¸° 5 ê±·ê¸° 3
     public float runIncrease = 2.0f;
     public float attackDamege = 10.0f;
     public float maxCoolTime = 1.5f;
@@ -36,7 +36,7 @@ public class EnemyBace : RecycleObject
             if (hp != value) 
             {
                 hp = value;
-                if (State != EnemyState.Dead && hp <= 0)    // ÇÑ¹ø¸¸ Á×±â¿ëµµ
+                if (State != EnemyState.Dead && hp <= 0)    // í•œë²ˆë§Œ ì£½ê¸°ìš©ë„
                 {
                     Die();
                 }
@@ -73,12 +73,12 @@ public class EnemyBace : RecycleObject
 
     protected enum EnemyState 
     {
-        Wait = 0,   //´ë±â
-        Alert,      //°æ°è
-        Chase,      //Ãß°İ
-        Wander,     //¹èÈ¸
-        Attack,     //°ø°İ
-        Dead        //»ç¸Á
+        Wait = 0,   //ëŒ€ê¸°
+        Alert,      //ê²½ê³„
+        Chase,      //ì¶”ê²©
+        Wander,     //ë°°íšŒ
+        Attack,     //ê³µê²©
+        Dead        //ì‚¬ë§
     }
     EnemyState state = EnemyState.Alert;
     protected EnemyState State 
@@ -92,8 +92,8 @@ public class EnemyBace : RecycleObject
                 switch (state)
                 {
                     case EnemyState.Wait:
-                        agent.isStopped = true;         // agent Á¤Áö
-                        agent.velocity = Vector3.zero;  // agent¿¡ ³²¾ÆÀÖ´ø ¿îµ¿·® Á¦°Å
+                        agent.isStopped = true;         // agent ì •ì§€
+                        agent.velocity = Vector3.zero;  // agentì— ë‚¨ì•„ìˆë˜ ìš´ë™ëŸ‰ ì œê±°
                         animator.SetBool(Move_Hash, false);
                         animator.SetBool(Run_Hash, false);
                         onStateUpdate = Update_Wait;
@@ -327,11 +327,11 @@ public class EnemyBace : RecycleObject
     {
         Vector3 dir = targeting.position - transform.position;
         float distance = dir.magnitude;
-        float findDistance = radi * findDistanceRange;                                                            //chase»óÅÂ·Î ³Ñ¾î°¡´Â °Å¸® ÇÑ°è
+        float findDistance = radi * findDistanceRange;                                                            //chaseìƒíƒœë¡œ ë„˜ì–´ê°€ëŠ” ê±°ë¦¬ í•œê³„
         if ( State == EnemyState.Chase || State == EnemyState.Wander)
         {
             State = EnemyState.Chase;
-            target = targeting;             //ÃßÀû½Ã°£ ÃÊ±âÈ­
+            target = targeting;             //ì¶”ì ì‹œê°„ ì´ˆê¸°í™”
             chaseTime = 0.0f;
         }
         else if(State == EnemyState.Wait || State == EnemyState.Alert)
@@ -339,15 +339,15 @@ public class EnemyBace : RecycleObject
             if (distance < findDistance)
             {
                 State = EnemyState.Chase;
-                target = targeting;             //ÃßÀû½Ã°£ ÃÊ±âÈ­
+                target = targeting;             //ì¶”ì ì‹œê°„ ì´ˆê¸°í™”
                 chaseTime = 0.0f;
-                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(ÃÖ´ë-ÇöÀç) / ÃÖ´ë : (0~1»çÀÌ°ª »ı¼º) -> +1(ÃÖ¼Ò°ª º¸Á¤)
+                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(ìµœëŒ€-í˜„ì¬) / ìµœëŒ€ : (0~1ì‚¬ì´ê°’ ìƒì„±) -> +1(ìµœì†Œê°’ ë³´ì •)
             }
             else
             {
                 State = EnemyState.Alert;
                 agent.SetDestination(targeting.position);
-                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(ÃÖ´ë-ÇöÀç) / ÃÖ´ë : (0~1»çÀÌ°ª »ı¼º) -> +1(ÃÖ¼Ò°ª º¸Á¤)
+                chaseAmpl = ((radi - distance) / radi) * (MaxChaseAmpl - 1) + 1;                                              //(ìµœëŒ€-í˜„ì¬) / ìµœëŒ€ : (0~1ì‚¬ì´ê°’ ìƒì„±) -> +1(ìµœì†Œê°’ ë³´ì •)
             }
         }
     }
@@ -359,12 +359,12 @@ public class EnemyBace : RecycleObject
         agent.SetDestination(targetPos);
     }
 
-    void OnNight(float Ampl) //½Ã°£¹Ù²ğ¶§ µ¨¸®°ÔÀÌÆ® ¹ŞÀ»°÷
+    void OnNight(float Ampl) //ì‹œê°„ë°”ë€”ë•Œ ë¸ë¦¬ê²Œì´íŠ¸ ë°›ì„ê³³
     {
         nightAmpl = Ampl;
     }
 
-    IEnumerator AlatWait()      //¿ø´õ ¾÷µ¥ÀÌÆ® 1Æ½ µ¹°í¼­ ¿©±â·Î ºüÁü ¿Ö?
+    IEnumerator AlatWait()      //ì›ë” ì—…ë°ì´íŠ¸ 1í‹± ëŒê³ ì„œ ì—¬ê¸°ë¡œ ë¹ ì§ ì™œ?
     {
         yield return new WaitForSeconds(alatWaitTime);
         if (target == null) 
@@ -374,7 +374,7 @@ public class EnemyBace : RecycleObject
         else 
         {
             State = EnemyState.Wander;
-            target = null;                              //³õÇûÀ»¶§ Å¸°ÙÀ» ´­·Î ¹Ù²ãÁÜ
+            target = null;                              //ë†“í˜”ì„ë•Œ íƒ€ê²Ÿì„ ëˆŒë¡œ ë°”ê¿”ì¤Œ
         }
     }
 
@@ -384,12 +384,12 @@ public class EnemyBace : RecycleObject
         result = Vector3.zero;
         for(int i = 0; i < 30; i++) 
         {
-            Vector2 random = Random.insideUnitCircle * range;                               //±¸ÇüÀÌ´Ùº¸´Ï±î(insideUnitSphere) ·¹ÀÎÁö 60ÀÌ¶ó À§ÂÊ Çã°ø¿¡ ÂïÈ÷¸é ±× ÁöÁ¡Áß ¹İ°æ 1¾È¿¡ ¶¥ÀÌ ¾ø´ø°Í,
-            Vector3 randomPoint = center;                                                   //±¸Çü¸»°í Æò¸éÀ¸·Î ¹Ù²Ù°í, Ãş°í¸¦ ´Ù¸¥¹æ¹ıÀ¸·Î µ¤¾î½á¼­ Á¡À» ¸¸µé°í ¹İ°æÀ» ÁÙÀÏ°Í
+            Vector2 random = Random.insideUnitCircle * range;                               //êµ¬í˜•ì´ë‹¤ë³´ë‹ˆê¹Œ(insideUnitSphere) ë ˆì¸ì§€ 60ì´ë¼ ìœ„ìª½ í—ˆê³µì— ì°íˆë©´ ê·¸ ì§€ì ì¤‘ ë°˜ê²½ 1ì•ˆì— ë•…ì´ ì—†ë˜ê²ƒ,
+            Vector3 randomPoint = center;                                                   //êµ¬í˜•ë§ê³  í‰ë©´ìœ¼ë¡œ ë°”ê¾¸ê³ , ì¸µê³ ë¥¼ ë‹¤ë¥¸ë°©ë²•ìœ¼ë¡œ ë®ì–´ì¨ì„œ ì ì„ ë§Œë“¤ê³  ë°˜ê²½ì„ ì¤„ì¼ê²ƒ
             randomPoint.x += random.x;
             randomPoint.z += random.y;
             NavMeshHit hit;                                                                 
-            if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))      //·£´ıÆ÷ÀÎÆ®±âÁØ 3º¯¼ö(10.0f) ¹İ°æ¾È¿¡¼­ °¡Àå °¡±î¿î Á¡ ¸®ÅÏ ¾øÀ¸¸é flase
+            if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))      //ëœë¤í¬ì¸íŠ¸ê¸°ì¤€ 3ë³€ìˆ˜(10.0f) ë°˜ê²½ì•ˆì—ì„œ ê°€ì¥ ê°€ê¹Œìš´ ì  ë¦¬í„´ ì—†ìœ¼ë©´ flase
             {
                 result = hit.position; 
                 isOk = true;
@@ -403,9 +403,9 @@ public class EnemyBace : RecycleObject
     private void OnDrawGizmos()
     {
         Handles.color = Color.green;
-        Handles.DrawWireDisc(transform.position, transform.up, 4.0f);   //°ø°İ¹üÀ§
+        Handles.DrawWireDisc(transform.position, transform.up, 4.0f);   //ê³µê²©ë²”ìœ„
         Handles.color = Color.blue;
-        Handles.DrawWireDisc(transform.position, transform.up, 1.4f);   //½ºÅ¾µğ½ºÅÏ½º
+        Handles.DrawWireDisc(transform.position, transform.up, 1.4f);   //ìŠ¤íƒ‘ë””ìŠ¤í„´ìŠ¤
     }
 #endif
 }

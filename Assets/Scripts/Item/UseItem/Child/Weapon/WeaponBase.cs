@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static BulletBase;
 
@@ -54,7 +55,7 @@ public class WeaponBase : ItemBase
 
     float coolTime = 0f;
 
-    public bool canFire => coolTime < fireRate && currentAmmo > 0;
+    public bool canFire = true; //  => coolTime < fireRate && currentAmmo > 0;
     public Action<ItemCode, int> onReload;    //장비창에 장착될때 인벤토리의 리로딩 함수와 연결 
     public Action<int, int> onAmmoChange;
 
@@ -128,29 +129,48 @@ public class WeaponBase : ItemBase
 
             // Raycast 및 이펙트 처리
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
-            RaycastHit[] hits = Physics.RaycastAll(ray);
+            RaycastHit hitInfo;
 
-            foreach (RaycastHit hitInfo in hits)
+            // Raycast 실행, 첫 번째로 맞은 오브젝트 정보 저장
+            while (Physics.Raycast(ray, out hitInfo))
             {
-                if (hitInfo.transform.gameObject.CompareTag("Item"))
+                GameObject hitObject = hitInfo.transform.gameObject;
+                Debug.Log($"Raycast hit: {hitObject.name} (Layer: {LayerMask.LayerToName(hitObject.layer)}) at position {hitInfo.point}");
+
+                if (hitObject.CompareTag("Item"))
                 {
-                    continue; // 'Item' 태그를 가진 오브젝트는 무시
+                    // 아이템 태그를 가진 오브젝트를 무시하고, Ray를 그 뒤로 계속 쏘기 위해 Ray의 시작점을 충돌 지점으로 이동
+                    ray.origin = hitInfo.point + ray.direction * 0.01f; // 충돌 지점에서 조금 더 이동한 지점을 새로운 시작점으로 설정
+                    continue;
                 }
 
-                if (hitInfo.transform.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                if (hitObject.CompareTag("Enemy"))
                 {
-                    // Enemy 레이어를 가진 오브젝트에 데미지를 주고 이펙트를 생성
-                    EnemyBace eFSM = hitInfo.transform.gameObject.GetComponent<EnemyBace>();
-                    if (eFSM != null)
+                    // Capsule Collider만 감지
+                    CapsuleCollider capsuleCollider = hitInfo.collider as CapsuleCollider;
+                    if (capsuleCollider != null)
                     {
-                        eFSM.Demage(damage);
+                        // Enemy 태그를 가진 오브젝트에 데미지를 주고 이펙트를 생성
+                        EnemyBace eFSM = hitObject.GetComponent<EnemyBace>();
+                        if (eFSM != null)
+                        {
+                            Debug.Log("Attacking enemy.");
+                            eFSM.Demage(damage);
+                        }
+                        if (bulletEffect != null && ps != null)
+                        {
+                            bulletEffect.transform.position = hitInfo.point;
+                            ps.Play();
+                        }
+                        // 적과 충돌한 경우 함수 종료
+                        return;
                     }
-                    if (bulletEffect != null && ps != null)
+                    else
                     {
-                        bulletEffect.transform.position = hitInfo.point;
-                        ps.Play();
+                        // Capsule Collider가 아닌 다른 콜라이더는 무시하고, Ray의 시작점을 충돌 지점으로 이동
+                        ray.origin = hitInfo.point + ray.direction * 0.01f;
+                        continue;
                     }
-                    break; // 적과 충돌한 경우 루프 종료
                 }
                 else
                 {
@@ -160,13 +180,14 @@ public class WeaponBase : ItemBase
                         bulletEffect.transform.position = hitInfo.point;
                         ps.Play();
                     }
-                    break; // 충돌 처리 후 루프 종료
+                    // 적이 아닌 오브젝트와 충돌한 경우 함수 종료
+                    return;
                 }
             }
         }
         else
         {
-            if (currentAmmo <= 0)
+            if (CurrentAmmo <= 0)
             {
                 Debug.Log("탄약이 부족합니다.");
             }
@@ -176,6 +197,12 @@ public class WeaponBase : ItemBase
             }
         }
     }
+
+
+
+
+
+
 
 
     // bulletEffect와 ps를 초기화하는 메서드 추가

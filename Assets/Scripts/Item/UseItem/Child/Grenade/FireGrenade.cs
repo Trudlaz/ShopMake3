@@ -13,7 +13,7 @@ public class FireGrenade : GrenadeBase
             if (collision.transform.CompareTag("Ground"))
             {
                 Explode();
-                Destroy(this.gameObject, 0.1f);
+                Destroy(this.gameObject, 1f);
             }
         }
     }

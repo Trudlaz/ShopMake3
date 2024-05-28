@@ -67,8 +67,13 @@ public class Equip
         if (IsValidIndex(slotIndex))
         {
             ItemData data = itemDataManager[code];
-            EquipSlot slot = slots[slotIndex];
+            if (data == null)
+            {
+                Debug.LogError($"itemDataManager에서 ItemCode {code}에 대한 데이터를 찾을 수 없습니다.");
+                return false;
+            }
 
+            EquipSlot slot = slots[slotIndex];
             if (slot.slotType.Contains(data.itemType))
             {
                 if (slot.IsEmpty)

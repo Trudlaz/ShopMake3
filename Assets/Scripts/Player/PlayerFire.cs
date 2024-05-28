@@ -121,7 +121,6 @@ public class PlayerFire : MonoBehaviour
                 {
                     if (grenade != null)
                     {
-                        grenade.Initialize(player); // Player 인스턴스 설정
                         grenade.Use();
                         Debug.Log($"수류탄 사용중: {grenade}");
                         itemUsed = true;

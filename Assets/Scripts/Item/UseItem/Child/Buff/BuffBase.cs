@@ -11,7 +11,6 @@ public class BuffBase : ItemBase
     public override void Use()
     {
         GameManager.Instance.EquipUI.UseItem(5);
-        
     }
 
     public void Initialize(Player player)
