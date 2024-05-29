@@ -146,28 +146,39 @@ public class ShopBuyMenuUI : MonoBehaviour
             }
 
             ItemCode purchasedItemCode = currentItemSlot.ItemData.itemId;
-            Debug.Log("구매한 아이템 코드 : " + purchasedItemCode);
+            int totalPrice = (int)(currentItemSlot.ItemData.Price * (int)quantity); // 총 가격 계산
 
-            bool allItemsAdded = true;
-            for (uint i = 0; i < quantity; i++)
+            WorldInventory_UI worldInventoryUI = GameManager.Instance.WorldInventory_UI;
+
+            // 플레이어가 충분한 돈을 가지고 있는지 확인
+            if (worldInventoryUI.Money >= totalPrice)
             {
-                bool itemAdded = GameManager.Instance.WorldInventory_UI.WorldInven.AddItem(purchasedItemCode);
-                if (!itemAdded)
+                bool allItemsAdded = true;
+                for (uint i = 0; i < quantity; i++)
                 {
-                    allItemsAdded = false;
-                    Debug.LogError("월드인벤토리에 아이템을 추가하지 못 했습니다.");
-                    break; // 하나라도 추가 실패하면 더 이상 추가하지 않고 중단
+                    bool itemAdded = GameManager.Instance.WorldInventory_UI.WorldInven.AddItem(purchasedItemCode);
+                    if (!itemAdded)
+                    {
+                        allItemsAdded = false;
+                        Debug.LogError("월드인벤토리에 아이템을 추가하지 못 했습니다.");
+                        break; // 하나라도 추가 실패하면 더 이상 추가하지 않고 중단
+                    }
                 }
-            }
 
-            if (allItemsAdded)
-            {
-                OnBuyItem?.Invoke(currentItemSlot, quantity);
-                Debug.Log("모든 아이템을 성공적으로 인벤토리에 추가했습니다.");
+                if (allItemsAdded)
+                {
+                    worldInventoryUI.Money -= totalPrice; // 플레이어 돈 차감
+                    OnBuyItem?.Invoke(currentItemSlot, quantity);
+                    Debug.Log("모든 아이템을 성공적으로 인벤토리에 추가했습니다.");
+                }
+                else
+                {
+                    Debug.LogError("모든 아이템을 성공적으로 인벤토리에 추가하지 못 했습니다.");
+                }
             }
             else
             {
-                Debug.LogError("모든 아이템을 성공적으로 인벤토리에 추가하지 못 했습니다.");
+                Debug.LogError("돈이 충분하지 않습니다.");
             }
         }
         else
@@ -175,6 +186,8 @@ public class ShopBuyMenuUI : MonoBehaviour
             Debug.LogError("잘못된 수량을 입력하셨습니다.");
         }
     }
+
+
 
 
     // 클릭 위치 확인
