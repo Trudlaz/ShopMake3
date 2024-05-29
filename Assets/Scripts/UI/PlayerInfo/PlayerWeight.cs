@@ -27,6 +27,8 @@ public class PlayerWeight : MonoBehaviour
         {
             maxWeight = player.MaxWeight;
             max.text = $"{(maxWeight):f1}KG";
+
+            current.text = "0";
         }
 
         player.onWeightChange += Refresh;

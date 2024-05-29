@@ -141,13 +141,6 @@ public class Player : MonoBehaviour
     const float runSoundRange = 5.0f;
     const float landingSoundRange = 6.0f;
 
-    /// <summary>
-    /// 플레이어가 공중에 있었는지 확인하는 변수
-    /// </summary>
-    private bool wasInAir = false;
-
-    
-        BuffBase buff;
     private void Awake()
     {
         inputActions = new PlayerMove();
@@ -412,6 +405,7 @@ public class Player : MonoBehaviour
     {
         bool result = false;
         ItemBase item = GetComponentInChildren<ItemBase>();
+        Inventory_UI inven = GameManager.Instance.InventoryUI;
 
         switch (type)
         {
@@ -419,6 +413,10 @@ public class Player : MonoBehaviour
                 WeaponBase weapon = item as WeaponBase;
                 if (weapon != null)
                 {
+                    if (weapon.CurrentAmmo != 0)
+                    {
+                        inven.Inventory.AddItem(weapon.NeedType, weapon.CurrentAmmo);
+                    }
                     Destroy(weapon.gameObject);
                     result = true;
                 }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.EventSystems.StandaloneInputModule;
 
 
 // 인벤토리 및 장비창 열고 닫기용 클래스
@@ -15,45 +16,20 @@ public class InventoryManager : MonoBehaviour
 
     DragSlotUI dragSlot;
     Inventory_UI inven;
-    WorldInventory_UI worldInven;
     Equip_UI equip;
 
     public DragSlotUI DragSlot => dragSlot;
 
-    PlayerInput input;
-
-    bool inventoryOnOff = true;
-
-
     private void Awake()
     {
-        input = new PlayerInput();
-
         dragSlot = GetComponentInChildren<DragSlotUI>();
 
         inven = GetComponentInChildren<Inventory_UI>();
-        worldInven = GetComponentInChildren<WorldInventory_UI>();
         equip = GetComponentInChildren<Equip_UI>();
 
-        Transform child = transform.GetChild(3);
+        Transform child = transform.GetChild(4);
         resultButton = child.GetComponent<Button>();
-
     }
-
-    private void OnEnable()
-    {
-        input.UI.Enable();
-        input.UI.Inventory.performed += OnOpen;
-    }
-
-    private void OnDisable()
-    {
-        input.UI.Inventory.performed -= OnOpen;
-        input.UI.Disable();
-    }
-
-
-
     private void Start()
     {
         GameManager.Instance.OnGameEnding += () =>
@@ -61,8 +37,8 @@ public class InventoryManager : MonoBehaviour
             resultButton.gameObject.SetActive(true);
         };
 
-        //resultButton.onClick.AddListener(OnClick);
-        //resultButton.gameObject.SetActive(false);
+        resultButton.onClick.AddListener(OnClick);
+        resultButton.gameObject.SetActive(false);
     }
 
     private void OnClick()
@@ -74,10 +50,19 @@ public class InventoryManager : MonoBehaviour
         resultButton.gameObject.SetActive(false);
     }
 
-
-    private void OnOpen(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void Open()
     {
-        inven.InventoryOnOff();
-        equip.InventoryOnOff();
+        inven.Open();
+        equip.Open();
+
+        Debug.Log("인벤토리 켜짐");
+    }
+
+    public void Close()
+    {
+        inven.Close();
+        equip.Close();
+
+        Debug.Log("인벤토리 꺼짐");
     }
 }

@@ -350,7 +350,7 @@ public class WorldInventory
     {
         if (slot.ItemData != null)
         {
-            worldInven.Money += (int)(slot.ItemData.Price * count);
+            worldInven.Money += (int)(slot.ItemData.Price * 0.5f * count);
         }
     }
 

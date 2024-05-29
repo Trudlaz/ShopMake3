@@ -9,20 +9,33 @@ public class PauseMenu : MonoBehaviour
     Button reGameButton;
     Button quitGameButton;
 
+    Transform child;
+
+    CursorManager cursor;
+
     private void Awake()
     {
-        Transform child = transform.GetChild(0);
-        reGameButton = child.GetComponent<Button>();
-        reGameButton.onClick.AddListener(Close);
+        cursor = GetComponentInParent<CursorManager>();
 
-        child = transform.GetChild(1);
-        quitGameButton = child.GetComponent<Button>();
+        child = transform.GetChild(0);
+        Transform childButton;
+
+        childButton = child.GetChild(0);
+        reGameButton = childButton.GetComponent<Button>();
+        reGameButton.onClick.AddListener(() =>
+        {
+            cursor.PauseOpen(false);
+        });
+
+        childButton = child.GetChild(1);
+        quitGameButton = childButton.GetComponent<Button>();
     }
     private void Start()
     {
         Player player = GameManager.Instance.Player;
-        quitGameButton.onClick.AddListener( () =>
+        quitGameButton.onClick.AddListener(() =>
         {
+            cursor.PauseOpen(false);
             player.Die();
         });
 
@@ -31,13 +44,11 @@ public class PauseMenu : MonoBehaviour
 
     public void Open()
     {
-        Time.timeScale = 0;
-        gameObject.SetActive(true);
+        child.gameObject.SetActive(true);
     }
 
     public void Close()
     {
-        Time.timeScale = 1.0f;
-        gameObject.SetActive(false);
+        child.gameObject.SetActive(false);
     }
 }

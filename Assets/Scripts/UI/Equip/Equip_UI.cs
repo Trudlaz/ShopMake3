@@ -15,8 +15,6 @@ public class Equip_UI : MonoBehaviour
 
     EquipSlot_UI[] equipSlot_UI;
 
-    DropSlotUI dropSlot;
-
     InventoryManager invenManager;
 
     RectTransform invenTransform;
@@ -33,13 +31,9 @@ public class Equip_UI : MonoBehaviour
 
     private void Awake()
     {
-        
-
         Transform child = transform.GetChild(0);
-        equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
 
-        child = transform.GetChild(1);
-        dropSlot = child.GetComponent< DropSlotUI>();
+        equipSlot_UI = child.GetComponentsInChildren<EquipSlot_UI>();
 
         invenManager = GetComponentInParent<InventoryManager>();
 
@@ -63,17 +57,14 @@ public class Equip_UI : MonoBehaviour
             QuickSlot.onGranadeChange = Equipment;
             QuickSlot.onETCChange = Equipment;
         }
-        invenManager.DragSlot.InitializeSlot(equip.DragSlot);  // �ӽ� ���� �ʱ�ȭ
-
         inven = GameManager.Instance.InventoryUI;
-        dropSlot.Close();
 
         Close();
     }
 
     void Equipment(Equipment type)
     {
-        Owner.Equipped(type);  
+        Owner.Equipped(type);
     }
 
     public bool EquipItem(ItemSlot slot)
@@ -89,6 +80,7 @@ public class Equip_UI : MonoBehaviour
     public void UseItem(uint index)
     {
         inven.Inventory.RemoveItem(equipSlot_UI[index].EquipSlot.ItemData.itemId);
+
         if (!inven.Inventory.FindItem(equipSlot_UI[index].EquipSlot.ItemData.itemId))
         {
             Owner.UnEquipped(equipSlot_UI[index].EquipSlot.ItemData.itemType);
@@ -96,9 +88,7 @@ public class Equip_UI : MonoBehaviour
         }
     }
 
-
-
-    public void open()
+    public void Open()
     {
         canvas.alpha = 1;
         canvas.interactable = true;
@@ -112,15 +102,15 @@ public class Equip_UI : MonoBehaviour
         canvas.blocksRaycasts = false;
     }
 
-    public void InventoryOnOff()
-    {
-        if (canvas.interactable)
-        {
-            Close();
-        }
-        else
-        {
-            open();
-        }
-    }
+    //public void InventoryOnOff()
+    //{
+    //    if (canvas.interactable)
+    //    {
+    //        Close();
+    //    }
+    //    else
+    //    {
+    //        Open();
+    //    }
+    //}
 }

@@ -8,7 +8,7 @@ public class QuickSlot : MonoBehaviour
     private Player owner;
     public Player Owner => owner;
 
-    PlayerInput UIinputActions;
+    PlayerMove UIinputActions;
 
     public Action<Equipment> onWeaponChange;
     public Action<Equipment> onGranadeChange;
@@ -16,23 +16,23 @@ public class QuickSlot : MonoBehaviour
 
     private void Awake()
     {
-        UIinputActions = new PlayerInput();
+        UIinputActions = new PlayerMove();
     }
 
     private void OnEnable()
     {
-        UIinputActions.UI.Enable();
-        UIinputActions.UI.QuickSlot1.performed += MainWeapon1;
-        UIinputActions.UI.QuickSlot2.performed += ThrowWeapon;
-        UIinputActions.UI.QuickSlot3.performed += ETCSlot;
+        UIinputActions.Player.Enable();
+        UIinputActions.Player.QuickSlot1.performed += MainWeapon1;
+        UIinputActions.Player.QuickSlot2.performed += ThrowWeapon;
+        UIinputActions.Player.QuickSlot3.performed += ETCSlot;
     }
 
     private void OnDisable()
     {
-        UIinputActions.UI.QuickSlot3.performed -= ETCSlot;
-        UIinputActions.UI.QuickSlot2.performed -= ThrowWeapon;
-        UIinputActions.UI.QuickSlot1.performed -= MainWeapon1;
-        UIinputActions.UI.Disable();
+        UIinputActions.Player.QuickSlot3.performed -= ETCSlot;
+        UIinputActions.Player.QuickSlot2.performed -= ThrowWeapon;
+        UIinputActions.Player.QuickSlot1.performed -= MainWeapon1;
+        UIinputActions.Player.Disable();
     }
 
     private void MainWeapon1(InputAction.CallbackContext context)

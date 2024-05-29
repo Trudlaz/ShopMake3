@@ -34,13 +34,9 @@ public class RemainBullet : MonoBehaviour
         current.text = currentAmmo.ToString();
         max.text = maxAmmo.ToString();
     }
-
-    /// <summary>
-    /// 무기가 바뀌었을때 탄창의 최대치를 바꿔주는 함수
-    /// </summary>
-    public void WeaponChange()
+    private void Start()
     {
-        max.text = weapon.maxAmmo.ToString();   // 나중에 총알관련 클래스 완성되면 넣어주기
         current.text = "0";
+        max.text = "0";
     }
 }

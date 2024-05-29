@@ -6,8 +6,6 @@ using UnityEngine.UI;
 
 public class Inventory_UI : MonoBehaviour
 {
-    PlayerInput inputActions;
-
     Inventory inventory;
 
     public Inventory Inventory => inventory;
@@ -32,7 +30,6 @@ public class Inventory_UI : MonoBehaviour
 
     Equip_UI equip;
 
-    int money = 0;
 
     /// <summary>
     /// 인벤토리 돈 관리하는 프로퍼티인데 나중에 아이템 개수로 바꿀 예정
@@ -51,7 +48,6 @@ public class Inventory_UI : MonoBehaviour
 
     private void Awake()
     {
-        inputActions = new PlayerInput();
 
         Transform child = transform.GetChild(0);
         slotsUI = child.GetComponentsInChildren<Slot_UI>();
@@ -102,7 +98,7 @@ public class Inventory_UI : MonoBehaviour
         dropSlot.onDropOk += OnDropOk;
         dropSlot.Close();
 
-        if (Owner != null)
+        if(Owner != null)
         {
             Owner.onWeightChange += weightPanel.Refresh;
             weightPanel.Refresh(Owner.Weight);
@@ -123,6 +119,7 @@ public class Inventory_UI : MonoBehaviour
 
     public void PlusValue(ItemSlot slot)
     {
+        if(Owner != null)
         Owner.Weight += slot.ItemData.weight;
     }
 
@@ -203,7 +200,7 @@ public class Inventory_UI : MonoBehaviour
     /// <param name="index"></param>
     private void OnClick(ItemSlot slot, RectTransform rect)
     {
-        if (!invenManager.DragSlot.ItemSlot.IsEmpty)
+        if(!invenManager.DragSlot.ItemSlot.IsEmpty)
         {
             OnItemMoveEnd(slot, rect);
         }
@@ -297,6 +294,7 @@ public class Inventory_UI : MonoBehaviour
         dropSlot.Close();
     }
 
+
     public void Open()
     {
         canvas.alpha = 1;
@@ -311,15 +309,15 @@ public class Inventory_UI : MonoBehaviour
         canvas.blocksRaycasts = false;
     }
 
-    public void InventoryOnOff()
-    {
-        if (canvas.interactable)
-        {
-            Close();
-        }
-        else
-        {
-            Open();
-        }
-    }
+    //public void InventoryOnOff()
+    //{
+    //    if (canvas.interactable)
+    //    {
+    //        Close();
+    //    }
+    //    else
+    //    {
+    //        Open();
+    //    }
+    //}
 }

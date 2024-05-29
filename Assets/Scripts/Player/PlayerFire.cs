@@ -12,7 +12,7 @@ public class PlayerFire : MonoBehaviour
     public int weaponPower = 5;
     private Player player; // Player 인스턴스 참조 추가
 
-    private PlayerMove InputActions;
+    private PlayerMove inputActions;
     private WeaponBase currentWeapon;
 
     PlayerNoiseSystem noise;
@@ -49,20 +49,21 @@ public class PlayerFire : MonoBehaviour
         }
 
         // 입력 시스템 설정
-        InputActions = new PlayerMove();
-        InputActions.Player.LeftMouse.performed += OnLeftMouse;
-        InputActions.Player.RightMouse.performed += OnRightMouse;
-        InputActions.Enable();
+        inputActions = new PlayerMove();
+        inputActions.Player.LeftMouse.performed += OnLeftMouse;
+        inputActions.Player.RightMouse.performed += OnRightMouse;
+        inputActions.Player.Reload.performed += OnReload;
+        inputActions.Enable();
     }
 
     private void OnEnable()
     {
-        InputActions.Enable();
+        inputActions.Enable();
     }
 
     private void OnDisable()
     {
-        InputActions.Disable();
+        inputActions.Disable();
     }
 
     private void OnLeftMouse(InputAction.CallbackContext context)
@@ -137,6 +138,23 @@ public class PlayerFire : MonoBehaviour
         else
         {
             Debug.LogError("FirePosition 오브젝트가 설정되지 않았습니다.");
+        }
+    }
+    private void OnReload(InputAction.CallbackContext context)
+    {
+        if (firePosition != null)
+        {
+            WeaponBase weapon = firePosition.GetComponentInChildren<WeaponBase>();
+
+            if (weapon != null)
+            {
+                weapon.Use();
+                Debug.Log("무기 장전 완료");
+            }
+            else
+            {
+                Debug.Log("장전 실패");
+            }
         }
     }
 }

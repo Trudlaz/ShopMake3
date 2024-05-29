@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Rifle : WeaponBase
 {
-    public override void Use()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
+    //public override void Use()
+    //{
+    //    if (Input.GetMouseButtonDown(0))
+    //    {
             
-        }
-    }
+    //    }
+    //}
 }

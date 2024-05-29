@@ -10,5 +10,5 @@ public class Test01 : MonoBehaviour
         mm
     }
 
-    public Name name;
+    public new Name name;
 }

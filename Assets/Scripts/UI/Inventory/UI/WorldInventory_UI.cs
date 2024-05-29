@@ -152,7 +152,6 @@ public class WorldInventory_UI : MonoBehaviour
 
         if (inven != null)
         {
-            worldInven.MinusMoney(slot, (int)slot.ItemCount);
             inven.PlusValue(slot);
         }
 
@@ -228,7 +227,6 @@ public class WorldInventory_UI : MonoBehaviour
     private void OnDropOk(uint index, uint count)
     {
         worldInven.RemoveItem(index, count);
-        worldInven.MinusMoney(worldSlotUI[index].ItemSlot, (int)count);
         worldDropSlot.Close();
     }
 

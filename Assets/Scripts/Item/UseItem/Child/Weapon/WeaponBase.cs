@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using static BulletBase;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class WeaponBase : ItemBase
 {
@@ -55,9 +56,11 @@ public class WeaponBase : ItemBase
 
     float coolTime = 0f;
 
-    public bool canFire = true; //  => coolTime < fireRate && currentAmmo > 0;
+    public bool canFire => coolTime < fireRate && currentAmmo > 0;
     public Action<ItemCode, int> onReload;    //장비창에 장착될때 인벤토리의 리로딩 함수와 연결 
     public Action<int, int> onAmmoChange;
+    ItemCode needType = ItemCode.PistolBullet;
+    public ItemCode NeedType => needType;
 
     private void Update()
     {
@@ -72,10 +75,14 @@ public class WeaponBase : ItemBase
         if (player != null)
         {
             PlayerUI playerUI = GameManager.Instance.PlayerUI;
+            Inventory_UI inventoryUI = GameManager.Instance.InventoryUI;
             onAmmoChange += playerUI.Remain.Refresh;
+            onReload += inventoryUI.Inventory.Reload;
 
+            inventoryUI.Inventory.onReload += Reload;
             playerUI.Remain.Refresh(currentAmmo, maxAmmo);
         }
+
     }
 
     private void OnDisable()
@@ -95,8 +102,8 @@ public class WeaponBase : ItemBase
 
     public override void Use() //리로딩
     {
+        Debug.Log("웨폰베이스 Use메소드 실행");
         int needAmmo = maxAmmo - CurrentAmmo;
-        ItemCode needType = ItemCode.PistolBullet;
         switch (ammunitionType)
         {
             case BulletType.Pistolbullet:
@@ -112,6 +119,7 @@ public class WeaponBase : ItemBase
                 needType = ItemCode.ShotgunBullet;
                 break;
         }
+        Debug.Log($"{needType}, {needAmmo}");
         onReload?.Invoke(needType, needAmmo);
     }
 

@@ -169,6 +169,7 @@ public class Inventory
                 else
                 {
                     result = 0;
+                    Debug.Log("아이템 제거 실패");
                 }
             }
         }
@@ -349,6 +350,7 @@ public class Inventory
     {
         if (slot.ItemData != null)
         {
+            if(Owner != null)
             Owner.Weight -= (int)(slot.ItemData.weight * count);
         }
     }
@@ -366,12 +368,15 @@ public class Inventory
             if (!slots[i].IsEmpty && slots[i].ItemData.itemId == code)
             {
                 Debug.Log("열쇠 확인");
-                slots[i].DecreaseSlotItem();
+                //slots[i].DecreaseSlotItem();
                 result = true;
                 break;
             }
+            else
+            {
+                //Debug.Log("열쇠 찾지 못함");
+            }
         }
-        Debug.Log("열쇠 찾지 못함");
         return result; // 루프를 끝까지 돌았는데도 아이템을 찾지 못했으면 false 반환
     }
 

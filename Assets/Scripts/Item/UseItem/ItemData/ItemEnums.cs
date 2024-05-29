@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType    //¾ÆÀÌÅÛ ±×·ì ºĞ¸®¿ë type
+public enum ItemType    //ì•„ì´í…œ ê·¸ë£¹ ë¶„ë¦¬ìš© type
 {
     Buff = 0,
     Grenade,
     Gun,
-    Pistol,   // pistol Ãß°¡
+    Pistol,   // pistol ì¶”ê°€
     Bullet,
     Trap,
     Key,
@@ -15,17 +15,18 @@ public enum ItemType    //¾ÆÀÌÅÛ ±×·ì ºĞ¸®¿ë type
     Armor,
     BackPack,
     Helmet,
-    Vest,     // Armor ´ë½Å backpack,helmet,vest Ãß°¡
+    Vest,     // Armor ëŒ€ì‹  backpack,helmet,vest ì¶”ê°€
     WeaponParts
 
 }
 
-public enum ItemCode    //¾ÆÀÌÅÛ °³º° ½Äº°¿ë ID
+public enum ItemCode    //ì•„ì´í…œ ê°œë³„ ì‹ë³„ìš© ID
 {
     SmallHeal = 0,
     MiddleHeal = 1,
     BigHeal = 2,
-    SmallSpeed = 3,
+    Small
+        = 3,
     MiddleSpeed = 4,
     BigSpeed = 5,
     SmallStrength = 6,

@@ -99,7 +99,7 @@ public class MainButtonUI : MonoBehaviour
 
     void Equipment()
     {
-        equop.open();
+        equop.Open();
         inventory.Open();
         shopInventory.Close();
         worldInventory.Close();
@@ -144,7 +144,7 @@ public class MainButtonUI : MonoBehaviour
     {
         if (state)
         {
-            equop.open();
+            equop.Open();
             inventory.Open();
             shopInventory.Open();
             worldInventory.Open();
