@@ -47,6 +47,8 @@ public class GrenadeBase : ItemBase
         rb.useGravity = true; // Use 메서드가 호출될 때 중력을 사용
         rb.AddForce(cam.forward * playerfire.throwPower, ForceMode.Impulse);
 
+        Debug.Log(isActive);
+
         GameManager.Instance.EquipUI.UseItem(3);
     }
 
